@@ -5,9 +5,15 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eplicta.Mets", "Eplicta.Mets\Eplicta.Mets.csproj", "{E081A9C8-5D0B-41B9-A707-51CB84215BFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eplicta.Mets.Tests", "Eplicta.Mets.Tests\Eplicta.Mets.Tests.csproj", "{6C2DF3BB-8EB3-42E8-87B3-44C9459E52D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eplicta.Mets.Tests", "Eplicta.Mets.Tests\Eplicta.Mets.Tests.csproj", "{6C2DF3BB-8EB3-42E8-87B3-44C9459E52D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eplicta.Mets.Console", "Eplicta.Mets.Console\Eplicta.Mets.Console.csproj", "{1B5A37C4-57F7-402D-B37C-ED87EF909A06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eplicta.Mets.Console", "Eplicta.Mets.Console\Eplicta.Mets.Console.csproj", "{1B5A37C4-57F7-402D-B37C-ED87EF909A06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BC44A2AB-261A-41A7-BD46-C15D0E8D5ADE}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
