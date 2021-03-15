@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using Eplicta.Mets.Entities;
 using Eplicta.Mets.Helpers;
 
+[assembly: InternalsVisibleTo("Eplicta.Mets.Tests")]
 namespace Eplicta.Mets
 {
     public class XmlValidator

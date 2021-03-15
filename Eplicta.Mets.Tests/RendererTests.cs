@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Eplicta.Mets.Entities;
+using FluentAssertions;
 using Xunit;
 
 namespace Eplicta.Mets.Tests
@@ -9,7 +10,8 @@ namespace Eplicta.Mets.Tests
         public void Basic()
         {
             //Arrange
-            var sut = new Renderer();
+            var modsData = new ModsData();
+            var sut = new Renderer(modsData);
 
             //Act
             var result = sut.Render();

@@ -1,14 +1,16 @@
-﻿//namespace Eplicta.Mets
-//{
-//    public class Version
-//    {
-//        private Version(string key)
-//        {
-//            Key = key;
-//        }
+﻿namespace Eplicta.Mets.Entities
+{
+    public class Version
+    {
+        private Version(string key)
+        {
+            Key = key;
+        }
 
-//        public static Version MODS_FGS_PUBL_1_1 => new Version("MODS_enligt_FGS-PUBL_xml1_1");
+        public static Version Mods_3_5 => new("mods-3-5");
+        public static Version ModsFgsPubl_1_0 => new("MODS_enligt_FGS-PUBL_xml1_0");
+        public static Version ModsFgsPubl_1_1 => new("MODS_enligt_FGS-PUBL_xml1_1");
 
-//        public string Key { get; }
-//    }
-//}
+        public string Key { get; }
+    }
+}
