@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System.Linq;
+using System.Xml;
+using System.Xml.Schema;
 using FluentAssertions;
 using Xunit;
 
@@ -10,15 +12,8 @@ namespace Eplicta.Mets.Tests
         public void Basic()
         {
             //Arrange
-            var document = new XmlDocument();
-            document.Load(@"C:\dev\Eplicta\mets\Resources\sample.xml");
-            //var root = document.CreateElement("root");
-            //var nsAttribute = document.CreateAttribute("xmlns", "xx", "http://www.w3.org/2000/xmlns/");
-            //nsAttribute.Value = "AAA";
-            //root.Attributes.Append(nsAttribute);
-
-            var schema = new XmlDocument();
-            schema.Load(@"C:\dev\Eplicta\mets\Resources\sample.xsd");
+            var document = Resource.Get("sample.xml");
+            var schema = Resource.Get("sample.xsd");
 
             var sut = new XmlValidator();
 
@@ -27,6 +22,33 @@ namespace Eplicta.Mets.Tests
 
             //Assert
             result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Invalid()
+        {
+            //Arrange
+            var document = new XmlDocument();
+            var root = document.CreateElement("root");
+            document.AppendChild(root);
+            root.SetAttribute("xmlns", "http://www.contoso.com/books");
+            var child1 = document.CreateElement("Child");
+            root.AppendChild(child1);
+            child1.SetAttribute("A", "B");
+
+            var schema = Resource.Get("sample.xsd");
+
+            var sut = new XmlValidator();
+
+            //Act
+            var result = sut.Validate(document, schema).ToArray();
+
+            //Assert
+            result.Should().NotBeEmpty();
+            result.Should().HaveCount(1);
+            result.First().Message.Should().Be("The 'http://www.contoso.com/books:root' element is not declared.");
+            result.First().XmlSeverityType.Should().Be(XmlSeverityType.Error);
+            result.First().XmlSchemaException.Should().NotBeNull();
         }
     }
 }

@@ -11,4 +11,12 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\MODS_enligt_FGS-PUBL_xml1_1.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MODS_enligt_FGS-PUBL_xml1_1.xsd" />
+  </ItemGroup>
+
 </Project>
