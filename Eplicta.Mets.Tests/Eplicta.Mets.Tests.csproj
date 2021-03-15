@@ -7,11 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\a.xml" />
+    <None Remove="Resources\a.xsd" />
+    <None Remove="Resources\mods99042030_linkedDataAdded.xml" />
+    <None Remove="Resources\MODS_enligt_FGS-PUBL_exempel_1.xml" />
+    <None Remove="Resources\MODS_enligt_FGS-PUBL_exempel_2.xml" />
+    <None Remove="Resources\MODS_enligt_FGS-PUBL_exempel_2_xml1_1.xml" />
     <None Remove="Resources\sample.xml" />
     <None Remove="Resources\sample.xsd" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\a.xml" />
+    <EmbeddedResource Include="Resources\a.xsd" />
+    <EmbeddedResource Include="Resources\mods99042030_linkedDataAdded.xml" />
+    <EmbeddedResource Include="Resources\MODS_enligt_FGS-PUBL_exempel_1.xml" />
+    <EmbeddedResource Include="Resources\MODS_enligt_FGS-PUBL_exempel_2.xml" />
+    <EmbeddedResource Include="Resources\MODS_enligt_FGS-PUBL_exempel_2_xml1_1.xml" />
     <EmbeddedResource Include="Resources\sample.xml" />
     <EmbeddedResource Include="Resources\sample.xsd" />
   </ItemGroup>
