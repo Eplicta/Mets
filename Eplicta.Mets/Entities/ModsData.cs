@@ -7,7 +7,7 @@ public record ModsData //: MetsData
     public TitleInfoData TitleInfo { get; set; }
     public NameData Name { get; set; }
     public Resource[] Resources { get; set; }
-    public string Publisher { get; set; }
+    public string Creator { get; set; }
 
     public record TitleInfoData
     {

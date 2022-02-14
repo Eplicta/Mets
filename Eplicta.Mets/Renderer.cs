@@ -140,7 +140,7 @@ public class Renderer
 
         var publisher = doc.CreateElement("publisher");
         originInfo.AppendChild(publisher);
-        publisher.InnerText = _modsData.Publisher;
+        publisher.InnerText = _modsData.Creator;
 
         //var dateIssued = doc.CreateElement("dateIssued");
         //originInfo.AppendChild(dateIssued);
