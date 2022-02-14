@@ -1,17 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Tharga.Toolkit.Console" Version="3.0.162" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Castle.Windsor" Version="5.1.1" />
+		<PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
+		<PackageReference Include="Tharga.Toolkit.Console" Version="3.0.162" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Eplicta.Mets\Eplicta.Mets.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Eplicta.Mets\Eplicta.Mets.csproj" />
+	</ItemGroup>
 
 </Project>
