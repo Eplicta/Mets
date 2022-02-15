@@ -1,10 +1,12 @@
-﻿namespace Eplicta.Mets.Console.Commands;
-
-public class MetsConsoleCommands : Tharga.Toolkit.Console.Commands.Base.ContainerCommandBase
+﻿namespace Eplicta.Mets.Console.Commands
 {
-    public MetsConsoleCommands()
-        : base("mets")
+
+    public class MetsConsoleCommands : Tharga.Toolkit.Console.Commands.Base.ContainerCommandBase
     {
-        RegisterCommand<CreateConsoleCommand>();
+        public MetsConsoleCommands()
+            : base("mets")
+        {
+            RegisterCommand<CreateConsoleCommand>();
+        }
     }
 }

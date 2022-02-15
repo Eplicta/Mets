@@ -2,21 +2,23 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Eplicta.Mets.Tests;
-
-public class RendererTests
+namespace Eplicta.Mets.Tests
 {
-    [Fact]
-    public void Basic()
+
+    public class RendererTests
     {
-        //Arrange
-        var modsData = new ModsData();
-        var sut = new Renderer(modsData);
+        [Fact]
+        public void Basic()
+        {
+            //Arrange
+            var modsData = new ModsData();
+            var sut = new Renderer(modsData);
 
-        //Act
-        var result = sut.Render();
+            //Act
+            var result = sut.Render();
 
-        //Assert
-        result.Should().NotBeNull();
+            //Assert
+            result.Should().NotBeNull();
+        }
     }
 }

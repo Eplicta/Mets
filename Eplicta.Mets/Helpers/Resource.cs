@@ -5,25 +5,27 @@ using System.Xml;
 
 [assembly: InternalsVisibleTo("Eplicta.Mets.Tests")]
 
-namespace Eplicta.Mets.Helpers;
-
-internal class Resource
+namespace Eplicta.Mets.Helpers
 {
-    public static string Get(string name)
-    {
-        var assembly = Assembly.GetExecutingAssembly();
-        var resourceName = $"Eplicta.Mets.Resources.{name}";
 
-        using var stream = assembly.GetManifestResourceStream(resourceName);
-        using var reader = new StreamReader(stream);
-        var result = reader.ReadToEnd();
-        return result;
-    }
-
-    internal static XmlDocument GetXml(string name)
+    internal class Resource
     {
-        var xsd = new XmlDocument();
-        xsd.LoadXml(Get(name));
-        return xsd;
+        public static string Get(string name)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = $"Eplicta.Mets.Resources.{name}";
+
+            using var stream = assembly.GetManifestResourceStream(resourceName);
+            using var reader = new StreamReader(stream);
+            var result = reader.ReadToEnd();
+            return result;
+        }
+
+        internal static XmlDocument GetXml(string name)
+        {
+            var xsd = new XmlDocument();
+            xsd.LoadXml(Get(name));
+            return xsd;
+        }
     }
 }

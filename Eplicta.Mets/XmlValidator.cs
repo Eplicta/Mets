@@ -10,52 +10,54 @@ using Eplicta.Mets.Helpers;
 
 [assembly: InternalsVisibleTo("Eplicta.Mets.Tests")]
 
-namespace Eplicta.Mets;
-
-public class XmlValidator
+namespace Eplicta.Mets
 {
-    public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, XmlDocument schema)
+
+    public class XmlValidator
     {
-        if (document == null) throw new ArgumentNullException(nameof(document));
-
-        var responses = new List<XmlValidatorResult>();
-
-        try
+        public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, XmlDocument schema)
         {
-            var schemas = new XmlSchemaSet();
-            using var fs = new StringReader(schema.OuterXml);
-            using var reader = XmlReader.Create(fs, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore });
-            var xmlns = document.FirstChild?.Attributes?["xmlns"]?.InnerText;
+            if (document == null) throw new ArgumentNullException(nameof(document));
 
-            schemas.Add(xmlns, reader);
+            var responses = new List<XmlValidatorResult>();
 
-            LoadSchema(schemas, "xmldsig-core-schema.xsd", @"http://www.w3.org/2000/09/xmldsig#");
-            LoadSchema(schemas, "xml.xsd", @"http://www.w3.org/XML/1998/namespace");
-            LoadSchema(schemas, "xlink.xsd", @"http://www.w3.org/1999/xlink");
-            LoadSchema(schemas, "eARD_Paket_FGS-PUBL_mets.xsd", @"http://www.loc.gov/METS/");
+            try
+            {
+                var schemas = new XmlSchemaSet();
+                using var fs = new StringReader(schema.OuterXml);
+                using var reader = XmlReader.Create(fs, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore });
+                var xmlns = document.FirstChild?.Attributes?["xmlns"]?.InnerText;
 
-            const XmlSchemaValidationFlags validationFlags = XmlSchemaValidationFlags.ProcessInlineSchema | XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ReportValidationWarnings | XmlSchemaValidationFlags.AllowXmlAttributes;
-            var settings = new XmlReaderSettings { ValidationType = ValidationType.Schema, ValidationFlags = validationFlags, DtdProcessing = DtdProcessing.Ignore };
+                schemas.Add(xmlns, reader);
 
-            using var ss1 = new StringReader(document.OuterXml);
-            using var xr = XmlReader.Create(ss1, settings);
-            var xdoc = XDocument.Load(xr);
-            xdoc.Validate(schemas, (_, e) => { responses.Add(new XmlValidatorResult(e.Message, e.Severity, e.Exception)); });
+                LoadSchema(schemas, "xmldsig-core-schema.xsd", @"http://www.w3.org/2000/09/xmldsig#");
+                LoadSchema(schemas, "xml.xsd", @"http://www.w3.org/XML/1998/namespace");
+                LoadSchema(schemas, "xlink.xsd", @"http://www.w3.org/1999/xlink");
+                LoadSchema(schemas, "eARD_Paket_FGS-PUBL_mets.xsd", @"http://www.loc.gov/METS/");
+
+                const XmlSchemaValidationFlags validationFlags = XmlSchemaValidationFlags.ProcessInlineSchema | XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ReportValidationWarnings | XmlSchemaValidationFlags.AllowXmlAttributes;
+                var settings = new XmlReaderSettings { ValidationType = ValidationType.Schema, ValidationFlags = validationFlags, DtdProcessing = DtdProcessing.Ignore };
+
+                using var ss1 = new StringReader(document.OuterXml);
+                using var xr = XmlReader.Create(ss1, settings);
+                var xdoc = XDocument.Load(xr);
+                xdoc.Validate(schemas, (_, e) => { responses.Add(new XmlValidatorResult(e.Message, e.Severity, e.Exception)); });
+            }
+            catch (XmlSchemaValidationException e)
+            {
+                responses.Add(new XmlValidatorResult(e.Message, XmlSeverityType.Error, new XmlSchemaException(e.Message, e)));
+            }
+
+            return responses;
         }
-        catch (XmlSchemaValidationException e)
+
+        private static void LoadSchema(XmlSchemaSet schemas, string name, string schemaNamespace)
         {
-            responses.Add(new XmlValidatorResult(e.Message, XmlSeverityType.Error, new XmlSchemaException(e.Message, e)));
+            var xmlReaderSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
+
+            using var fs = new StringReader(Resource.Get(name));
+            using var reader = XmlReader.Create(fs, xmlReaderSettings);
+            schemas.Add(schemaNamespace, reader);
         }
-
-        return responses;
-    }
-
-    private static void LoadSchema(XmlSchemaSet schemas, string name, string schemaNamespace)
-    {
-        var xmlReaderSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
-
-        using var fs = new StringReader(Resource.Get(name));
-        using var reader = XmlReader.Create(fs, xmlReaderSettings);
-        schemas.Add(schemaNamespace, reader);
     }
 }
