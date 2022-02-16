@@ -44,7 +44,7 @@ namespace Eplicta.Mets
             //AppendTypeOfResource(doc, root);
             //AppendGenre(doc, root);
             AppendOriginInfo(doc, root);
-            AppendMetsHdr(doc, root);
+            ModsRenderer(doc, root);
 
             
 
@@ -123,36 +123,103 @@ namespace Eplicta.Mets
             return doc;
         }
 
-        public void AppendMetsHdr(XmlDocument doc,XmlElement root)
+        public void ModsRenderer(XmlDocument doc,XmlElement root)
         {
-
+            // dynamic info, the create date with accordance to ISO 8601
             DateTime TodaysDate = DateTime.Now;
-            string DateNow = TodaysDate.ToString("F");
+            string DateNow = TodaysDate.ToString("O");
 
+            //Creates the metsHdr tag where agents and RecordID's will be
             var metshdr = doc.CreateElement("metsHdr");
             root.AppendChild(metshdr);
             metshdr.SetAttribute("CREATEDATE", DateNow);
 
+        //dynamic info, the needed information
+            var AgentElement = doc.CreateElement("agent");
+            metshdr.AppendChild(AgentElement);
+            AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
+            AgentElement.SetAttribute("TYPE", _modsData.agent.Type);
+            AgentElement.SetAttribute("OTHERTYPE", _modsData.agent.OtherType);
 
-            foreach (var Agent1 in _modsData.agents)
-            {
-                var AgentElement = doc.CreateElement("agent");
-                metshdr.AppendChild(AgentElement);
-                AgentElement.SetAttribute("ROLE", Agent.Role);
-                AgentElement.SetAttribute("TYPE", Agent.Type);
-                AgentElement.SetAttribute("OTHERTYPE", Agent.OtherType);
+            var CompName = doc.CreateElement("name");
+            CompName.InnerText = _modsData.agent.name;
+            AgentElement.AppendChild(CompName);
 
-                var CompName = doc.CreateElement("name");
-                CompName.InnerText = Agent.name;
-                AgentElement.AppendChild(CompName);
+            var note = doc.CreateElement("note");
+            note.InnerText = _modsData.agent.note;
+            AgentElement.AppendChild(note);
 
-                var note = doc.CreateElement("note");
-                note.InnerText = Agent.note;
-                AgentElement.AppendChild(note);
-            }
+
+        //Static info of the company 
+            var Companyagent = doc.CreateElement("agent");
+            Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
+            Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
+                    metshdr.AppendChild(Companyagent);
+
+            var companyname = doc.CreateElement("name");
+            companyname.InnerText = _modsData.eplicta.name;
+                Companyagent.AppendChild(companyname);
+
+            var companynote = doc.CreateElement("name");
+            companynote.InnerText = _modsData.eplicta.note;
+            Companyagent.AppendChild(companynote);
+
+                
+            var recordID1 = doc.CreateElement("AltRecordID");
+            recordID1.InnerText = "Deposit";                //Will make it later to an array that holds data for all 3 RecordsID innertext
+            recordID1.SetAttribute("type", _modsData.records.type1);    //same for types
+            metshdr.AppendChild(recordID1);
+
+
+            var recordID2 = doc.CreateElement("AltRecordID");
+            recordID2.InnerText = "Deposit";
+            recordID2.SetAttribute("type", _modsData.records.type2);
+            metshdr.AppendChild(recordID2);
+
+            var recordID3 = doc.CreateElement("AltRecordID");
+            recordID3.InnerText = "Deposit";
+            recordID3.SetAttribute("type", _modsData.records.type3);
+            metshdr.AppendChild(recordID3);
+
+            //Here is metsHdr element ending
+
+            //start of dmdSec
+            var dmdSec = doc.CreateElement("dmdSec");
+            dmdSec.SetAttribute("ID", "ID1");
+            root.AppendChild(dmdSec);
+
+            var mdwrap = doc.CreateElement("mdWrap");
+            mdwrap.SetAttribute("MDTYPE", "MODS");
+            dmdSec.AppendChild(mdwrap);
+
+            var xmldata = doc.CreateElement("xmlData");
+            dmdSec.AppendChild(xmldata);
 
             
-            
+            //mods:mods
+            var modsmods = doc.CreateElement("mods:mods");
+            modsmods.SetAttribute("xmlns", "http://www.w3.org/1999/xlink");
+            dmdSec.AppendChild(modsmods);
+
+            //mods:identifier
+            var modslocation = doc.CreateElement("mods:location");
+            modslocation.SetAttribute("type", "local");
+            modslocation.InnerText = "C5385FBC5FC559E7C43AB6700DB28EF3"; //is supposed to be dynamic
+            modsmods.AppendChild(modslocation);
+
+            var modsurl = doc.CreateElement("mods:URL");
+            modsurl.InnerText = "https://www.alingsas.se/utbildning-och-barnomsorg/vuxenutbildning/jag-vill-studera/program-i-alingsas/moln-och-virtualiseringspecialist/";
+            modslocation.AppendChild(modsurl);
+
+            var modsorigininfo = doc.CreateElement("mods:origininfo");
+            modsmods.AppendChild(modsorigininfo);
+
+            var modsDateIssued = doc.CreateElement("mods:DateIssued");
+            modsDateIssued.SetAttribute("encoding", "w3cdtf");
+            modsorigininfo.AppendChild(modsDateIssued);
+
+
+
 
 
         }

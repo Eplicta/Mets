@@ -68,16 +68,22 @@ namespace Eplicta.Mets.Console.Commands
                 Creator = "Test 2",
 
                 CreateDate = "2022-02-14",
-                agent = new ModsData.Agent
+                agent = new ModsData.Agentdata
                 {
                     Role = "Editor",
                     Type = "OTHER",
                     OtherType = "Software",
                     name = "name",
                     note = "URL",
-                }
+                },
+
+                eplicta = new ModsData.company(),
+                records = new ModsData.AltRecordID(),
+
+
                 
 
+             
 
                 
                 //Resources = new[]

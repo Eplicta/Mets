@@ -12,7 +12,10 @@ namespace Eplicta.Mets.Entities
         public Resource[] Resources { get; set; }
 
 
-        public Agent[] agents { get; set; } //should collect d
+        public Agentdata agent { get; set; } //should collect d
+        public company eplicta { get; set; }
+        public AltRecordID records { get; set; }
+
         public string Creator { get; set; }
 
 
@@ -20,12 +23,29 @@ namespace Eplicta.Mets.Entities
 
 
         //Will be used to collect all nessesery data from the website one by one
-        public record Agent{
-            public string[] name { get; set; }
-            public string[] note { get; set; }
-            public string[] Role { get; set; }
-            public string[] Type { get; set; }
-            public string[] OtherType { get; set; }
+        public record Agentdata{
+            public string name { get; set; }
+            public string note { get; set; }
+            public string Role { get; set; }
+            public string Type { get; set; }
+            public string OtherType { get; set; }
+        }
+
+        public record company
+        {
+            public string name { get; set; } = "Eplicta";
+            public string note { get; set; }
+            public string Role { get; set; } = "Editor";
+            public string Type { get; set; } = "Organisation";
+
+        }
+
+        public record AltRecordID
+        {
+            public string name2 { get; set; } = "modsmods::location";
+            public string type1 { get; set; } = "DELIVERYTYPE";
+            public string type2 { get; set; } = "DELIVERYSPECIFICATION";
+            public string type3 { get; set; } = "SUBMISSIONAGREEMENT";
         }
 
         public record TitleInfoData
