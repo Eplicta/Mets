@@ -122,6 +122,7 @@ namespace Eplicta.Mets
               </recordInfo>
             */
 
+          
             return doc;
         }
 
@@ -200,38 +201,40 @@ namespace Eplicta.Mets
             
             //mods:mods
             var modsmods = doc.CreateElement("mods:mods");
-            modsmods.SetAttribute("xmlns", "http://www.w3.org/1999/xlink");
+            modsmods.SetAttribute("xmlns", _modsData.mods.xmlns);
             xmldata.AppendChild(modsmods);
 
             //mods:identifier
             var modsidentifier = doc.CreateElement("mods:identifier");
             modsidentifier.SetAttribute("type", "local");
-            modsidentifier.InnerText = "C5385FBC5FC559E7C43AB6700DB28EF3"; //is supposed to be dynamic
+            modsidentifier.InnerText = _modsData.mods.identifier; 
             modsmods.AppendChild(modsidentifier);
 
             var modslocation = doc.CreateElement("mods:location");
             modsmods.AppendChild(modslocation);
 
             var modsurl = doc.CreateElement("mods:URL");
-            modsurl.InnerText = "https://www.alingsas.se/utbildning-och-barnomsorg/vuxenutbildning/jag-vill-studera/program-i-alingsas/moln-och-virtualiseringspecialist/";
+            modsurl.InnerText = _modsData.mods.URL ;
             modsmods.AppendChild(modsurl);
+
 
             var modsorigininfo = doc.CreateElement("mods:origininfo");
             modsmods.AppendChild(modsorigininfo);
 
             var modsDateIssued = doc.CreateElement("mods:DateIssued");
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
+            modsDateIssued.InnerText =  _modsData.mods.DateIssued;
             modsorigininfo.AppendChild(modsDateIssued);
 
             var modsaccesscondition = doc.CreateElement("mods:accessCondition");
-            modsaccesscondition.InnerText = "gratis";
+            modsaccesscondition.InnerText = _modsData.mods.accesscondition;
             modsmods.AppendChild(modsaccesscondition);
 
             var modstitleinfo = doc.CreateElement("mods:titleinfo");
             modsmods.AppendChild(modstitleinfo);
 
             var modstitle = doc.CreateElement("mods:title");
-            modstitle.InnerText = "Moln- och virtualiseringspecialist";
+            modstitle.InnerText = _modsData.mods.modstitle;
             modstitleinfo.AppendChild(modstitle);
 
             var modsrelateditem = doc.CreateElement("mods:relatedItem");
@@ -240,14 +243,14 @@ namespace Eplicta.Mets
 
             var modsidentifier2 = doc.CreateElement("mods:identifier");
             modsidentifier2.SetAttribute("type", "uri");
-            modsidentifier2.InnerText = "https://www.alingsas.se/";
+            modsidentifier2.InnerText = _modsData.mods.uri;
             modsrelateditem.AppendChild(modsidentifier2);
 
             var modstitleInfo2 = doc.CreateElement("mods:titleInfo");
             modsrelateditem.AppendChild(modstitleInfo2);
 
             var modstitle2 = doc.CreateElement("mods:title");
-            modstitle2.InnerText = "https://www.alingsas.se/";
+            modstitle2.InnerText = _modsData.mods.modstitle2;
             modstitleInfo2.AppendChild(modstitle2);
 
             //From heres are the file section
@@ -259,13 +262,13 @@ namespace Eplicta.Mets
             filesec.AppendChild(filegrp);
 
             var file = doc.CreateElement("File");
-            file.SetAttribute("ID", "ID4d6bdd9068214aa5a57d53bdbe4a9cf3");
-            file.SetAttribute("USE", "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144");
-            file.SetAttribute("MIMETYPE", "application/pdf");
-            file.SetAttribute("SIZE", "1145856");
-            file.SetAttribute("CREATED", "2022-02-19T16:44:44.000+01:00");
-            file.SetAttribute("CHECKSUM", "801520fe16da09d1365596dfabb2846b");
-            file.SetAttribute("CHECKSUMTYPE", "MD5");
+            file.SetAttribute("ID", _modsData.file.ID);
+            file.SetAttribute("USE", _modsData.file.USE);
+            file.SetAttribute("MIMETYPE", _modsData.file.MIMETYPE);
+            file.SetAttribute("SIZE", _modsData.file.SIZE);
+            file.SetAttribute("CREATED", _modsData.file.CREATED);
+            file.SetAttribute("CHECKSUM", _modsData.file.CHECKSUM);
+            file.SetAttribute("CHECKSUMTYPE", _modsData.file.CHECKSUMTYPE);
             filegrp.AppendChild(file);
 
             var flocat = doc.CreateElement("FLocat");

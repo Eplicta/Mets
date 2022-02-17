@@ -15,6 +15,9 @@ namespace Eplicta.Mets.Entities
         public Agentdata agent { get; set; } //should collect d
         public company eplicta { get; set; }
         public AltRecordID records { get; set; }
+        public ModsSectionInfo mods { get; set; }
+        public files file { get; set; }
+
 
         public string Creator { get; set; }
 
@@ -42,12 +45,35 @@ namespace Eplicta.Mets.Entities
 
         public record AltRecordID
         {
-            public string name2 { get; set; }
             public string type1 { get; set; } = "DELIVERYTYPE";
             public string type2 { get; set; } = "DELIVERYSPECIFICATION";
             public string type3 { get; set; } = "SUBMISSIONAGREEMENT";
         }
 
+        public record ModsSectionInfo
+        {
+            public string xmlns { get; set; } = "http://www.w3.org/1999/xlink";
+            public string identifier { get; set; } = "C5385FBC5FC559E7C43AB6700DB28EF3";
+            public string URL { get; set; } = "https://www.alingsas.se/utbildning-och-barnomsorg/vuxenutbildning/jag-vill-studera/program-i-alingsas/moln-och-virtualiseringspecialist/";
+            public string DateIssued { get; set; } = "time now";
+            public string accesscondition { get; set; } = "gratis";
+            public string modstitle { get; set; } = "Moln- och virtualiseringspecialist";
+            public string uri { get; set; } = "https://www.alingsas.se/";
+            public string modstitle2 { get; set; } = "https://www.alingsas.se/";
+        }
+
+
+        public record files
+        {
+            public string ID { get; set; } = "ID4d6bdd9068214aa5a57d53bdbe4a9cf3";
+            public string USE { get; set; } = "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144";
+            public string MIMETYPE { get; set; } = "application/pdf";
+            public string SIZE { get; set; } = "1145856";
+            public string CREATED { get; set; } = "2022-02-19T16:44:44.000+01:00";
+            public string CHECKSUM { get; set; } = "801520fe16da09d1365596dfabb2846b";
+            public string CHECKSUMTYPE { get; set; } = "MD5";
+
+        }
         public record TitleInfoData
         {
             public string Title { get; set; }
