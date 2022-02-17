@@ -193,23 +193,26 @@ namespace Eplicta.Mets
             dmdSec.AppendChild(mdwrap);
 
             var xmldata = doc.CreateElement("xmlData");
-            dmdSec.AppendChild(xmldata);
+            mdwrap.AppendChild(xmldata);
 
             
             //mods:mods
             var modsmods = doc.CreateElement("mods:mods");
             modsmods.SetAttribute("xmlns", "http://www.w3.org/1999/xlink");
-            dmdSec.AppendChild(modsmods);
+            xmldata.AppendChild(modsmods);
 
             //mods:identifier
+            var modsidentifier = doc.CreateElement("mods:identifier");
+            modsidentifier.SetAttribute("type", "local");
+            modsidentifier.InnerText = "C5385FBC5FC559E7C43AB6700DB28EF3"; //is supposed to be dynamic
+            modsmods.AppendChild(modsidentifier);
+
             var modslocation = doc.CreateElement("mods:location");
-            modslocation.SetAttribute("type", "local");
-            modslocation.InnerText = "C5385FBC5FC559E7C43AB6700DB28EF3"; //is supposed to be dynamic
             modsmods.AppendChild(modslocation);
 
             var modsurl = doc.CreateElement("mods:URL");
             modsurl.InnerText = "https://www.alingsas.se/utbildning-och-barnomsorg/vuxenutbildning/jag-vill-studera/program-i-alingsas/moln-och-virtualiseringspecialist/";
-            modslocation.AppendChild(modsurl);
+            modsmods.AppendChild(modsurl);
 
             var modsorigininfo = doc.CreateElement("mods:origininfo");
             modsmods.AppendChild(modsorigininfo);
@@ -217,6 +220,41 @@ namespace Eplicta.Mets
             var modsDateIssued = doc.CreateElement("mods:DateIssued");
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
             modsorigininfo.AppendChild(modsDateIssued);
+
+            var modsaccesscondition = doc.CreateElement("mods:accessCondition");
+            modsaccesscondition.InnerText = "gratis";
+            modsmods.AppendChild(modsaccesscondition);
+
+            var modstitleinfo = doc.CreateElement("mods:titleinfo");
+            modsmods.AppendChild(modstitleinfo);
+
+            var modstitle = doc.CreateElement("mods:title");
+            modstitle.InnerText = "Moln- och virtualiseringspecialist";
+            modstitleinfo.AppendChild(modstitle);
+
+            var modsrelateditem = doc.CreateElement("mods:relatedItem");
+            modsrelateditem.SetAttribute("type", "host");
+            modsmods.AppendChild(modsrelateditem);
+
+            var modsidentifier2 = doc.CreateElement("mods:identifier");
+            modsidentifier2.SetAttribute("type", "uri");
+            modsidentifier2.InnerText = "https://www.alingsas.se/";
+            modsrelateditem.AppendChild(modsidentifier2);
+
+            var modstitleInfo2 = doc.CreateElement("mods:titleInfo");
+            modsrelateditem.AppendChild(modstitleInfo2);
+
+            var modstitle2 = doc.CreateElement("mods:title");
+            modstitle2.InnerText = "https://www.alingsas.se/";
+            modstitleInfo2.AppendChild(modstitle2);
+
+
+
+
+
+
+
+
 
 
 

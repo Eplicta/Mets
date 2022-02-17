@@ -42,7 +42,7 @@ namespace Eplicta.Mets.Entities
 
         public record AltRecordID
         {
-            public string name2 { get; set; } = "modsmods::location";
+            public string name2 { get; set; }
             public string type1 { get; set; } = "DELIVERYTYPE";
             public string type2 { get; set; } = "DELIVERYSPECIFICATION";
             public string type3 { get; set; } = "SUBMISSIONAGREEMENT";
