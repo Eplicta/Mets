@@ -248,11 +248,45 @@ namespace Eplicta.Mets
             modstitle2.InnerText = "https://www.alingsas.se/";
             modstitleInfo2.AppendChild(modstitle2);
 
+            //From heres are the file section
 
+            var filesec = doc.CreateElement("fileSec");
+            root.AppendChild(filesec);
 
+            var filegrp = doc.CreateElement("fileGrp");
+            filesec.AppendChild(filegrp);
 
+            var file = doc.CreateElement("File");
+            file.SetAttribute("ID", "ID4d6bdd9068214aa5a57d53bdbe4a9cf3");
+            file.SetAttribute("USE", "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144");
+            file.SetAttribute("MIMETYPE", "application/pdf");
+            file.SetAttribute("SIZE", "1145856");
+            file.SetAttribute("CREATED", "2022-02-19T16:44:44.000+01:00");
+            file.SetAttribute("CHECKSUM", "801520fe16da09d1365596dfabb2846b");
+            file.SetAttribute("CHECKSUMTYPE", "MD5");
+            filegrp.AppendChild(file);
 
+            var flocat = doc.CreateElement("FLocat");
+            flocat.SetAttribute("ns2:type", "simple");
+            flocat.SetAttribute("ns2:href", "file: Content/Moln-och-virtualiseringsspecialist.pdf");
+            flocat.SetAttribute("LOCALTYPE", "URL");
+            file.AppendChild(flocat);
 
+            var struktmap = doc.CreateElement("structMap");
+            struktmap.SetAttribute("TYPE", "physical");
+            root.AppendChild(struktmap);
+
+            var div = doc.CreateElement("div");
+            div.SetAttribute("TYPE", "files");
+            struktmap.AppendChild(div);
+
+            var div2 = doc.CreateElement("div");
+            div2.SetAttribute("TYPE", "publication");
+            div.AppendChild(div2);
+
+            var fptr = doc.CreateElement("fptr");
+            fptr.SetAttribute("FILEID", "ID4d6bdd9068214aa5a57d53bdbe4a9cf3");
+            div2.AppendChild(fptr);
 
 
 
