@@ -25,12 +25,14 @@ namespace Eplicta.Mets
             var documentType = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
             doc.AppendChild(documentType);
 
-            var root = doc.CreateElement("mods");
+            var root = doc.CreateElement("mets");
             doc.AppendChild(root);
             root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
             root.SetAttribute("version", "3.5");
 
             root.SetAttribute("xmlns", "http://www.loc.gov/mods/v3");
+
+            root.SetAttribute("OBJID", "UUID:4129e4754572415da8aa2424b7fdd16e");
 
             var element = doc.DocumentElement;
             var attr = doc.CreateAttribute("xsi", "schemaLocation", "http://www.w3.org/2001/XMLSchema-instance");
