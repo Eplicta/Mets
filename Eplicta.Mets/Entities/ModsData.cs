@@ -25,7 +25,9 @@ namespace Eplicta.Mets.Entities
         public string CreateDate { get; set; }
 
 
-        //Will be used to collect all nessesery data from the website one by one
+        //Will be used to collect all nessesery data from the website
+        //All necessery info about the websites will be located here
+        //Dynamic data
         public record Agentdata{
             public string name { get; set; }
             public string note { get; set; }
@@ -34,6 +36,8 @@ namespace Eplicta.Mets.Entities
             public string OtherType { get; set; }
         }
 
+        //All info about the company doing the E-plikt
+        //Static data
         public record company
         {
             public string name { get; set; } = "Eplicta";
@@ -43,6 +47,9 @@ namespace Eplicta.Mets.Entities
 
         }
 
+
+        //record ID's 
+        //Static data
         public record AltRecordID
         {
             public string type1 { get; set; } = "DELIVERYTYPE";
@@ -50,6 +57,8 @@ namespace Eplicta.Mets.Entities
             public string type3 { get; set; } = "SUBMISSIONAGREEMENT";
         }
 
+        //Everything for Mods section
+        //Mostly dynamic data
         public record ModsSectionInfo
         {
             public string xmlns { get; set; } = "http://www.w3.org/1999/xlink";
@@ -63,16 +72,18 @@ namespace Eplicta.Mets.Entities
         }
 
 
+        //files section for storing data about files
+        //Dynamic and Calculated data, and pronom-code
         public record files
         {
-            public string ID { get; set; } = "ID4d6bdd9068214aa5a57d53bdbe4a9cf3";
-            public string USE { get; set; } = "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144";
-            public string MIMETYPE { get; set; } = "application/pdf";
-            public string SIZE { get; set; } = "1145856";
-            public string CREATED { get; set; } = "2022-02-19T16:44:44.000+01:00";
-            public string CHECKSUM { get; set; } = "801520fe16da09d1365596dfabb2846b";
-            public string CHECKSUMTYPE { get; set; } = "MD5";
-
+            public string ID { get; set; } = "ID4d6bdd9068214aa5a57d53bdbe4a9cf3";  //Calculated data
+            public string USE { get; set; } = "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"; //Pronom-code
+            public string MIMETYPE { get; set; } = "application/pdf";   //Dynamic data
+            public string SIZE { get; set; } = "1145856"; //Calculated data
+            public string CREATED { get; set; } = "2022-02-19T16:44:44.000+01:00";  //Calculated data
+            public string CHECKSUM { get; set; } = "801520fe16da09d1365596dfabb2846b"; //Calculated data
+            public string CHECKSUMTYPE { get; set; } = "MD5"; //static data
+             
         }
         public record TitleInfoData
         {
