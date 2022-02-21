@@ -1,14 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Xml;
 using Eplicta.Mets.Entities;
-using System.Globalization;
-using System;
 
 namespace Eplicta.Mets
 {
-
     public class Renderer
     {
         private readonly ModsData _modsData;
@@ -47,9 +45,6 @@ namespace Eplicta.Mets
             //AppendGenre(doc, root);
             AppendOriginInfo(doc, root);
             ModsRenderer(doc, root);
-
-            
-
 
 
             /*
@@ -122,22 +117,22 @@ namespace Eplicta.Mets
               </recordInfo>
             */
 
-          
+
             return doc;
         }
 
-        public void ModsRenderer(XmlDocument doc,XmlElement root)
+        public void ModsRenderer(XmlDocument doc, XmlElement root)
         {
             // dynamic info, the create date with accordance to ISO 8601
-            DateTime TodaysDate = DateTime.Now;
-            string DateNow = TodaysDate.ToString("O");
+            var TodaysDate = DateTime.Now;
+            var DateNow = TodaysDate.ToString("O");
 
             //Creates the metsHdr tag where agents and RecordID's will be
             var metshdr = doc.CreateElement("metsHdr");
             root.AppendChild(metshdr);
             metshdr.SetAttribute("CREATEDATE", DateNow);
 
-        //dynamic info, the needed information
+            //dynamic info, the needed information
             var AgentElement = doc.CreateElement("agent");
             metshdr.AppendChild(AgentElement);
             AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
@@ -153,24 +148,24 @@ namespace Eplicta.Mets
             AgentElement.AppendChild(note);
 
 
-        //Static info of the company 
+            //Static info of the company 
             var Companyagent = doc.CreateElement("agent");
             Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
             Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
-                    metshdr.AppendChild(Companyagent);
+            metshdr.AppendChild(Companyagent);
 
             var companyname = doc.CreateElement("name");
             companyname.InnerText = _modsData.eplicta.name;
-                Companyagent.AppendChild(companyname);
+            Companyagent.AppendChild(companyname);
 
             var companynote = doc.CreateElement("name");
             companynote.InnerText = _modsData.eplicta.note;
             Companyagent.AppendChild(companynote);
 
-                
+
             var recordID1 = doc.CreateElement("AltRecordID");
-            recordID1.InnerText = "Deposit";                //Will make it later to an array that holds data for all 3 RecordsID innertext
-            recordID1.SetAttribute("type", _modsData.records.type1);    //same for types
+            recordID1.InnerText = "Deposit"; //Will make it later to an array that holds data for all 3 RecordsID innertext
+            recordID1.SetAttribute("type", _modsData.records.type1); //same for types
             metshdr.AppendChild(recordID1);
 
 
@@ -198,7 +193,7 @@ namespace Eplicta.Mets
             var xmldata = doc.CreateElement("xmlData");
             mdwrap.AppendChild(xmldata);
 
-            
+
             //mods:mods
             var modsmods = doc.CreateElement("mods:mods");
             modsmods.SetAttribute("xmlns", _modsData.mods.xmlns);
@@ -207,14 +202,14 @@ namespace Eplicta.Mets
             //mods:identifier
             var modsidentifier = doc.CreateElement("mods:identifier");
             modsidentifier.SetAttribute("type", "local");
-            modsidentifier.InnerText = _modsData.mods.identifier; 
+            modsidentifier.InnerText = _modsData.mods.identifier;
             modsmods.AppendChild(modsidentifier);
 
             var modslocation = doc.CreateElement("mods:location");
             modsmods.AppendChild(modslocation);
 
             var modsurl = doc.CreateElement("mods:URL");
-            modsurl.InnerText = _modsData.mods.URL ;
+            modsurl.InnerText = _modsData.mods.URL;
             modsmods.AppendChild(modsurl);
 
 
@@ -223,7 +218,7 @@ namespace Eplicta.Mets
 
             var modsDateIssued = doc.CreateElement("mods:DateIssued");
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
-            modsDateIssued.InnerText =  _modsData.mods.DateIssued;
+            modsDateIssued.InnerText = _modsData.mods.DateIssued;
             modsorigininfo.AppendChild(modsDateIssued);
 
             var modsaccesscondition = doc.CreateElement("mods:accessCondition");
@@ -301,13 +296,6 @@ namespace Eplicta.Mets
             var fptr = doc.CreateElement("fptr");
             fptr.SetAttribute("FILEID", "ID4d6bdd9068214aa5a57d53bdbe4a9cf3");
             div2.AppendChild(fptr);
-
-
-
-
-
-
-
         }
 
         private void AppendOriginInfo(XmlDocument doc, XmlElement root)
@@ -419,12 +407,8 @@ namespace Eplicta.Mets
             AddFile(zipArchive, "metadata.xml", Render().OuterXml);
 
             if (_modsData.Resources != null)
-            {
                 foreach (var resource in _modsData.Resources)
-                {
                     AddFile(zipArchive, $"data/{resource.Name}", resource.Data);
-                }
-            }
 
             return compressedFileStream;
         }

@@ -7,12 +7,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Eplicta.Mets.Console.csproj.DotSettings" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Castle.Windsor" Version="5.1.1" />
 		<PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
 		<PackageReference Include="Tharga.Toolkit.Console" Version="3.0.162" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Eplicta.Html\Eplicta.Html.csproj" />
 		<ProjectReference Include="..\Eplicta.Mets\Eplicta.Mets.csproj" />
 	</ItemGroup>
 

@@ -5,7 +5,6 @@ using Xunit;
 
 namespace Eplicta.Mets.Tests
 {
-
     public class MetsValidatorTests
     {
         [Fact]
