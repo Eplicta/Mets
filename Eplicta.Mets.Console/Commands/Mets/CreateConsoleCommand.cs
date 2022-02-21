@@ -2,14 +2,13 @@
 using System.Text;
 using System.Threading.Tasks;
 using Eplicta.Mets.Entities;
+using Tharga.Toolkit.Console.Commands.Base;
 
-namespace Eplicta.Mets.Console.Commands
+namespace Eplicta.Mets.Console.Commands.Mets
 {
-
-    public class CreateConsoleCommand : Tharga.Toolkit.Console.Commands.Base.AsyncActionCommandBase
+    public class CreateConsoleCommand : AsyncActionCommandBase
     {
-        public CreateConsoleCommand()
-            : base("Create")
+        public CreateConsoleCommand() : base("Create")
         {
         }
 
@@ -56,17 +55,9 @@ namespace Eplicta.Mets.Console.Commands
 
             var metsData = new ModsData
             {
-                Name = new ModsData.NameData
-                {
-                    NamePart = "kommun",
-                },
-                TitleInfo = new ModsData.TitleInfoData
-                {
-                    Title = "Moln- och virtualiseringspecialist",
-                    SubTitle = null
-                },
+                Name = new ModsData.NameData { NamePart = "kommun" },
+                TitleInfo = new ModsData.TitleInfoData { Title = "Moln- och virtualiseringspecialist", SubTitle = null },
                 Creator = "Test 2",
-
                 CreateDate = "2022-02-14",
                 agent = new ModsData.Agentdata
                 {
@@ -74,20 +65,14 @@ namespace Eplicta.Mets.Console.Commands
                     Type = "OTHER",
                     OtherType = "Software",
                     name = "name",
-                    note = "URL",
+                    note = "URL"
                 },
-
                 eplicta = new ModsData.company(),
                 records = new ModsData.AltRecordID(),
                 mods = new ModsData.ModsSectionInfo(),
-                file = new ModsData.files(),
+                file = new ModsData.files()
 
 
-                
-
-             
-
-                
                 //Resources = new[]
                 //{
                 //    new ModsData.Resource

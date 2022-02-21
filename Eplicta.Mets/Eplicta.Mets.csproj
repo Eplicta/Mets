@@ -12,6 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="Eplicta.Mets.csproj.DotSettings" />
 		<None Remove="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<None Remove="Resources\mods-3-0.xsd" />
 		<None Remove="Resources\mods-3-1.xsd" />
