@@ -213,7 +213,7 @@ namespace Eplicta.Mets
             var modslocation = doc.CreateElement("mods:location");
             modsmods.AppendChild(modslocation);
 
-            var modsurl = doc.CreateElement("mods::  URL");
+            var modsurl = doc.CreateElement("mods:URL");
             modsurl.InnerText = _modsData.mods.URL ;
             modsmods.AppendChild(modsurl);
 
@@ -264,6 +264,7 @@ namespace Eplicta.Mets
             foreach (var item in _modsData.files)
             {
                 var file = doc.CreateElement("File");
+
                 file.SetAttribute("ID", item.ID);
                 file.SetAttribute("USE", item.USE);
                 file.SetAttribute("MIMETYPE", item.MIMETYPE);
