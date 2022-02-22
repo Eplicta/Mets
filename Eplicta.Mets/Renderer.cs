@@ -120,6 +120,9 @@ namespace Eplicta.Mets
 
             return doc;
         }
+        // Overrides the Render method to write a <span> element
+        // that applies styles and attributes. 
+         
 
         public void ModsRenderer(XmlDocument doc, XmlElement root)
         {

@@ -39,10 +39,120 @@ namespace Eplicta.Mets.Console.Commands.Html
                                },
                                new HtmlTemplate.Element
                                {
+                                   Name = "externaId",
+                                   Value = "113824134542904_117380220853962"
+                               },
+                               new HtmlTemplate.Element
+                               {
                                    Name = "uri",
                                    Value = "https://www.facebook.com/113824134542904/posts/117380220853962/"
                                },
-                           }
+                               new HtmlTemplate.Element
+                               {
+                                   Name = "publishDate",
+                                   Value = "2022-02-07T13:14:22.0000000Z"
+
+                               },
+                               new HtmlTemplate.Element
+                               {
+                                   Name = "title",
+                                   Value = "Detta är ett inlägg med bild och location"
+                               },
+                               new HtmlTemplate.Element
+                               {
+                                   Name = "postMessage",
+                                   Children = new HtmlTemplate.Element[]
+                                   {
+                                       new HtmlTemplate.Element
+                                       {
+                                           Name = "![CDATA[ Detta är ett inlägg med bild och location. ]]",
+                                       }
+                                   }
+                               },
+                               new HtmlTemplate.Element
+                               {
+                                   Name = "likeCount",
+                                   Value = "1"
+                               },
+                               new HtmlTemplate.Element
+                               {
+                                   Name = "shareCount",
+                                   Value = "0"
+                               },
+                               new HtmlTemplate.Element
+                               {
+                                   Name = "location",
+                                   Children = new HtmlTemplate.Element[]
+                                   {
+                                       new HtmlTemplate.Element
+                                       {
+                                           Name = "name",
+                                           Value = "Stockholm"
+                                       },
+                                       new HtmlTemplate.Element
+                                       {
+                                           Name = "link",
+                                           Value = "https://www.facebook.com/106505586052951"
+                                       }
+                                   }
+                               }
+                            }
+                        },
+                        new HtmlTemplate.Element
+                        {
+                            Name = "channelInfo",
+                            Children = new HtmlTemplate.Element[]
+                            {
+                                new HtmlTemplate.Element
+                                {
+                                    Name = "epafhannelId",
+                                    Value = "C18D7E70CD734F8286E2CA6E6490D56E"
+                                },
+                                new HtmlTemplate.Element
+                                {
+                                    Name = "ChannelKey",
+                                    Value = "Harvester testflöde-113824134542904",
+                                    Attributes = new System.Collections.Generic.Dictionary<string, string>
+                                    {
+                                        {
+                                            "Key", "asdsad"
+                                        }
+                                    }
+                                },
+                                new HtmlTemplate.Element
+                                {
+                                    Name = "channelType",
+                                    Value = "Facebook"
+                                }
+                            }
+                        },
+                        new HtmlTemplate.Element
+                        {
+                            Name = "resources",
+                            Children = new HtmlTemplate.Element[]
+                            {
+                                new HtmlTemplate.Element
+                                {
+                                    Name = "file",
+                                    Children = new HtmlTemplate.Element[]
+                                    {
+                                        new HtmlTemplate.Element
+                                        {
+                                            Name = "attachmentType",
+                                            Value = "photo"
+                                        }
+                                    },
+                                    Attributes = new System.Collections.Generic.Dictionary<string, string>
+                                    {
+                                        {
+                                            "name","Content/273280339_117380057520645_1825831192817841875_n.jpg"
+                                        },
+                                        {
+                                            "har","quack"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
