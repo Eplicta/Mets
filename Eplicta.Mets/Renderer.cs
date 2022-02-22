@@ -259,21 +259,30 @@ namespace Eplicta.Mets
             var filegrp = doc.CreateElement("fileGrp");
             filesec.AppendChild(filegrp);
 
-            var file = doc.CreateElement("File");
-            file.SetAttribute("ID", _modsData.file.ID);
-            file.SetAttribute("USE", _modsData.file.USE);
-            file.SetAttribute("MIMETYPE", _modsData.file.MIMETYPE);
-            file.SetAttribute("SIZE", _modsData.file.SIZE);
-            file.SetAttribute("CREATED", _modsData.file.CREATED);
-            file.SetAttribute("CHECKSUM", _modsData.file.CHECKSUM);
-            file.SetAttribute("CHECKSUMTYPE", _modsData.file.CHECKSUMTYPE);
-            filegrp.AppendChild(file);
+            foreach (var item in _modsData.files)
+            {
+                var file = doc.CreateElement("File");
 
-            var flocat = doc.CreateElement("FLocat");
-            flocat.SetAttribute("ns2:type", "simple");
-            flocat.SetAttribute("ns2:href", "file: Content/Moln-och-virtualiseringsspecialist.pdf");
-            flocat.SetAttribute("LOCALTYPE", "URL");
-            file.AppendChild(flocat);
+                file.SetAttribute("ID", item.ID);
+                file.SetAttribute("USE", item.USE);
+                file.SetAttribute("MIMETYPE", item.MIMETYPE);
+                file.SetAttribute("SIZE", item.SIZE);
+                file.SetAttribute("CREATED", item.CREATED);
+                file.SetAttribute("CHECKSUM", item.CHECKSUM);
+                file.SetAttribute("CHECKSUMTYPE", item.CHECKSUMTYPE);
+                var flocat = doc.CreateElement("FLocat");
+                flocat.SetAttribute("ns2:type", item.ns2Type);
+                flocat.SetAttribute("ns2:href", item.ns2href);
+                flocat.SetAttribute("LOCALTYPE", item.localtype);
+                file.AppendChild(flocat);
+
+                filegrp.AppendChild(file);
+
+
+            }
+
+
+
 
             var struktmap = doc.CreateElement("structMap");
             struktmap.SetAttribute("TYPE", "physical");

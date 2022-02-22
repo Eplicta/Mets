@@ -70,7 +70,12 @@ namespace Eplicta.Mets.Console.Commands.Mets
                 eplicta = new ModsData.company(),
                 records = new ModsData.AltRecordID(),
                 mods = new ModsData.ModsSectionInfo(),
-                file = new ModsData.files()
+                files = new ModsData.file[1],
+
+
+                
+
+             
 
 
                 //Resources = new[]

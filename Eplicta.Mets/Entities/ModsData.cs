@@ -16,7 +16,7 @@ namespace Eplicta.Mets.Entities
         public company eplicta { get; set; }
         public AltRecordID records { get; set; }
         public ModsSectionInfo mods { get; set; }
-        public files file { get; set; }
+        public file[] files { get; set; }
 
 
         public string Creator { get; set; }
@@ -74,7 +74,7 @@ namespace Eplicta.Mets.Entities
 
         //files section for storing data about files
         //Dynamic and Calculated data, and pronom-code
-        public record files
+        public record file
         {
             public string ID { get; set; } = "ID4d6bdd9068214aa5a57d53bdbe4a9cf3";  //Calculated data
             public string USE { get; set; } = "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"; //Pronom-code
@@ -83,6 +83,10 @@ namespace Eplicta.Mets.Entities
             public string CREATED { get; set; } = "2022-02-19T16:44:44.000+01:00";  //Calculated data
             public string CHECKSUM { get; set; } = "801520fe16da09d1365596dfabb2846b"; //Calculated data
             public string CHECKSUMTYPE { get; set; } = "MD5"; //static data
+            public string ns2Type { get; set; }
+            public string ns2href { get; set; }
+            public string localtype { get; set; }
+
              
         }
         public record TitleInfoData
