@@ -16,7 +16,7 @@ namespace Eplicta.Mets.Entities
         public company eplicta { get; set; }
         public AltRecordID records { get; set; }
         public ModsSectionInfo mods { get; set; }
-        public file[] files { get; set; }
+        public file[] Files { get; set; }
 
 
         public string Creator { get; set; }
@@ -29,11 +29,10 @@ namespace Eplicta.Mets.Entities
         //All necessery info about the websites will be located here
         //Dynamic data
         public record Agentdata{
-            public string name { get; set; }
-            public string note { get; set; }
-            public string Role { get; set; }
-            public string Type { get; set; }
-            public string OtherType { get; set; }
+            public string name { get; set; } = "Alingsås Kommun";
+            public string note { get; set; } = "http://id.kb.se/organisations/SE2120001553";
+            public string Role { get; set; } = "ARCHIVIST";
+            public string Type { get; set; } = "ORGANIZATION";
         }
 
         //All info about the company doing the E-plikt
@@ -41,9 +40,14 @@ namespace Eplicta.Mets.Entities
         public record company
         {
             public string name { get; set; } = "Eplicta";
-            public string note { get; set; }
+            public string note { get; set; } = "http://id.kb.se/organisations/SE5590369160";
             public string Role { get; set; } = "Editor";
             public string Type { get; set; } = "Organisation";
+
+            public string name2 { get; set; } = "Eplicta Aggregator";
+            public string Role2 { get; set; } = "Editor";
+            public string Type2 { get; set; } = "Organisation";
+            public string Othertype { get; set; } = "SOFTWARE";
 
         }
 
@@ -53,8 +57,11 @@ namespace Eplicta.Mets.Entities
         public record AltRecordID
         {
             public string type1 { get; set; } = "DELIVERYTYPE";
-            public string type2 { get; set; } = "DELIVERYSPECIFICATION";
+            public string innertext1 { get; set; } = "DEPOSIT";
+            public string type2 { get; set; } = "deliveryspecification";
+            public string innertext2 { get; set; } = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/";
             public string type3 { get; set; } = "SUBMISSIONAGREEMENT";
+            public string innertext3 { get; set; } = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013";
         }
 
         //Everything for Mods section
@@ -74,7 +81,7 @@ namespace Eplicta.Mets.Entities
 
         //files section for storing data about files
         //Dynamic and Calculated data, and pronom-code
-        public record file
+        public record file/*(string ID, string USE, string MIMETYPE, string SIZE, string CREATED, string CHECKSUM, string CHECKSUMTYPE, string ns2Type, string ns2href, string localtype)*/
         {
             public string ID { get; set; } = "ID4d6bdd9068214aa5a57d53bdbe4a9cf3";  //Calculated data
             public string USE { get; set; } = "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"; //Pronom-code
@@ -83,11 +90,27 @@ namespace Eplicta.Mets.Entities
             public string CREATED { get; set; } = "2022-02-19T16:44:44.000+01:00";  //Calculated data
             public string CHECKSUM { get; set; } = "801520fe16da09d1365596dfabb2846b"; //Calculated data
             public string CHECKSUMTYPE { get; set; } = "MD5"; //static data
-            public string ns2Type { get; set; }
-            public string ns2href { get; set; }
-            public string localtype { get; set; }
+            public string ns2Type { get; set; } = "simple";
+            public string ns2href { get; set; } = "Content/Moln-och-virtualiseringsspecialist.pdf";
+            public string localtype { get; set; } = "URL";
 
-             
+
+
+            //public file(string Id, string Use, string Mimetype, string Size, string Created, string Checksum, string Ns2Type, string Ns2href, string Localtype)
+            //{
+            //    ID = Id;
+            //    USE = Use;
+            //        MIMETYPE = Mimetype;
+            //        SIZE = Size;
+            //        CREATED = Created;
+            //        CHECKSUM = Checksum;
+            //    ns2Type = Ns2Type;
+            //    ns2href = Ns2href;
+            //    localtype = Localtype;
+            //}
+
+
+
         }
         public record TitleInfoData
         {
@@ -103,7 +126,7 @@ namespace Eplicta.Mets.Entities
         public record Resource
         {
             public string Name { get; set; }
-            public byte[] Data { get; set; }
+            public byte[] Data { get; set; } 
         }
     }
 }
