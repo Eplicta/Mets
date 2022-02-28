@@ -140,8 +140,9 @@ namespace Eplicta.Mets
             //dynamic info, the needed information
 
             var AgentElement = doc.CreateElement("agent");
-            AgentElement.SetAttribute("TYPE", _modsData.agent.Type);
             AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
+            AgentElement.SetAttribute("TYPE", _modsData.agent.Type);
+            
             metshdr.AppendChild(AgentElement);
 
 
@@ -156,8 +157,9 @@ namespace Eplicta.Mets
 
             //Static info of the company 
             var Companyagent = doc.CreateElement("agent");
-            Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
             Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
+            Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
+            
             metshdr.AppendChild(Companyagent);
 
             
