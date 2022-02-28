@@ -28,10 +28,10 @@ namespace Eplicta.Mets.Console.Commands.Html
                         {
                             Name = "sourceReference",
                             Value = "aaa_{pathX}_bbb",
-                            Attributes = new System.Collections.Generic.Dictionary<string, string>
+                            Attributes = new Dictionary<string, string>
                             {
                                 {
-                                    "anka", "jijdfsfj"
+                                    "anka", "{pathX}"
                                 },
                                 {
                                     "korv", "jag"
@@ -49,7 +49,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                                new HtmlTemplate.Element
                                {
                                    Name = "epafDocumentId",
-                                   Value = "EF7279696F91C83870A84C51E2EB48D1"
+                                   Value = "{epafDocumentId}"
                                },
                                new HtmlTemplate.Element
                                {
@@ -119,14 +119,14 @@ namespace Eplicta.Mets.Console.Commands.Html
                             {
                                 new HtmlTemplate.Element
                                 {
-                                    Name = "epafhannelId",
-                                    Value = "{epafDocumentId}"
+                                    Name = "epafChannelId",
+                                    Value = "{epafChannelId}"
                                 },
                                 new HtmlTemplate.Element
                                 {
                                     Name = "ChannelKey",
                                     Value = "Harvester testflöde-113824134542904",
-                                    Attributes = new System.Collections.Generic.Dictionary<string, string>
+                                    Attributes = new Dictionary<string, string>
                                     {
                                         {
                                             "Ky", "asdsad"
@@ -159,7 +159,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                                             Value = "photo"
                                         }
                                     },
-                                    Attributes = new System.Collections.Generic.Dictionary<string, string>
+                                    Attributes = new Dictionary<string, string>
                                     {
                                         {
                                             "name","Content/273280339_117380057520645_1825831192817841875_n.jpg"
@@ -181,9 +181,9 @@ namespace Eplicta.Mets.Console.Commands.Html
                 Data = new Dictionary<string, string>
                 {
                     {"pathX", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt" },
-                    {"epafDocumentId", "hästkorv" },
-
-                     
+                    {"epafChannelId", "hästkorv" },
+                    {"epafDocumentId", "EF7279696F91C83870A84C51E2EB48D1"},
+                    
                 }
             };
 
