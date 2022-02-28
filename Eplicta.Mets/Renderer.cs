@@ -25,12 +25,14 @@ namespace Eplicta.Mets
 
             var root = doc.CreateElement("mets");
             doc.AppendChild(root);
+            root.SetAttribute("TYPE", "SIP");
+            root.SetAttribute("OBJID", "UUID:4129e4754572415da8aa2424b7fdd16e");
             root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
             root.SetAttribute("version", "3.5");
 
             root.SetAttribute("xmlns", "http://www.loc.gov/mods/v3");
 
-            root.SetAttribute("OBJID", "UUID:4129e4754572415da8aa2424b7fdd16e");
+            
 
             var element = doc.DocumentElement;
             var attr = doc.CreateAttribute("xsi", "schemaLocation", "http://www.w3.org/2001/XMLSchema-instance");
@@ -39,11 +41,11 @@ namespace Eplicta.Mets
 
             root.SetAttribute("xml:lang", "SE");
 
-            AppendTitleInfo(doc, root);
+            
             //AppendName(doc, root);
             //AppendTypeOfResource(doc, root);
             //AppendGenre(doc, root);
-            AppendOriginInfo(doc, root);
+            
             ModsRenderer(doc, root);
 
 
@@ -136,11 +138,12 @@ namespace Eplicta.Mets
             metshdr.SetAttribute("CREATEDATE", DateNow);
 
             //dynamic info, the needed information
+
             var AgentElement = doc.CreateElement("agent");
-            metshdr.AppendChild(AgentElement);
-            AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
             AgentElement.SetAttribute("TYPE", _modsData.agent.Type);
-            AgentElement.SetAttribute("OTHERTYPE", _modsData.agent.OtherType);
+            AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
+            metshdr.AppendChild(AgentElement);
+
 
             var CompName = doc.CreateElement("name");
             CompName.InnerText = _modsData.agent.name;
@@ -153,34 +156,55 @@ namespace Eplicta.Mets
 
             //Static info of the company 
             var Companyagent = doc.CreateElement("agent");
-            Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
             Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
+            Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
             metshdr.AppendChild(Companyagent);
+
+            
 
             var companyname = doc.CreateElement("name");
             companyname.InnerText = _modsData.eplicta.name;
             Companyagent.AppendChild(companyname);
 
-            var companynote = doc.CreateElement("name");
+            var companynote = doc.CreateElement("note");
             companynote.InnerText = _modsData.eplicta.note;
             Companyagent.AppendChild(companynote);
 
 
-            var recordID1 = doc.CreateElement("AltRecordID");
-            recordID1.InnerText = "Deposit"; //Will make it later to an array that holds data for all 3 RecordsID innertext
-            recordID1.SetAttribute("type", _modsData.records.type1); //same for types
+            //software section 
+            var companysoftware = doc.CreateElement("agent");
+            
+            companysoftware.SetAttribute("ROLE", _modsData.software.Role.ToUpper());
+            companysoftware.SetAttribute("TYPE", _modsData.software.Type.ToUpper());
+            companysoftware.SetAttribute("OTHERTYPE", _modsData.software.othertype.ToUpper());
+            metshdr.AppendChild(companysoftware);
+
+            var softwarename = doc.CreateElement("name");
+            softwarename.InnerText = _modsData.software.name;
+            companysoftware.AppendChild(softwarename);
+
+
+
+
+            var recordID1 = doc.CreateElement("altRecordID");
+            recordID1.InnerText = _modsData.records.innertext1; //Will make it later to an array that holds data for all 3 RecordsID innertext
+            recordID1.SetAttribute("TYPE", _modsData.records.type1.ToUpper()); //same for types
             metshdr.AppendChild(recordID1);
 
 
-            var recordID2 = doc.CreateElement("AltRecordID");
-            recordID2.InnerText = "Deposit";
-            recordID2.SetAttribute("type", _modsData.records.type2);
+            var recordID2 = doc.CreateElement("altRecordID");
+            recordID2.InnerText = _modsData.records.innertext2;
+            recordID2.SetAttribute("TYPE", _modsData.records.type2.ToUpper());
             metshdr.AppendChild(recordID2);
 
-            var recordID3 = doc.CreateElement("AltRecordID");
-            recordID3.InnerText = "Deposit";
-            recordID3.SetAttribute("type", _modsData.records.type3);
+            var recordID3 = doc.CreateElement("altRecordID");
+            recordID3.InnerText = _modsData.records.innertext3;
+            recordID3.SetAttribute("TYPE", _modsData.records.type3.ToUpper());
             metshdr.AppendChild(recordID3);
+
+
+
+
 
             //Here is metsHdr element ending
 
@@ -213,7 +237,7 @@ namespace Eplicta.Mets
 
             var modsurl = doc.CreateElement("mods:URL");
             modsurl.InnerText = _modsData.mods.URL;
-            modsmods.AppendChild(modsurl);
+            modslocation.AppendChild(modsurl);
 
 
             var modsorigininfo = doc.CreateElement("mods:origininfo");
@@ -261,19 +285,19 @@ namespace Eplicta.Mets
 
             foreach (var item in _modsData.files)
             {
-                var file = doc.CreateElement("File");
-
-                file.SetAttribute("ID", item.ID);
-                file.SetAttribute("USE", item.USE);
-                file.SetAttribute("MIMETYPE", item.MIMETYPE);
-                file.SetAttribute("SIZE", item.SIZE);
-                file.SetAttribute("CREATED", item.CREATED);
-                file.SetAttribute("CHECKSUM", item.CHECKSUM);
-                file.SetAttribute("CHECKSUMTYPE", item.CHECKSUMTYPE);
+                var file = doc.CreateElement("File");                                                                        
                 var flocat = doc.CreateElement("FLocat");
-                flocat.SetAttribute("ns2:type", item.ns2Type);
-                flocat.SetAttribute("ns2:href", item.ns2href);
+              
                 flocat.SetAttribute("LOCALTYPE", item.localtype);
+                flocat.SetAttribute("ns2:href", item.ns2href);
+                flocat.SetAttribute("ns2:type", item.ns2Type);
+                file.SetAttribute("CHECKSUMTYPE", item.CHECKSUMTYPE);
+                file.SetAttribute("CHECKSUM", item.CHECKSUM);
+                file.SetAttribute("CREATED", item.CREATED);
+                file.SetAttribute("SIZE", item.SIZE);
+                file.SetAttribute("MIMETYPE", item.MIMETYPE);
+                file.SetAttribute("USE", item.USE);
+                file.SetAttribute("ID", item.ID);
                 file.AppendChild(flocat);
 
                 filegrp.AppendChild(file);

@@ -59,18 +59,17 @@ namespace Eplicta.Mets.Console.Commands.Mets
                 TitleInfo = new ModsData.TitleInfoData { Title = "Moln- och virtualiseringspecialist", SubTitle = null },
                 Creator = "Test 2",
                 CreateDate = "2022-02-14",
-                agent = new ModsData.Agentdata
-                {
-                    Role = "Editor",
-                    Type = "OTHER",
-                    OtherType = "Software",
-                    name = "name",
-                    note = "URL"
-                },
+                agent = new ModsData.Agentdata()
+               ,
                 eplicta = new ModsData.company(),
                 records = new ModsData.AltRecordID(),
                 mods = new ModsData.ModsSectionInfo(),
-                files = new ModsData.file[1],
+                software = new ModsData.CompanySoftware(),
+                files = new ModsData.file[]
+                {
+                    new ModsData.file(),
+                   
+                },
 
 
                 
