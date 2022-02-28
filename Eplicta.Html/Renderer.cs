@@ -29,7 +29,7 @@ namespace Eplicta.Html
         }
         private string GetValue(string value)
         {
-             
+
             if (value != null && value.Contains("{"))
             {
                 var k = value;
@@ -48,7 +48,7 @@ namespace Eplicta.Html
 
             return value;
         }
-    
+
         private void RenderChildren(HtmlTemplate.Element[] nodes, StringBuilder sb, int indent = 0)
         {
             var indentation = new string(' ', indent);
@@ -62,7 +62,7 @@ namespace Eplicta.Html
                     {
                         //sb.AppendLine($"{attribute.Key}=\"{attribute.Value}\"");
                         var attributeValue = GetValue(attribute.Value);
-                        attr += $" {attribute.Key}=\"{attribute.Value}\"";
+                        attr += $" {attribute.Key}=\"{attributeValue}\"";
          
                     }                    
                 }
@@ -73,7 +73,7 @@ namespace Eplicta.Html
                     var k = node.Value;
                     var iStart = k.IndexOf("{");
                     var iEnd = k.IndexOf("}");
-                    var key1 = k.Substring(iStart + 1, iEnd - iStart-1);
+                    var key1 = k.Substring(iStart + 1, iEnd - iStart - 1);
 
                     if (_htmlData.Data.TryGetValue(key1, out var val))
                     {
@@ -82,9 +82,8 @@ namespace Eplicta.Html
                         value = pre + val + suff;
                     }
                 }
-                //var valu = node.Attributes.TryGetValue("ky", out var vl);
-                //if (vl != null) &&
-                
+
+
                 if (!string.IsNullOrEmpty(value))
                 {
                     sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");

@@ -31,7 +31,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                             Attributes = new Dictionary<string, string>
                             {
                                 {
-                                    "anka", "{pathX}"
+                                    "anka", "{anka}"
                                 },
                                 {
                                     "korv", "jag"
@@ -183,8 +183,10 @@ namespace Eplicta.Mets.Console.Commands.Html
                     {"pathX", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt" },
                     {"epafChannelId", "hästkorv" },
                     {"epafDocumentId", "EF7279696F91C83870A84C51E2EB48D1"},
+                    {"anka", "duck" }
                     
                 }
+
             };
 
             var renderer = new Eplicta.Html.Renderer(template, htmlData);
