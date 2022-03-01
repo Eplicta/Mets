@@ -25,27 +25,31 @@ namespace Eplicta.Mets
 
             var root = doc.CreateElement("mets");
             doc.AppendChild(root);
-            root.SetAttribute("TYPE", "SIP");
+            root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
+            root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
+            root.SetAttribute("xmlns:ns2", "http://www.w3.org/1999/xlink");
             root.SetAttribute("OBJID", "UUID:4129e4754572415da8aa2424b7fdd16e");
-            root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-            root.SetAttribute("version", "3.5");
+            root.SetAttribute("TYPE", "SIP");
+            root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
+            //root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+            //root.SetAttribute("version", "3.5");
 
-            root.SetAttribute("xmlns", "http://www.loc.gov/mods/v3");
+            //root.SetAttribute("xmlns", "http://www.loc.gov/mods/v3");
 
-            
 
-            var element = doc.DocumentElement;
-            var attr = doc.CreateAttribute("xsi", "schemaLocation", "http://www.w3.org/2001/XMLSchema-instance");
-            attr.Value = "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd";
-            element?.Attributes.Append(attr);
 
-            root.SetAttribute("xml:lang", "SE");
+            //var element = doc.DocumentElement;
+            //var attr = doc.CreateAttribute("xsi", "schemaLocation", "http://www.w3.org/2001/XMLSchema-instance");
+            //attr.Value = "http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd";
+            //element?.Attributes.Append(attr);
 
-            
+            //root.SetAttribute("xml:lang", "SE");
+
+
             //AppendName(doc, root);
             //AppendTypeOfResource(doc, root);
             //AppendGenre(doc, root);
-            
+
             ModsRenderer(doc, root);
 
 
@@ -287,19 +291,24 @@ namespace Eplicta.Mets
 
             foreach (var item in _modsData.files)
             {
-                var file = doc.CreateElement("File");                                                                        
+                var file = doc.CreateElement("file");                                                                        
                 var flocat = doc.CreateElement("FLocat");
-              
-                flocat.SetAttribute("LOCALTYPE", item.localtype);
-                flocat.SetAttribute("ns2:href", item.ns2href);
-                flocat.SetAttribute("ns2:type", item.ns2Type);
-                file.SetAttribute("CHECKSUMTYPE", item.CHECKSUMTYPE);
-                file.SetAttribute("CHECKSUM", item.CHECKSUM);
-                file.SetAttribute("CREATED", item.CREATED);
-                file.SetAttribute("SIZE", item.SIZE);
-                file.SetAttribute("MIMETYPE", item.MIMETYPE);
-                file.SetAttribute("USE", item.USE);
+                
+
+
                 file.SetAttribute("ID", item.ID);
+                file.SetAttribute("USE", item.USE);
+                file.SetAttribute("MIMETYPE", item.MIMETYPE);
+                file.SetAttribute("SIZE", item.SIZE);
+                file.SetAttribute("CREATED", item.CREATED);
+                file.SetAttribute("CHECKSUM", item.CHECKSUM);
+                file.SetAttribute("CHECKSUMTYPE", item.CHECKSUMTYPE);
+
+
+                flocat.SetAttribute("ns2:type", item.ns2Type);
+                flocat.SetAttribute("ns2:href", item.ns2href);
+                flocat.SetAttribute("LOCTYPE", item.loctype);
+
                 file.AppendChild(flocat);
 
                 filegrp.AppendChild(file);

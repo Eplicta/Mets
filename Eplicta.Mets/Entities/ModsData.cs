@@ -99,7 +99,7 @@ namespace Eplicta.Mets.Entities
             public string CHECKSUMTYPE { get; set; } = "MD5"; //static data
             public string ns2Type { get; set; } = "simple";
             public string ns2href { get; set; } = "file:Content/Moln-och-virtualiseringsspecialist.pdf";
-            public string localtype { get; set; } = "URL";
+            public string loctype { get; set; } = "URL";
 
 
         }
