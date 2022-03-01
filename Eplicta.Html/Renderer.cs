@@ -18,6 +18,8 @@ namespace Eplicta.Html
             _htmlData = htmlData;
         }
 
+        public object DateTime { get; private set; }
+
         public string Render()
         {
             var sb = new StringBuilder();
@@ -66,24 +68,15 @@ namespace Eplicta.Html
          
                     }                    
                 }
-
-                var value = GetValue(node.Value);
-                if (value != null && value.Contains("{"))
-                {
-                    var k = node.Value;
-                    var iStart = k.IndexOf("{");
-                    var iEnd = k.IndexOf("}");
-                    var key1 = k.Substring(iStart + 1, iEnd - iStart - 1);
-
-                    if (_htmlData.Data.TryGetValue(key1, out var val))
-                    {
-                        var pre = value.Substring(0, iStart);
-                        var suff = value.Substring(iEnd + 1);
-                        value = pre + val + suff;
-                    }
+                var Hår = node.Value;
+                if (Hår != null && Hår.Contains("{publishDate}"))
+                {  
+                    System.DateTime hd = System.DateTime.Now;
+                    node.Value = hd.ToString("O");
                 }
 
-
+                var value = GetValue(node.Value);
+           
                 if (!string.IsNullOrEmpty(value))
                 {
                     sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
