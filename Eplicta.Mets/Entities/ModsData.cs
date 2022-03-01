@@ -32,8 +32,8 @@ namespace Eplicta.Mets.Entities
         public record Agentdata{
             public string name { get; set; } = "Alingsås Kommun";
             public string note { get; set; } = "http://id.kb.se/organisations/SE2120001553";
-            public string Type { get; set; } = "ORGANIZATION";
-            public string Role { get; set; } = "ARCHIVIST";
+            public string Type { get; set; } = "ORGANIZATION".ToUpper();
+            public string Role { get; set; } = "ARCHIVIST".ToUpper();
         }
 
         //All info about the company doing the E-plikt
@@ -42,8 +42,8 @@ namespace Eplicta.Mets.Entities
         {
             public string name { get; set; } = "Eplicta AB";
             public string note { get; set; } = "http://id.kb.se/organisations/SE5590369160";
-            public string Role { get; set; } = "Editor";
-            public string Type { get; set; } = "Organisation";
+            public string Role { get; set; } = "Editor".ToUpper();
+            public string Type { get; set; } = "Organisation".ToUpper();
 
         }
 
@@ -64,9 +64,9 @@ namespace Eplicta.Mets.Entities
         {
             public string type1 { get; set; } = "DELIVERYTYPE";
             public string innertext1 { get; set; } = "DEPOSIT".ToUpper();
-            public string type2 { get; set; } = "DELIVERYSPECIFICATION";
+            public string type2 { get; set; } = "DELIVERYSPECIFICATION".ToUpper();
             public string innertext2 { get; set; } = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/";
-            public string type3 { get; set; } = "SUBMISSIONAGREEMENT";
+            public string type3 { get; set; } = "SUBMISSIONAGREEMENT".ToUpper();
             /*public string code { get; set; } = "31-KB999-2013";*/ //calculated code for back of the innertext3 link
             public string innertext3 { get; set; } = $"http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013";
         }
@@ -76,7 +76,7 @@ namespace Eplicta.Mets.Entities
         public record ModsSectionInfo
         {
             public string xmlns { get; set; } = "http://www.w3.org/1999/xlink";
-            public string identifier { get; set; } = "C5385FBC5FC559E7C43AB6700DB28EF3";
+            public string identifier { get; set; } = "C5385FBC5FC559E7C43AB6700DB28EF3".ToUpper();
             public string URL { get; set; } = "https://www.alingsas.se/utbildning-och-barnomsorg/vuxenutbildning/jag-vill-studera/program-i-alingsas/moln-och-virtualiseringspecialist/";
             public string DateIssued { get; set; } = "2022-02-03T15:48:04.000+01:00";
             public string accesscondition { get; set; } = "gratis";
