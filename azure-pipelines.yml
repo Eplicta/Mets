@@ -7,11 +7,17 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: 'Eplicta.Toolkit.sln'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+#  BQC.ForceNewBaseline: true
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET 6'
+  inputs:
+    version: 6.0.x
+    includePreviewVersions: false
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore nuget packages'
@@ -26,15 +32,28 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '-c Release --no-restore /p:Version=$(Build.BuildNumber)'
+    arguments: '-c $(buildConfiguration) --no-restore /p:Version=$(Build.BuildNumber) /p:NoWarn=0618'
     versioningScheme: 'byBuildNumber'
 
 - task: DotNetCoreCLI@2
   displayName: 'Test'
   inputs:
     command: 'test'
-    projects: '**/*.Tests.csproj'
-    arguments: '--collect "Code coverage" -c Release --no-build'
+    projects: '**/*Tests.csproj'
+    arguments: '--collect "Code coverage" --configuration $(buildConfiguration) --no-build'
+
+#- task: BuildQualityChecks@8
+#  displayName: 'Build Quality Checks'
+#  inputs:
+#    checkWarnings: true
+#    warningFailOption: 'build'
+#    allowWarningVariance: true
+#    warningVariance: '1'
+#    checkCoverage: true
+#    coverageFailOption: 'build'
+#    coverageType: 'blocks'
+#    allowCoverageVariance: true
+#    coverageVariance: '1'
 
 - task: DotNetCoreCLI@2
   displayName: 'Pack nuget Eplicta.Mets'
