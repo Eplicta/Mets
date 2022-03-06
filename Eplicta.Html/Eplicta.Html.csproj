@@ -9,10 +9,20 @@
 		<Product>Eplicta Html archive renderer</Product>
 		<PackageIconUrl>https://eplicta-aggregator.azurewebsites.net/images/eplicta.toolkit.png</PackageIconUrl>
 		<LangVersion>latest</LangVersion>
+		<PackageProjectUrl>https://github.com/Eplicta/mets</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>html archive</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <None Remove="Eplicta.Html.csproj.DotSettings" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>

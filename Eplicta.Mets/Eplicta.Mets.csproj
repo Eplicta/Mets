@@ -9,11 +9,13 @@
 		<Product>Eplicta Mets Mods archive renderer</Product>
 		<PackageIconUrl>https://eplicta-aggregator.azurewebsites.net/images/eplicta.toolkit.png</PackageIconUrl>
 		<LangVersion>latest</LangVersion>
+		<PackageProjectUrl>https://github.com/Eplicta/mets</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>mets mods archive</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="Eplicta.Mets.csproj.DotSettings" />
-		<None Remove="README.md" />
 		<None Remove="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<None Remove="Resources\mods-3-0.xsd" />
 		<None Remove="Resources\mods-3-1.xsd" />
@@ -51,6 +53,13 @@
 		<EmbeddedResource Include="Resources\xlink.xsd" />
 		<EmbeddedResource Include="Resources\xml.xsd" />
 		<EmbeddedResource Include="Resources\xmldsig-core-schema.xsd" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
