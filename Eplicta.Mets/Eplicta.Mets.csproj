@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<Version>1.0.0</Version>
 		<Authors>Daniel Bohlin</Authors>
@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<None Remove="Eplicta.Mets.csproj.DotSettings" />
+		<None Remove="README.md" />
 		<None Remove="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<None Remove="Resources\mods-3-0.xsd" />
 		<None Remove="Resources\mods-3-1.xsd" />
@@ -27,6 +28,12 @@
 		<None Remove="Resources\xlink.xsd" />
 		<None Remove="Resources\xml.xsd" />
 		<None Remove="Resources\xmldsig-core-schema.xsd" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="README.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>

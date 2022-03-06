@@ -1,11 +1,11 @@
-﻿using Eplicta.Mets.Entities;
+﻿using AutoFixture;
+using Eplicta.Mets.Entities;
 using FluentAssertions;
 using Xunit;
-using AutoFixture;
 
 namespace Eplicta.Mets.Tests;
 
-public class RendererTests
+public class ArchiveTests
 {
     [Fact]
     public void Basic()
@@ -15,9 +15,9 @@ public class RendererTests
         var sut = new Renderer(modsData);
 
         //Act
-        var result = sut.Render();
+        var result = sut.GetArchiveStream();
 
         //Assert
-        result.Should().NotBeNull();
+        result.ToArray().Should().NotBeNull();
     }
 }

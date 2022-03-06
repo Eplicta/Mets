@@ -1,9 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
 using Eplicta.Html.Entities;
-using System.Collections.Generic;
- 
-
 
 namespace Eplicta.Html
 {
@@ -18,8 +15,6 @@ namespace Eplicta.Html
             _htmlData = htmlData;
         }
 
-        public object DateTime { get; private set; }
-
         public string Render()
         {
             var sb = new StringBuilder();
@@ -29,9 +24,9 @@ namespace Eplicta.Html
             var result = sb.ToString();
             return result;
         }
+
         private string GetValue(string value)
         {
-
             if (value != null && value.Contains("{"))
             {
                 var k = value;
@@ -57,30 +52,22 @@ namespace Eplicta.Html
 
             foreach (var node in nodes)
             {
-                var attr = "";// $" name=\"anka\"";
+                var attr = "";
                 if (node.Attributes.Any())
                 {
                     foreach (var attribute in node.Attributes)
                     {
-                        //sb.AppendLine($"{attribute.Key}=\"{attribute.Value}\"");
                         var attributeValue = GetValue(attribute.Value);
                         attr += $" {attribute.Key}=\"{attributeValue}\"";
-         
-                    }                    
-                }
-                var Hår = node.Value;
-                if (Hår != null && Hår.Contains("{publishDate}"))
-                {  
-                    System.DateTime hd = System.DateTime.Now;
-                    node.Value = hd.ToString("O");
+                    }
                 }
 
                 var value = GetValue(node.Value);
-           
+
                 if (!string.IsNullOrEmpty(value))
                 {
                     sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
-                }              
+                }
                 else if (node.Children.Any())
                 {
                     sb.AppendLine($"{indentation}<{node.Name}{attr}>");
@@ -93,8 +80,6 @@ namespace Eplicta.Html
                 {
                     sb.AppendLine($"{indentation}<{node.Name}{attr}/>");
                 }
-                
- 
             }
         }
     }

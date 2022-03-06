@@ -127,8 +127,8 @@ namespace Eplicta.Mets
             return doc;
         }
         // Overrides the Render method to write a <span> element
-        // that applies styles and attributes. 
-         
+        // that applies styles and attributes.
+
 
         public void ModsRenderer(XmlDocument doc, XmlElement root)
         {
@@ -146,7 +146,7 @@ namespace Eplicta.Mets
             var AgentElement = doc.CreateElement("agent");
             AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
             AgentElement.SetAttribute("TYPE", _modsData.agent.Type);
-            
+
             metshdr.AppendChild(AgentElement);
 
 
@@ -159,14 +159,14 @@ namespace Eplicta.Mets
             AgentElement.AppendChild(note);
 
 
-            //Static info of the company 
+            //Static info of the company
             var Companyagent = doc.CreateElement("agent");
             Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
             Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
-            
+
             metshdr.AppendChild(Companyagent);
 
-            
+
 
             var companyname = doc.CreateElement("name");
             companyname.InnerText = _modsData.eplicta.name;
@@ -177,9 +177,9 @@ namespace Eplicta.Mets
             Companyagent.AppendChild(companynote);
 
 
-            //software section 
+            //software section
             var companysoftware = doc.CreateElement("agent");
-            
+
             companysoftware.SetAttribute("ROLE", _modsData.software.Role.ToUpper());
             companysoftware.SetAttribute("TYPE", _modsData.software.Type.ToUpper());
             companysoftware.SetAttribute("OTHERTYPE", _modsData.software.othertype.ToUpper());
@@ -291,9 +291,9 @@ namespace Eplicta.Mets
 
             foreach (var item in _modsData.files)
             {
-                var file = doc.CreateElement("file");                                                                        
+                var file = doc.CreateElement("file");
                 var flocat = doc.CreateElement("FLocat");
-                
+
 
 
                 file.SetAttribute("ID", item.ID);

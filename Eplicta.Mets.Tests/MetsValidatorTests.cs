@@ -3,43 +3,42 @@ using Eplicta.Mets.Entities;
 using FluentAssertions;
 using Xunit;
 
-namespace Eplicta.Mets.Tests
+namespace Eplicta.Mets.Tests;
+
+public class MetsValidatorTests
 {
-    public class MetsValidatorTests
+    [Fact(Skip = "Fix validation.")]
+    public void Empty()
     {
-        [Fact(Skip = "Fix")]
-        public void Empty()
-        {
-            //Arrange
-            var modsData = new ModsData();
-            var renderer = new Renderer(modsData);
-            var document = renderer.Render();
-            var sut = new MetsValidator();
+        //Arrange
+        var modsData = new ModsData();
+        var renderer = new Renderer(modsData);
+        var document = renderer.Render();
+        var sut = new MetsValidator();
 
-            //Act
-            var result = sut.Validate(document, Version.Mods_3_5);
+        //Act
+        var result = sut.Validate(document, Version.Mods_3_5);
 
-            //Assert
-            result.Should().BeEmpty();
-        }
+        //Assert
+        result.Should().BeEmpty();
+    }
 
-        [Fact(Skip = "Fix")]
-        public void Complete()
-        {
-            //Arrange
-            var fixture = new Fixture();
-            var modsData = fixture.Build<ModsData>().Create();
-            var renderer = new Renderer(modsData);
-            var document = renderer.Render();
-            var sut = new MetsValidator();
+    [Fact(Skip = "Fix validation.")]
+    public void Complete()
+    {
+        //Arrange
+        var fixture = new Fixture();
+        var modsData = fixture.Build<ModsData>().Create();
+        var renderer = new Renderer(modsData);
+        var document = renderer.Render();
+        var sut = new MetsValidator();
 
-            //Act
-            var result = sut.Validate(document, Version.Mods_3_5);
+        //Act
+        var result = sut.Validate(document, Version.Mods_3_5);
 
-            document.Save(@"C:\Temp\x.xml");
+        document.Save(@"C:\Temp\x.xml");
 
-            //Assert
-            result.Should().BeEmpty();
-        }
+        //Assert
+        result.Should().BeEmpty();
     }
 }
