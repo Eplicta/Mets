@@ -50,7 +50,7 @@ namespace Eplicta.Html
         {
             var indentation = new string(' ', indent);
 
-            foreach (var node in nodes)
+            foreach (var node in nodes.Where(x => x != null))
             {
                 var attr = "";
                 if (node.Attributes.Any())

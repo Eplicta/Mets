@@ -143,74 +143,74 @@ namespace Eplicta.Mets
 
             //dynamic info, the needed information
 
-            var AgentElement = doc.CreateElement("agent");
-            AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
-            AgentElement.SetAttribute("TYPE", _modsData.agent.Type);
+            if (_modsData.agent != null)
+            {
+                var AgentElement = doc.CreateElement("agent");
+                AgentElement.SetAttribute("ROLE", _modsData.agent.Role);
+                AgentElement.SetAttribute("TYPE", _modsData.agent.Type);
 
-            metshdr.AppendChild(AgentElement);
+                metshdr.AppendChild(AgentElement);
 
+                var CompName = doc.CreateElement("name");
+                CompName.InnerText = _modsData.agent.name;
+                AgentElement.AppendChild(CompName);
 
-            var CompName = doc.CreateElement("name");
-            CompName.InnerText = _modsData.agent.name;
-            AgentElement.AppendChild(CompName);
-
-            var note = doc.CreateElement("note");
-            note.InnerText = _modsData.agent.note;
-            AgentElement.AppendChild(note);
+                var note = doc.CreateElement("note");
+                note.InnerText = _modsData.agent.note;
+                AgentElement.AppendChild(note);
+            }
 
 
             //Static info of the company
-            var Companyagent = doc.CreateElement("agent");
-            Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
-            Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
+            if (_modsData.eplicta != null)
+            {
+                var Companyagent = doc.CreateElement("agent");
+                Companyagent.SetAttribute("ROLE", _modsData.eplicta.Role);
+                Companyagent.SetAttribute("TYPE", _modsData.eplicta.Type);
 
-            metshdr.AppendChild(Companyagent);
+                metshdr.AppendChild(Companyagent);
 
+                var companyname = doc.CreateElement("name");
+                companyname.InnerText = _modsData.eplicta.name;
+                Companyagent.AppendChild(companyname);
 
-
-            var companyname = doc.CreateElement("name");
-            companyname.InnerText = _modsData.eplicta.name;
-            Companyagent.AppendChild(companyname);
-
-            var companynote = doc.CreateElement("note");
-            companynote.InnerText = _modsData.eplicta.note;
-            Companyagent.AppendChild(companynote);
-
+                var companynote = doc.CreateElement("note");
+                companynote.InnerText = _modsData.eplicta.note;
+                Companyagent.AppendChild(companynote);
+            }
 
             //software section
             var companysoftware = doc.CreateElement("agent");
 
-            companysoftware.SetAttribute("ROLE", _modsData.software.Role.ToUpper());
-            companysoftware.SetAttribute("TYPE", _modsData.software.Type.ToUpper());
-            companysoftware.SetAttribute("OTHERTYPE", _modsData.software.othertype.ToUpper());
-            metshdr.AppendChild(companysoftware);
+            if (_modsData.software != null)
+            {
+                companysoftware.SetAttribute("ROLE", _modsData.software.Role.ToUpper());
+                companysoftware.SetAttribute("TYPE", _modsData.software.Type.ToUpper());
+                companysoftware.SetAttribute("OTHERTYPE", _modsData.software.othertype.ToUpper());
+                metshdr.AppendChild(companysoftware);
 
-            var softwarename = doc.CreateElement("name");
-            softwarename.InnerText = _modsData.software.name;
-            companysoftware.AppendChild(softwarename);
+                var softwarename = doc.CreateElement("name");
+                softwarename.InnerText = _modsData.software.name;
+                companysoftware.AppendChild(softwarename);
+            }
 
+            if (_modsData.records != null)
+            {
+                var recordID1 = doc.CreateElement("altRecordID");
+                recordID1.InnerText = _modsData.records.innertext1; //Will make it later to an array that holds data for all 3 RecordsID innertext
+                recordID1.SetAttribute("TYPE", _modsData.records.type1.ToUpper()); //same for types
+                metshdr.AppendChild(recordID1);
 
+                var recordID2 = doc.CreateElement("altRecordID");
+                recordID2.InnerText = _modsData.records.innertext2;
+                recordID2.SetAttribute("TYPE", _modsData.records.type2.ToUpper());
+                metshdr.AppendChild(recordID2);
 
-
-            var recordID1 = doc.CreateElement("altRecordID");
-            recordID1.InnerText = _modsData.records.innertext1; //Will make it later to an array that holds data for all 3 RecordsID innertext
-            recordID1.SetAttribute("TYPE", _modsData.records.type1.ToUpper()); //same for types
-            metshdr.AppendChild(recordID1);
-
-
-            var recordID2 = doc.CreateElement("altRecordID");
-            recordID2.InnerText = _modsData.records.innertext2;
-            recordID2.SetAttribute("TYPE", _modsData.records.type2.ToUpper());
-            metshdr.AppendChild(recordID2);
-
-            var recordID3 = doc.CreateElement("altRecordID");
-            recordID3.InnerText = _modsData.records.innertext3;
-            recordID3.SetAttribute("TYPE", _modsData.records.type3.ToUpper());
-            metshdr.AppendChild(recordID3);
-
-
-
-
+                var recordID3 = doc.CreateElement("altRecordID");
+                recordID3.InnerText = _modsData.records.innertext3;
+                recordID3.SetAttribute("TYPE", _modsData.records.type3.ToUpper());
+                metshdr.AppendChild(recordID3);
+            }
 
             //Here is metsHdr element ending
 
@@ -228,58 +228,61 @@ namespace Eplicta.Mets
 
 
             //mods:mods
-            var modsmods = doc.CreateElement("mods:mods");
-            modsmods.SetAttribute("xmlns", _modsData.mods.xmlns);
-            xmldata.AppendChild(modsmods);
+            if (_modsData.mods != null)
+            {
+                var modsmods = doc.CreateElement("mods:mods");
+                modsmods.SetAttribute("xmlns", _modsData.mods.xmlns);
+                xmldata.AppendChild(modsmods);
 
-            //mods:identifier
-            var modsidentifier = doc.CreateElement("mods:identifier");
-            modsidentifier.SetAttribute("type", "local");
-            modsidentifier.InnerText = _modsData.mods.identifier;
-            modsmods.AppendChild(modsidentifier);
+                //mods:identifier
+                var modsidentifier = doc.CreateElement("mods:identifier");
+                modsidentifier.SetAttribute("type", "local");
+                modsidentifier.InnerText = _modsData.mods.identifier;
+                modsmods.AppendChild(modsidentifier);
 
-            var modslocation = doc.CreateElement("mods:location");
-            modsmods.AppendChild(modslocation);
+                var modslocation = doc.CreateElement("mods:location");
+                modsmods.AppendChild(modslocation);
 
-            var modsurl = doc.CreateElement("mods:URL");
-            modsurl.InnerText = _modsData.mods.URL;
-            modslocation.AppendChild(modsurl);
+                var modsurl = doc.CreateElement("mods:URL");
+                modsurl.InnerText = _modsData.mods.URL;
+                modslocation.AppendChild(modsurl);
 
 
-            var modsorigininfo = doc.CreateElement("mods:origininfo");
-            modsmods.AppendChild(modsorigininfo);
+                var modsorigininfo = doc.CreateElement("mods:origininfo");
+                modsmods.AppendChild(modsorigininfo);
 
-            var modsDateIssued = doc.CreateElement("mods:DateIssued");
-            modsDateIssued.SetAttribute("encoding", "w3cdtf");
-            modsDateIssued.InnerText = _modsData.mods.DateIssued;
-            modsorigininfo.AppendChild(modsDateIssued);
+                var modsDateIssued = doc.CreateElement("mods:DateIssued");
+                modsDateIssued.SetAttribute("encoding", "w3cdtf");
+                modsDateIssued.InnerText = _modsData.mods.DateIssued;
+                modsorigininfo.AppendChild(modsDateIssued);
 
-            var modsaccesscondition = doc.CreateElement("mods:accessCondition");
-            modsaccesscondition.InnerText = _modsData.mods.accesscondition;
-            modsmods.AppendChild(modsaccesscondition);
+                var modsaccesscondition = doc.CreateElement("mods:accessCondition");
+                modsaccesscondition.InnerText = _modsData.mods.accesscondition;
+                modsmods.AppendChild(modsaccesscondition);
 
-            var modstitleinfo = doc.CreateElement("mods:titleinfo");
-            modsmods.AppendChild(modstitleinfo);
+                var modstitleinfo = doc.CreateElement("mods:titleinfo");
+                modsmods.AppendChild(modstitleinfo);
 
-            var modstitle = doc.CreateElement("mods:title");
-            modstitle.InnerText = _modsData.mods.modstitle;
-            modstitleinfo.AppendChild(modstitle);
+                var modstitle = doc.CreateElement("mods:title");
+                modstitle.InnerText = _modsData.mods.modstitle;
+                modstitleinfo.AppendChild(modstitle);
 
-            var modsrelateditem = doc.CreateElement("mods:relatedItem");
-            modsrelateditem.SetAttribute("type", "host");
-            modsmods.AppendChild(modsrelateditem);
+                var modsrelateditem = doc.CreateElement("mods:relatedItem");
+                modsrelateditem.SetAttribute("type", "host");
+                modsmods.AppendChild(modsrelateditem);
 
-            var modsidentifier2 = doc.CreateElement("mods:identifier");
-            modsidentifier2.SetAttribute("type", "uri");
-            modsidentifier2.InnerText = _modsData.mods.uri;
-            modsrelateditem.AppendChild(modsidentifier2);
+                var modsidentifier2 = doc.CreateElement("mods:identifier");
+                modsidentifier2.SetAttribute("type", "uri");
+                modsidentifier2.InnerText = _modsData.mods.uri;
+                modsrelateditem.AppendChild(modsidentifier2);
 
-            var modstitleInfo2 = doc.CreateElement("mods:titleInfo");
-            modsrelateditem.AppendChild(modstitleInfo2);
+                var modstitleInfo2 = doc.CreateElement("mods:titleInfo");
+                modsrelateditem.AppendChild(modstitleInfo2);
 
-            var modstitle2 = doc.CreateElement("mods:title");
-            modstitle2.InnerText = _modsData.mods.modstitle2;
-            modstitleInfo2.AppendChild(modstitle2);
+                var modstitle2 = doc.CreateElement("mods:title");
+                modstitle2.InnerText = _modsData.mods.modstitle2;
+                modstitleInfo2.AppendChild(modstitle2);
+            }
 
             //From heres are the file section
 
@@ -289,35 +292,31 @@ namespace Eplicta.Mets
             var filegrp = doc.CreateElement("fileGrp");
             filesec.AppendChild(filegrp);
 
-            foreach (var item in _modsData.files)
+            if (_modsData.files != null)
             {
-                var file = doc.CreateElement("file");
-                var flocat = doc.CreateElement("FLocat");
+                foreach (var item in _modsData.files)
+                {
+                    var file = doc.CreateElement("file");
+                    var flocat = doc.CreateElement("FLocat");
+
+                    file.SetAttribute("ID", item.ID);
+                    file.SetAttribute("USE", item.USE);
+                    file.SetAttribute("MIMETYPE", item.MIMETYPE);
+                    file.SetAttribute("SIZE", item.SIZE);
+                    file.SetAttribute("CREATED", item.CREATED);
+                    file.SetAttribute("CHECKSUM", item.CHECKSUM);
+                    file.SetAttribute("CHECKSUMTYPE", item.CHECKSUMTYPE);
 
 
+                    flocat.SetAttribute("ns2:type", item.ns2Type);
+                    flocat.SetAttribute("ns2:href", item.ns2href);
+                    flocat.SetAttribute("LOCTYPE", item.loctype);
 
-                file.SetAttribute("ID", item.ID);
-                file.SetAttribute("USE", item.USE);
-                file.SetAttribute("MIMETYPE", item.MIMETYPE);
-                file.SetAttribute("SIZE", item.SIZE);
-                file.SetAttribute("CREATED", item.CREATED);
-                file.SetAttribute("CHECKSUM", item.CHECKSUM);
-                file.SetAttribute("CHECKSUMTYPE", item.CHECKSUMTYPE);
+                    file.AppendChild(flocat);
 
-
-                flocat.SetAttribute("ns2:type", item.ns2Type);
-                flocat.SetAttribute("ns2:href", item.ns2href);
-                flocat.SetAttribute("LOCTYPE", item.loctype);
-
-                file.AppendChild(flocat);
-
-                filegrp.AppendChild(file);
-
-
+                    filegrp.AppendChild(file);
+                }
             }
-
-
-
 
             var struktmap = doc.CreateElement("structMap");
             struktmap.SetAttribute("TYPE", "physical");

@@ -20,4 +20,18 @@ public class RendererTests
         //Assert
         result.Should().NotBeNull();
     }
+
+    [Fact]
+    public void Empty()
+    {
+        //Arrange
+        var modsData = new ModsData();
+        var sut = new Renderer(modsData);
+
+        //Act
+        var result = sut.Render();
+
+        //Assert
+        result.Should().NotBeNull();
+    }
 }

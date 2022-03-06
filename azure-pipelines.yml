@@ -67,7 +67,7 @@ steps:
   displayName: 'Pack nuget Eplicta.Html'
   inputs:
     command: 'pack'
-    packagesToPack: 'Eplicta.Mets/Eplicta.Html.csproj'
+    packagesToPack: 'Eplicta.Html/Eplicta.Html.csproj'
     nobuild: true
     versioningScheme: 'byBuildNumber'
 

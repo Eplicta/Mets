@@ -22,4 +22,20 @@ public class RendererTests
         //Assert
         result.Should().NotBeNull();
     }
+
+    [Fact]
+    public void Empty()
+    {
+        //Arrange
+        var fixture = new Fixture();
+        var htmlTemplate = new HtmlTemplate();
+        var htmlData = fixture.Build<HtmlData>().Create();
+        var sut = new Renderer(htmlTemplate, htmlData);
+
+        //Act
+        var result = sut.Render();
+
+        //Assert
+        result.Should().Be(string.Empty);
+    }
 }
