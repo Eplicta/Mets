@@ -10,7 +10,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-#  BQC.ForceNewBaseline: true
+  BQC.ForceNewBaseline: true
 
 steps:
 - task: UseDotNet@2
@@ -42,18 +42,18 @@ steps:
     projects: '**/*Tests.csproj'
     arguments: '--collect "Code coverage" --configuration $(buildConfiguration) --no-build'
 
-#- task: BuildQualityChecks@8
-#  displayName: 'Build Quality Checks'
-#  inputs:
-#    checkWarnings: true
-#    warningFailOption: 'build'
-#    allowWarningVariance: true
-#    warningVariance: '1'
-#    checkCoverage: true
-#    coverageFailOption: 'build'
-#    coverageType: 'blocks'
-#    allowCoverageVariance: true
-#    coverageVariance: '1'
+- task: BuildQualityChecks@8
+  displayName: 'Build Quality Checks'
+  inputs:
+    checkWarnings: true
+    warningFailOption: 'build'
+    allowWarningVariance: true
+    warningVariance: '1'
+    checkCoverage: true
+    coverageFailOption: 'build'
+    coverageType: 'blocks'
+    allowCoverageVariance: true
+    coverageVariance: '1'
 
 - task: DotNetCoreCLI@2
   displayName: 'Pack nuget Eplicta.Mets'
