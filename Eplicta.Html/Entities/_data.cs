@@ -1,7 +1,9 @@
-﻿namespace Eplicta.Html.Entities
+﻿using System.Collections.Generic;
+
+namespace Eplicta.Html.Entities
 {
     public record HtmlData
     {
-        public string Title { get; set; }
+        public Dictionary<string, string> Data { get; set; }
     }
 }

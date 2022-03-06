@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Eplicta.Html;
 using Eplicta.Html.Entities;
 using Tharga.Toolkit.Console.Commands.Base;
+
 
 namespace Eplicta.Mets.Console.Commands.Html
 {
@@ -21,11 +24,24 @@ namespace Eplicta.Mets.Console.Commands.Html
                 {
                     Name = "document",
                     Children = new[]
+
                     {
                         new HtmlTemplate.Element
                         {
                             Name = "sourceReference",
-                            Value = "Channel_C18D7E70CD734F8286E2CA6E6490D56E.zip"
+                            Value = "aaa_{pathX}_bbb",
+                            Attributes = new Dictionary<string, string>
+                            {
+                                {
+                                    "anka", "{anka}"
+                                },
+                                {
+                                    "korv", "jag"
+                                },
+                                {
+                                    "lamm", "get"
+                                }
+                            }
                         },
                         new HtmlTemplate.Element
                         {
@@ -35,11 +51,11 @@ namespace Eplicta.Mets.Console.Commands.Html
                                new HtmlTemplate.Element
                                {
                                    Name = "epafDocumentId",
-                                   Value = "EF7279696F91C83870A84C51E2EB48D1"
+                                   Value = "{epafDocumentId}"
                                },
                                new HtmlTemplate.Element
                                {
-                                   Name = "externaId",
+                                   Name = "externalId",
                                    Value = "113824134542904_117380220853962"
                                },
                                new HtmlTemplate.Element
@@ -50,7 +66,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                                new HtmlTemplate.Element
                                {
                                    Name = "publishDate",
-                                   Value = "2022-02-07T13:14:22.0000000Z"
+                                   Value = "{publishDate}"
 
                                },
                                new HtmlTemplate.Element
@@ -105,17 +121,20 @@ namespace Eplicta.Mets.Console.Commands.Html
                             {
                                 new HtmlTemplate.Element
                                 {
-                                    Name = "epafhannelId",
-                                    Value = "C18D7E70CD734F8286E2CA6E6490D56E"
+                                    Name = "epafChannelId",
+                                    Value = "{epafChannelId}"
                                 },
                                 new HtmlTemplate.Element
                                 {
                                     Name = "ChannelKey",
                                     Value = "Harvester testflöde-113824134542904",
-                                    Attributes = new System.Collections.Generic.Dictionary<string, string>
+                                    Attributes = new Dictionary<string, string>
                                     {
                                         {
-                                            "Key", "asdsad"
+                                            "Ky", "asdsad"
+                                        },
+                                        {
+                                            "Häst", "Korv"
                                         }
                                     }
                                 },
@@ -142,7 +161,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                                             Value = "photo"
                                         }
                                     },
-                                    Attributes = new System.Collections.Generic.Dictionary<string, string>
+                                    Attributes = new Dictionary<string, string>
                                     {
                                         {
                                             "name","Content/273280339_117380057520645_1825831192817841875_n.jpg"
@@ -160,7 +179,18 @@ namespace Eplicta.Mets.Console.Commands.Html
 
             var htmlData = new HtmlData
             {
-                Title = "MyTitle"
+                
+                //Title = "MyTitle"
+                Data = new Dictionary<string, string>
+                {
+                    {"pathX", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt" },
+                    {"epafChannelId", "hästkorv" },
+                    {"epafDocumentId", "EF7279696F91C83870A84C51E2EB48D1"},
+                    {"anka", "duck" },
+                    {"publishDate",""}
+
+                }
+
             };
 
             var renderer = new Eplicta.Html.Renderer(template, htmlData);
@@ -171,5 +201,7 @@ namespace Eplicta.Mets.Console.Commands.Html
 
             OutputInformation("Done");
         }
+
+        
     }
 }
