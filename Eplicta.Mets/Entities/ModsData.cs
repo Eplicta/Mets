@@ -75,6 +75,7 @@ namespace Eplicta.Mets.Entities
         //Mostly dynamic data
         public record ModsSectionInfo
         {
+            public string ObjId { get; set; } = "UUID:4129e4754572415da8aa2424b7fdd16e";
             public string xmlns { get; set; } = "http://www.w3.org/1999/xlink";
             public string identifier { get; set; } = "C5385FBC5FC559E7C43AB6700DB28EF3".ToUpper();
             public string URL { get; set; } = "https://www.alingsas.se/utbildning-och-barnomsorg/vuxenutbildning/jag-vill-studera/program-i-alingsas/moln-och-virtualiseringspecialist/";

@@ -28,7 +28,7 @@ namespace Eplicta.Mets
             root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
             root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
             root.SetAttribute("xmlns:ns2", "http://www.w3.org/1999/xlink");
-            root.SetAttribute("OBJID", "UUID:4129e4754572415da8aa2424b7fdd16e");
+            root.SetAttribute("OBJID", _modsData.mods.ObjId);
             root.SetAttribute("TYPE", "SIP");
             root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
             //root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
