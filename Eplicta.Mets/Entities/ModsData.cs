@@ -102,7 +102,7 @@ namespace Eplicta.Mets.Entities
             public string ns2href { get; set; } = "file:Content/Moln-och-virtualiseringsspecialist.pdf";
             public string loctype { get; set; } = "URL";
 
-
+            public string FileId { get; set; } 
         }
         public record TitleInfoData
         {

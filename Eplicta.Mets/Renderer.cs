@@ -318,24 +318,25 @@ namespace Eplicta.Mets
                     file.AppendChild(flocat);
 
                     filegrp.AppendChild(file);
+
+                    var struktmap = doc.CreateElement("structMap");
+                    struktmap.SetAttribute("TYPE", "physical");
+                    root.AppendChild(struktmap);
+
+                    var div = doc.CreateElement("div");
+                    div.SetAttribute("TYPE", "files");
+                    struktmap.AppendChild(div);
+
+                    var div2 = doc.CreateElement("div");
+                    div2.SetAttribute("TYPE", "publication");
+                    div.AppendChild(div2);
+
+                    var fptr = doc.CreateElement("fptr");
+                    fptr.SetAttribute("FILEID", item.FileId);
+                    div2.AppendChild(fptr);
                 }
             }
 
-            var struktmap = doc.CreateElement("structMap");
-            struktmap.SetAttribute("TYPE", "physical");
-            root.AppendChild(struktmap);
-
-            var div = doc.CreateElement("div");
-            div.SetAttribute("TYPE", "files");
-            struktmap.AppendChild(div);
-
-            var div2 = doc.CreateElement("div");
-            div2.SetAttribute("TYPE", "publication");
-            div.AppendChild(div2);
-
-            var fptr = doc.CreateElement("fptr");
-            fptr.SetAttribute("FILEID", "ID4d6bdd9068214aa5a57d53bdbe4a9cf3");
-            div2.AppendChild(fptr);
         }
 
         private void AppendOriginInfo(XmlDocument doc, XmlElement root)
