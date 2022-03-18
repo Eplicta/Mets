@@ -332,7 +332,7 @@ namespace Eplicta.Mets
                     div.AppendChild(div2);
 
                     var fptr = doc.CreateElement("fptr");
-                    fptr.SetAttribute("FILEID", item.FileId);
+                    fptr.SetAttribute("FILEID", item.ID);
                     div2.AppendChild(fptr);
                 }
             }
