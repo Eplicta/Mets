@@ -26,6 +26,7 @@ namespace Eplicta.Mets
             var root = doc.CreateElement("mets");
             doc.AppendChild(root);
             root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
+            XmlNode xmlNode = doc.CreateNode(XmlNodeType.Element, "mods", "xmlns", "http://www.loc.gov/mods/v3");
             root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
             root.SetAttribute("xmlns:ns2", "http://www.w3.org/1999/xlink");
             if (_modsData.mods != null)
@@ -230,59 +231,67 @@ namespace Eplicta.Mets
             mdwrap.AppendChild(xmldata);
 
 
+            string prefix = "mods";
+
             //mods:mods
             if (_modsData.mods != null)
             {
-                var modsmods = doc.CreateElement("mods:mods");
+
+
+                var modsmods = doc.CreateElement("mods", "mods", "http://www.loc.gov/mods/v3");
                 modsmods.SetAttribute("xmlns", _modsData.mods.xmlns);
                 xmldata.AppendChild(modsmods);
 
+
+
                 //mods:identifier
-                var modsidentifier = doc.CreateElement("mods:identifier");
+
+                XmlElement modsidentifier = doc.CreateElement("mods","identifier", "http://www.loc.gov/mods/v3");
                 modsidentifier.SetAttribute("type", "local");
                 modsidentifier.InnerText = _modsData.mods.identifier;
-                modsmods.AppendChild(modsidentifier);
 
-                var modslocation = doc.CreateElement("mods:location");
+                modsmods.AppendChild(modsidentifier);
+                
+                var modslocation =  doc.CreateElement("mods", "location", "http://www.loc.gov/mods/v3");
                 modsmods.AppendChild(modslocation);
 
-                var modsurl = doc.CreateElement("mods:URL");
+                var modsurl = doc.CreateElement("mods","URL", "http://www.loc.gov/mods/v3");
                 modsurl.InnerText = _modsData.mods.URL;
                 modslocation.AppendChild(modsurl);
 
 
-                var modsorigininfo = doc.CreateElement("mods:origininfo");
+                var modsorigininfo = doc.CreateElement("mods","origininfo", "http://www.loc.gov/mods/v3");
                 modsmods.AppendChild(modsorigininfo);
 
-                var modsDateIssued = doc.CreateElement("mods:DateIssued");
+                var modsDateIssued = doc.CreateElement("mods","DateIssued", "http://www.loc.gov/mods/v3");
                 modsDateIssued.SetAttribute("encoding", "w3cdtf");
                 modsDateIssued.InnerText = _modsData.mods.DateIssued;
                 modsorigininfo.AppendChild(modsDateIssued);
 
-                var modsaccesscondition = doc.CreateElement("mods:accessCondition");
+                var modsaccesscondition = doc.CreateElement("mods","accessCondition", "http://www.loc.gov/mods/v3");
                 modsaccesscondition.InnerText = _modsData.mods.accesscondition;
                 modsmods.AppendChild(modsaccesscondition);
 
-                var modstitleinfo = doc.CreateElement("mods:titleinfo");
+                var modstitleinfo = doc.CreateElement("mods","titleinfo", "http://www.loc.gov/mods/v3");
                 modsmods.AppendChild(modstitleinfo);
 
-                var modstitle = doc.CreateElement("mods:title");
+                var modstitle = doc.CreateElement("mods","title", "http://www.loc.gov/mods/v3");
                 modstitle.InnerText = _modsData.mods.modstitle;
                 modstitleinfo.AppendChild(modstitle);
 
-                var modsrelateditem = doc.CreateElement("mods:relatedItem");
+                var modsrelateditem = doc.CreateElement("mods","relatedItem", "http://www.loc.gov/mods/v3");
                 modsrelateditem.SetAttribute("type", "host");
                 modsmods.AppendChild(modsrelateditem);
 
-                var modsidentifier2 = doc.CreateElement("mods:identifier");
+                var modsidentifier2 = doc.CreateElement("mods","identifier", "http://www.loc.gov/mods/v3");
                 modsidentifier2.SetAttribute("type", "uri");
                 modsidentifier2.InnerText = _modsData.mods.uri;
                 modsrelateditem.AppendChild(modsidentifier2);
 
-                var modstitleInfo2 = doc.CreateElement("mods:titleInfo");
+                var modstitleInfo2 = doc.CreateElement("mods","titleInfo", "http://www.loc.gov/mods/v3");
                 modsrelateditem.AppendChild(modstitleInfo2);
 
-                var modstitle2 = doc.CreateElement("mods:title");
+                var modstitle2 = doc.CreateElement("mods","title", "http://www.loc.gov/mods/v3");
                 modstitle2.InnerText = _modsData.mods.modstitle2;
                 modstitleInfo2.AppendChild(modstitle2);
             }
