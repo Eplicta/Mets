@@ -328,23 +328,32 @@ namespace Eplicta.Mets
 
                     filegrp.AppendChild(file);
 
-                    var struktmap = doc.CreateElement("structMap");
-                    struktmap.SetAttribute("TYPE", "physical");
-                    root.AppendChild(struktmap);
-
-                    var div = doc.CreateElement("div");
-                    div.SetAttribute("TYPE", "files");
-                    struktmap.AppendChild(div);
-
-                    var div2 = doc.CreateElement("div");
-                    div2.SetAttribute("TYPE", "publication");
-                    div.AppendChild(div2);
-
-                    var fptr = doc.CreateElement("fptr");
-                    fptr.SetAttribute("FILEID", item.ID);
-                    div2.AppendChild(fptr);
                 }
+            
+
+            var struktmap = doc.CreateElement("structMap");
+            struktmap.SetAttribute("TYPE", "physical");
+            root.AppendChild(struktmap);
+
+            var div = doc.CreateElement("div");
+            div.SetAttribute("TYPE", "files");
+            struktmap.AppendChild(div);
+
+            var div2 = doc.CreateElement("div");
+            div2.SetAttribute("TYPE", "publication");
+            div.AppendChild(div2);
+
+
+
+            foreach (var item in _modsData.files) {
+                 var fptr = doc.CreateElement("fptr");
+                fptr.SetAttribute("FILEID", item.ID);
+                div2.AppendChild(fptr);
+
+
             }
+            }
+
 
         }
 
