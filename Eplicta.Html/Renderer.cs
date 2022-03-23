@@ -66,7 +66,8 @@ namespace Eplicta.Html
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
+                    //sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
+                    sb.AppendLine($"{indentation}<{node.Name}{attr}>{node.Value}</{node.Name}>");
                 }
                 else if (node.Children.Any())
                 {
