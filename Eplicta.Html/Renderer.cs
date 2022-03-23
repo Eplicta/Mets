@@ -18,7 +18,7 @@ namespace Eplicta.Html
         public string Render()
         {
             var sb = new StringBuilder();
-
+            sb.AppendLine("<!doctype html");
             RenderChildren(new[] { _template.Root }, sb);
 
             var result = sb.ToString();
