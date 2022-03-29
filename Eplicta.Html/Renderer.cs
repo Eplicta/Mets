@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using Eplicta.Html.Entities;
+using System.Linq;
 using System.Text;
-using Eplicta.Html.Entities;
 
 namespace Eplicta.Html
 {
@@ -18,13 +18,18 @@ namespace Eplicta.Html
         public string Render()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("<!doctype html");
+            sb.AppendLine("<!doctype html>");
             RenderChildren(new[] { _template.Root }, sb);
-
+            //string hår = _htmlData.Data.Values.First();
+            //string[] items = hår.Split(' ');
+            
+            
             var result = sb.ToString();
             return result;
         }
+        
 
+         
         private string GetValue(string value)
         {
             if (value != null && value.Contains("{"))
@@ -45,10 +50,12 @@ namespace Eplicta.Html
 
             return value;
         }
+        
 
         private void RenderChildren(HtmlTemplate.Element[] nodes, StringBuilder sb, int indent = 0)
         {
             var indentation = new string(' ', indent);
+           
 
             foreach (var node in nodes.Where(x => x != null))
             {
@@ -61,6 +68,7 @@ namespace Eplicta.Html
                         attr += $" {attribute.Key}=\"{attributeValue}\"";
                     }
                 }
+                
 
                 var value = GetValue(node.Value);
 
@@ -69,13 +77,23 @@ namespace Eplicta.Html
                     //sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
                     sb.AppendLine($"{indentation}<{node.Name}{attr}>{node.Value}</{node.Name}>");
                 }
+                
                 else if (node.Children.Any())
                 {
                     sb.AppendLine($"{indentation}<{node.Name}{attr}>");
                     indent += 4;
                     RenderChildren(node.Children, sb, indent);
                     indent -= 4;
+                    if (node.Attributes.Values != null && node.Attributes.Values.Contains("post"))
+                    {
+                        foreach (var anka in _htmlData.Data.Values)
+                        {
+                            sb.AppendLine($"<div class=\"content-image\"><img src=\"{anka}\"></div>");
+                        }
+
+                    }
                     sb.AppendLine($"{indentation}</{node.Name}/>");
+                   
                 }
                 else
                 {

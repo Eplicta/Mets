@@ -25,7 +25,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                 {
                     Name = "head",
                     Children = new[]
-               {
+                {
                     new HtmlTemplate.Element
                     {
                         Name = "meta",
@@ -285,13 +285,13 @@ namespace Eplicta.Mets.Console.Commands.Html
                    } }}
             };
 
-            var htmlData = new HtmlData
+            var htmlData = new HtmlData 
             {
                 
                 //Title = "MyTitle"
                 Data = new Dictionary<string, string>
                 {
-                    {"pathX", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt" },
+                    {"pathX", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt dkfkdf kdf kdsf dsf dsf dsf " },
                     {"epafChannelId", "hästkorv" },
                     {"epafDocumentId", "EF7279696F91C83870A84C51E2EB48D1"},
                     {"anka", "duck" },
@@ -299,7 +299,7 @@ namespace Eplicta.Mets.Console.Commands.Html
 
                 }
 
-            };
+            }; 
 
             var renderer = new Eplicta.Html.Renderer(template, htmlData);
 
