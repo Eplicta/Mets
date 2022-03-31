@@ -295,8 +295,36 @@ namespace Eplicta.Mets.Console.Commands.Html
                     {"epafChannelId", "hästkorv" },
                     {"epafDocumentId", "EF7279696F91C83870A84C51E2EB48D1"},
                     {"anka", "duck" },
-                    {"publishDate",""}
+                    {"publishDate","HDSFNFDJK"}
 
+                },
+                //Anka = new Dictionary<string, string>
+                //{
+                //    {"dfsdsf", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" }, 
+                //    {"rd", "sjnoppp" },
+                //    {"fdsf", "jjgfkdlgjlkfdg" }
+                //},
+                //Fisk = new Dictionary<string, string>
+                //{
+                //    {"Hvdfjbds","jfjlks" },
+                //    {"tedsa", "haåe" },
+                //    {"ke", "häst" },
+                //    {"åsna","anka" }
+
+                //},
+                Recourses = new List<Dictionary<string, string>>
+                {
+                     new Dictionary<string, string>
+                {
+                    {"prutt", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" },
+                    {"saxx", "" }
+                }, 
+                     new Dictionary<string, string>
+                {
+                    {"prutt", "" },
+                    {"saxx", "hår" }
+                   
+                },
                 }
 
             }; 

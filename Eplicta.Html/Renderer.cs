@@ -84,13 +84,29 @@ namespace Eplicta.Html
                     indent += 4;
                     RenderChildren(node.Children, sb, indent);
                     indent -= 4;
-                    if (node.Attributes.Values != null && node.Attributes.Values.Contains("post"))
+                    if (node.Attributes.Values.Contains("post"))
                     {
-                        foreach (var anka in _htmlData.Data.Values)
+                        //foreach (var anka in _htmlData.Data.Values)
+                        //{
+                        //    sb.AppendLine($"<div class=\"content-image\"><img src=\"{anka}\"></div>");
+                        //}
+                        //foreach (var hår in _htmldata.anka.values)
+                        //{
+                        //    sb.appendline($"<div class=\"content-movie\"><img src=\"{hår}\"></div>");
+                        //}
+                        foreach (var haj in _htmlData.Recourses)
                         {
-                            sb.AppendLine($"<div class=\"content-image\"><img src=\"{anka}\"></div>");
+                            var prutt = haj["prutt"];
+                            if (prutt != "")
+                            sb.AppendLine($"<div class=\"content-movie\"><img src=\"{prutt}\"></div>");
                         }
-
+                        foreach (var recource in _htmlData.Recourses )
+                        {
+                            var src = recource["saxx"];
+                            if (src != "")
+                            sb.AppendLine($"<div class=\"content-image\"><img src=\"{src}\"></div>");
+                        }
+                        
                     }
                     sb.AppendLine($"{indentation}</{node.Name}/>");
                    
