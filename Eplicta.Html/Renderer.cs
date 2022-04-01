@@ -20,9 +20,6 @@ namespace Eplicta.Html
             var sb = new StringBuilder();
             sb.AppendLine("<!doctype html>");
             RenderChildren(new[] { _template.Root }, sb);
-            //string hår = _htmlData.Data.Values.First();
-            //string[] items = hår.Split(' ');
-            
             
             var result = sb.ToString();
             return result;
@@ -86,27 +83,14 @@ namespace Eplicta.Html
                     indent -= 4;
                     if (node.Attributes.Values.Contains("post"))
                     {
-                        //foreach (var anka in _htmlData.Data.Values)
-                        //{
-                        //    sb.AppendLine($"<div class=\"content-image\"><img src=\"{anka}\"></div>");
-                        //}
-                        //foreach (var hår in _htmldata.anka.values)
-                        //{
-                        //    sb.appendline($"<div class=\"content-movie\"><img src=\"{hår}\"></div>");
-                        //}
-                        foreach (var haj in _htmlData.Recourses)
+                        foreach (var recource in _htmlData.Recourses)
                         {
-                            var prutt = haj["prutt"];
-                            if (prutt != "")
-                            sb.AppendLine($"<div class=\"content-movie\"><img src=\"{prutt}\"></div>");
-                        }
-                        foreach (var recource in _htmlData.Recourses )
-                        {
-                            var src = recource["saxx"];
+                            var src = recource["src"];
+                            var cnt = recource["content"];
                             if (src != "")
-                            sb.AppendLine($"<div class=\"content-image\"><img src=\"{src}\"></div>");
+                            sb.AppendLine($"<div class=\"content-{cnt}\"><img src=\"{src}\"></div>");
                         }
-                        
+
                     }
                     sb.AppendLine($"{indentation}</{node.Name}/>");
                    

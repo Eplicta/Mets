@@ -298,33 +298,39 @@ namespace Eplicta.Mets.Console.Commands.Html
                     {"publishDate","HDSFNFDJK"}
 
                 },
-                //Anka = new Dictionary<string, string>
-                //{
-                //    {"dfsdsf", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" }, 
-                //    {"rd", "sjnoppp" },
-                //    {"fdsf", "jjgfkdlgjlkfdg" }
-                //},
-                //Fisk = new Dictionary<string, string>
-                //{
-                //    {"Hvdfjbds","jfjlks" },
-                //    {"tedsa", "haåe" },
-                //    {"ke", "häst" },
-                //    {"åsna","anka" }
-
-                //},
                 Recourses = new List<Dictionary<string, string>>
                 {
                      new Dictionary<string, string>
                 {
-                    {"prutt", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" },
-                    {"saxx", "" }
-                }, 
-                     new Dictionary<string, string>
-                {
-                    {"prutt", "" },
-                    {"saxx", "hår" }
-                   
+                    {"src", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" },
+                    {"content", "movie" }           
                 },
+                    new Dictionary<string, string>
+                {
+                    {"src", "ankmåös" },
+                    {"content", "attachment content-attachment-docx" }
+                },
+                    new Dictionary<string, string>
+                {
+                    {"src", "Zlatmannn" },
+                    {"content", "attachment content-attachment-txt" }
+                },
+                    new Dictionary<string, string>
+                {
+                    {"src", "hårbomb23" },
+                    {"content", "attachment contetn-attachment-jpg" }
+                },
+                    new Dictionary<string, string>
+                {
+                    {"src", "Anks" },
+                    {"content", "movie" }
+                },                    
+                    new Dictionary<string, string>
+                {
+                    {"src", "golazo"},
+                    {"content", "attachment content-attachment-pdf"}
+                }
+                
                 }
 
             }; 
