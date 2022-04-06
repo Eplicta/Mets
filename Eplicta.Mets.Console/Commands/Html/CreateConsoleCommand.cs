@@ -251,7 +251,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                                Attributes = new Dictionary<string, string>
                                {
                                    {
-                                       "class", "source"
+                                       "class", "{source}"
                                    }
                                },
                                Children= new []
@@ -280,22 +280,28 @@ namespace Eplicta.Mets.Console.Commands.Html
 
                         }
                     },
-
                         }
-                   } }}
+                    }
+                    }
+                }
             };
+
+                       
+ 
+                
+ 
 
             var htmlData = new HtmlData 
             {
-                
+
                 //Title = "MyTitle"
                 Data = new Dictionary<string, string>
                 {
-                    {"pathX", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt dkfkdf kdf kdsf dsf dsf dsf " },
-                    {"epafChannelId", "hästkorv" },
-                    {"epafDocumentId", "EF7279696F91C83870A84C51E2EB48D1"},
+                    {"h1", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt dkfkdf kdf kdsf dsf dsf dsf " },
+                    {"plikes", "hästkorv" },
+                    {"pshare", "EF7279696F91C83870A84C51E2EB48D1"},
                     {"anka", "duck" },
-                    {"publishDate","HDSFNFDJK"}
+                    {"source","HDSFNFDJK"}
 
                 },
                 Recourses = new List<Dictionary<string, string>>
@@ -303,7 +309,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                      new Dictionary<string, string>
                 {
                     {"src", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" },
-                    {"content", "movie" }           
+                    {"content", "movie" }
                 },
                     new Dictionary<string, string>
                 {
@@ -324,13 +330,13 @@ namespace Eplicta.Mets.Console.Commands.Html
                 {
                     {"src", "Anks" },
                     {"content", "movie" }
-                },                    
+                },
                     new Dictionary<string, string>
                 {
                     {"src", "golazo"},
                     {"content", "attachment content-attachment-pdf"}
                 }
-                
+
                 }
 
             }; 
@@ -344,6 +350,6 @@ namespace Eplicta.Mets.Console.Commands.Html
             OutputInformation("Done");
         }
 
-        
+
     }
 }

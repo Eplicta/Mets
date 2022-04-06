@@ -9,6 +9,7 @@ namespace Eplicta.Html
         private readonly HtmlTemplate _template;
         private readonly HtmlData _htmlData;
 
+
         public Renderer(HtmlTemplate template, HtmlData htmlData)
         {
             _template = template;
@@ -72,7 +73,7 @@ namespace Eplicta.Html
                 if (!string.IsNullOrEmpty(value))
                 {
                     //sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
-                    sb.AppendLine($"{indentation}<{node.Name}{attr}>{node.Value}</{node.Name}>");
+                    sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
                 }
                 
                 else if (node.Children.Any())
@@ -82,16 +83,16 @@ namespace Eplicta.Html
                     RenderChildren(node.Children, sb, indent);
                     indent -= 4;
                     if (node.Attributes.Values.Contains("post"))
-                    {
                         foreach (var recource in _htmlData.Recourses)
                         {
-                            var src = recource["src"];
-                            var cnt = recource["content"];
-                            if (src != "")
-                            sb.AppendLine($"<div class=\"content-{cnt}\"><img src=\"{src}\"></div>");
-                        }
+                            {
+                                var src = recource["src"];
+                                var cnt = recource["content"];
+                                if (src != "")
+                                    sb.AppendLine($"<div class=\"content-{cnt}\"><img src=\"{src}\"></div>");
+                            }
 
-                    }
+                        }
                     sb.AppendLine($"{indentation}</{node.Name}/>");
                    
                 }
