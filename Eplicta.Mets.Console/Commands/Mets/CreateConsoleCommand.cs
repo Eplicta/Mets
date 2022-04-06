@@ -68,8 +68,12 @@ namespace Eplicta.Mets.Console.Commands.Mets
                 files = new ModsData.file[]
                 {
                     new ModsData.file(),
-                   
+
                 },
+                Resources = new ModsData.Resource[]
+                {
+                    new ModsData.Resource(),
+                }
 
 
                 
