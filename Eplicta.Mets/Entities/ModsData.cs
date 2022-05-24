@@ -4,50 +4,97 @@ namespace Eplicta.Mets.Entities;
 
 public record ModsData
 {
-    public TitleInfoData TitleInfo { get; set; }
-    public NameData Name { get; set; }
-    public ResourceData[] Resources { get; set; }
+    public enum EType
+    {
+        Individual,
+        Organization,
+        Other
+    }
+
+    public enum EOtherType
+    {
+        Software
+    }
+
+    public enum ERole
+    {
+        Creator,
+        Editor,
+        Archivist,
+        Preservation,
+        Disseminator,
+        Custodian,
+        IpOwner,
+        Other
+    }
+
+    public enum EAltRecordType
+    {
+        DeliveryType,
+        DeliverySpecification,
+        SubmissionAgreement,
+        PreviousSubmissionAgreement,
+        DataSubmissionSession,
+        PackageNumber,
+        ReferenceCode,
+        PreviousReferenceCode,
+        Appraisal,
+        AccessRestrict
+    }
+
+    public enum EChecksumType
+    {
+        MD5,
+        SHA_1,
+        SHA_256,
+        SHA_384,
+        SHA_512
+    }
+
+    public enum ELocType
+    {
+        Urn,
+        Url,
+        Handle,
+        Other
+    }
+
     public AgentData Agent { get; set; }
     public CompanyData Company { get; set; }
     public SoftwareData Software { get; set; }
-    public AltRecordId Records { get; set; }
+    public AltRecord[] AltRecords { get; set; }
     public ModsSectionData Mods { get; set; }
     public FileData[] Files { get; set; }
-    public string Creator { get; set; }
 
     public record AgentData
     {
         public string Name { get; set; }
         public string Note { get; set; }
-        public string Type { get; set; }
-        public string Role { get; set; }
+        public EType Type { get; set; }
+        public ERole Role { get; set; }
     }
 
     public record CompanyData
     {
         public string Name { get; set; }
         public string Note { get; set; }
-        public string Role { get; set; }
-        public string Type { get; set; }
+        public ERole Role { get; set; }
+        public EType Type { get; set; }
     }
 
     public record SoftwareData
     {
         public string Name { get; set; }
         public string Note { get; set; }
-        public string Role { get; set; }
-        public string Type { get; set; }
-        public string OtherType { get; set; }
+        public ERole Role { get; set; }
+        public EType Type { get; set; }
+        public EOtherType OtherType { get; set; }
     }
 
-    public record AltRecordId
+    public record AltRecord
     {
-        public string Type1 { get; set; }
-        public string InnerText1 { get; set; }
-        public string Type2 { get; set; }
-        public string InnerText2 { get; set; }
-        public string Type3 { get; set; }
-        public string InnerText3 { get; set; }
+        public EAltRecordType Type { get; set; }
+        public string InnerText { get; set; }
     }
 
     public record ModsSectionData
@@ -55,12 +102,12 @@ public record ModsData
         public string ObjId { get; set; }
         public string Xmlns { get; set; }
         public string Identifier { get; set; }
-        public string Url { get; set; }
+        public Uri Url { get; set; }
         public DateTime DateIssued { get; set; }
         public string AccessCondition { get; set; }
         public string ModsTitle { get; set; }
-        public string Uri { get; set; }
-        public string ModeTitle2 { get; set; }
+        public Uri Uri { get; set; }
+        public string ModsTitleInfo { get; set; }
     }
 
     public record FileData
@@ -69,28 +116,11 @@ public record ModsData
         public string Use { get; set; }
         public string MimeType { get; set; }
         public long Size { get; set; }
-        public string Created { get; set; }
-        public string CheckSum { get; set; }
-        public string ChecksumType { get; set; }
-        public string Ns2Type { get; set; }
-        public string Ns2Href { get; set; }
-        public string LocType { get; set; }
-    }
-
-    public record TitleInfoData
-    {
-        public string Title { get; set; }
-        public string SubTitle { get; set; }
-    }
-
-    public record NameData
-    {
-        public string NamePart { get; set; }
-    }
-
-    public record ResourceData
-    {
-        public string Name { get; set; }
+        public DateTime Created { get; set; }
+        public string Checksum { get; set; }
+        public EChecksumType ChecksumType { get; set; }
+        public ELocType LocType { get; set; }
+        public string FileName { get; set; }
         public byte[] Data { get; set; }
     }
 }

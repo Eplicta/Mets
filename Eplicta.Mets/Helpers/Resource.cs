@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace Eplicta.Mets.Helpers;
 
-internal static class Resource
+public static class Resource
 {
     public static string Get(string name)
     {
@@ -17,7 +17,7 @@ internal static class Resource
         return result;
     }
 
-    internal static XmlDocument GetXml(string name)
+    public static XmlDocument GetXml(string name)
     {
         var xsd = new XmlDocument();
         xsd.LoadXml(Get(name));

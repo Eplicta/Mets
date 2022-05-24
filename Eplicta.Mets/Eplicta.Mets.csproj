@@ -66,4 +66,8 @@
 		<InternalsVisibleTo Include="Eplicta.Mets.Tests" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="MimeTypeMapOfficial" Version="1.0.17" />
+	</ItemGroup>
+
 </Project>

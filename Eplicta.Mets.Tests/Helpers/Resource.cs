@@ -6,7 +6,7 @@ namespace Eplicta.Mets.Tests.Helpers;
 
 internal static class Resource
 {
-    public static string Get(string name)
+    private static string Get(string name)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var resourceName = $"Eplicta.Mets.Tests.Resources.{name}";

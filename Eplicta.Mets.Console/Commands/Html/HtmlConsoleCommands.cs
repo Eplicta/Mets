@@ -6,6 +6,6 @@ public class HtmlConsoleCommands : ContainerCommandBase
 {
     public HtmlConsoleCommands() : base("html")
     {
-        RegisterCommand<CreateConsoleCommand>();
+        RegisterCommand<HtmlSampleConsoleCommands>();
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Eplicta.Mets.Entities;
 using Tharga.Toolkit.Console.Commands.Base;
 
@@ -15,94 +16,91 @@ public class CreateConsoleCommand : AsyncActionCommandBase
 
     public override async Task InvokeAsync(string[] param)
     {
-        var metsData = new ModsData
-        {
-            Name = new ModsData.NameData
-            {
-                NamePart = "kommun"
-            },
-            TitleInfo = new ModsData.TitleInfoData
-            {
-                Title = "Moln- och virtualiseringspecialist",
-                SubTitle = null
-            },
-            Creator = "Test 2",
-            //CreateDate = "2022-02-14",
-            Agent = new ModsData.AgentData
+        var metsData = new Builder()
+            .SetAgent(new ModsData.AgentData
             {
                 Name = "Some Company",
                 Note = "http://id.kb.se/organisations/SE0000000000",
-                Type = "ORGANIZATION",
-                Role = "ARCHIVIST"
-            },
-            Company = new ModsData.CompanyData
+                Type = ModsData.EType.Other,
+                Role = ModsData.ERole.Archivist
+            })
+            .SetCompany(new ModsData.CompanyData
             {
                 Name = "Eplicta AB",
                 Note = "http://id.kb.se/organisations/SE0000000000",
-                Role = "EDITOR",
-                Type = "ORGANISATION"
-            },
-            Records = new ModsData.AltRecordId
+                Role = ModsData.ERole.Editor,
+                Type = ModsData.EType.Other
+            })
+            .AddAltRecord(new ModsData.AltRecord
             {
-                Type1 = "DELIVERYTYPE",
-                InnerText1 = "DEPOSIT",
-                Type2 = "DELIVERYSPECIFICATION",
-                InnerText2 = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/",
-                Type3 = "SUBMISSIONAGREEMENT",
-                InnerText3 = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013"
-            },
-            Mods = new ModsData.ModsSectionData
+                Type = ModsData.EAltRecordType.DeliveryType,
+                InnerText = "DEPOSIT",
+            })
+            .AddAltRecord(new ModsData.AltRecord
+            {
+                Type = ModsData.EAltRecordType.DeliverySpecification,
+                InnerText = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/",
+            })
+            .AddAltRecord(new ModsData.AltRecord
+            {
+                Type = ModsData.EAltRecordType.SubmissionAgreement,
+                InnerText = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013",
+            })
+            .SetModsSection(new ModsData.ModsSectionData
             {
                 ObjId = "UUID:test ID",
                 Xmlns = "http://www.w3.org/1999/xlink",
                 Identifier = "C5385FBC5FC559E7C43AB6700DB28EF3",
-                Url = "https://www.alingsas.se/utbildning-och-barnomsorg/vuxenutbildning/jag-vill-studera/program-i-alingsas/moln-och-virtualiseringspecialist/",
-                DateIssued = DateTime.Parse("2022-02-03T15:48:04.000+01:00"), //TODO: Add as date and output with the correct format.
+                Url = new Uri("https://some.domain.com"),
+                DateIssued = DateTime.Parse("2022-02-03T15:48:04.000+01:00"),
                 AccessCondition = "gratis",
                 ModsTitle = "Moln- och virtualiseringspecialist",
-                Uri = "https://www.alingsas.se/",
-                ModeTitle2 = "https://www.alingsas.se/"
-            },
-            Software = new ModsData.SoftwareData
+                Uri = new Uri("https://some.domain.com/"),
+                ModsTitleInfo = "https://some.domain.com/"
+            })
+            .SetSoftware(new ModsData.SoftwareData
             {
                 Name = "Eplicta Aggregator",
                 Note = "http://id.kb.se/organisations/SE0000000000",
-                Role = "EDITOR",
-                Type = "OTHER",
-                OtherType = "SOFTWARE"
-            },
-            Files = new ModsData.FileData[]
-            {
-                new()
-                {
-                    Id = "ID4d6bdd9068214aa5a57d53bdbe4a9cf3",
-                    Use = "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144",
-                    MimeType = "application/pdf",
-                    Size = 1145856,
-                    Created = "2022-02-19T16:44:44.000+01:00",
-                    CheckSum = "801520fe16da09d1365596dfabb2846b",
-                    ChecksumType = "MD5",
-                    Ns2Type = "simple",
-                    Ns2Href = "file:Content/Moln-och-virtualiseringsspecialist.pdf",
-                    LocType = "URL"
-                }
-            },
-            Resources = new ModsData.ResourceData[]
-            {
-                new()
-            }
-        };
+                Role = ModsData.ERole.Editor,
+                Type = ModsData.EType.Other,
+                OtherType = ModsData.EOtherType.Software
+            })
+            .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
+            .Build();
 
         var renderer = new Renderer(metsData);
 
+        var xmlDocument = renderer.Render();
+
+        if (!Validate(xmlDocument)) return;
+
         //NOTE: This code saves the metadata to the temp-folder.
-        var xmlData = renderer.Render().OuterXml;
-        await File.WriteAllBytesAsync("C:\\temp\\metadata.xml", Encoding.UTF8.GetBytes(xmlData));
+        //var xmlData = xmlDocument.OuterXml;
+        //await File.WriteAllBytesAsync("C:\\temp\\metadata.xml", Encoding.UTF8.GetBytes(xmlData));
 
         //NOTE: This code craetes a zip-archive with metadata and resource-files amd saves to the temp-folder.
         await using var archive = renderer.GetArchiveStream();
         await File.WriteAllBytesAsync("C:\\temp\\mods-archive.zip", archive.ToArray());
 
         OutputInformation("Done");
+    }
+
+    private bool Validate(XmlDocument xmlDocument)
+    {
+        var sut = new XmlValidator();
+        var schema = Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
+        var result = sut.Validate(xmlDocument, schema)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
+        if (result.Any())
+        {
+            foreach (var item in result)
+            {
+                OutputError(item.Message);
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }
