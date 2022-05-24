@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AutoFixture;
 using Eplicta.Mets.Entities;
@@ -35,7 +36,7 @@ public class RendererValidatorTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
-            .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
+            .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var document = new Renderer(modsData).Render();
         var schema = Mets.Helpers.Resource.GetXml(format);

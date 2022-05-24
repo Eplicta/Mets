@@ -35,7 +35,7 @@ public class MetsValidatorTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
-            .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
+            .AddFile(new FileSource { Data = new byte[] { } })
             .Build();
         var document = new Renderer(modsData).Render();
         var sut = new MetsValidator();

@@ -48,10 +48,11 @@ public class Builder
         {
             var fileInfo = new FileInfo(fileSource.FilePath);
             data = File.ReadAllBytes(fileSource.FilePath);
-            id ??= data.ToHash();
             fileName ??= fileInfo.Name;
             created ??= fileInfo.CreationTime;
         }
+
+        id ??= data.ToHash();
 
         var mimeType = GetMimeType(fileName);
 
