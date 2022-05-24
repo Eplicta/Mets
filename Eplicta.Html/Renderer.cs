@@ -1,105 +1,101 @@
-﻿using Eplicta.Html.Entities;
+﻿using System;
 using System.Linq;
 using System.Text;
+using Eplicta.Html.Entities;
 
-namespace Eplicta.Html
+namespace Eplicta.Html;
+
+public class Renderer
 {
-    public class Renderer
+    private readonly HtmlTemplate _template;
+    private readonly HtmlData _htmlData;
+
+    public Renderer(HtmlTemplate template, HtmlData htmlData)
     {
-        private readonly HtmlTemplate _template;
-        private readonly HtmlData _htmlData;
+        _template = template;
+        _htmlData = htmlData;
+    }
 
+    public string Render()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("<!doctype html>");
+        RenderChildren(new[] { _template.Root }, sb);
 
-        public Renderer(HtmlTemplate template, HtmlData htmlData)
+        var result = sb.ToString();
+        return result;
+    }
+
+    private string GetValue(string value)
+    {
+        if (value != null && value.Contains("{"))
         {
-            _template = template;
-            _htmlData = htmlData;
-        }
+            var k = value;
+            var iStart = k.IndexOf("{", StringComparison.Ordinal);
+            var iEnd = k.IndexOf("}", StringComparison.Ordinal);
+            var key1 = k.Substring(iStart + 1, iEnd - iStart - 1);
 
-        public string Render()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("<!doctype html>");
-            RenderChildren(new[] { _template.Root }, sb);
-            
-            var result = sb.ToString();
-            return result;
-        }
-        
-
-         
-        private string GetValue(string value)
-        {
-            if (value != null && value.Contains("{"))
+            if (_htmlData.Data.TryGetValue(key1, out var val))
             {
-                var k = value;
-                var iStart = k.IndexOf("{");
-                var iEnd = k.IndexOf("}");
-                var key1 = k.Substring(iStart + 1, iEnd - iStart - 1);
+                var pre = value.Substring(0, iStart);
+                var suff = value.Substring(iEnd + 1);
 
-                if (_htmlData.Data.TryGetValue(key1, out var val))
+                value = pre + val + suff;
+            }
+        }
+
+        return value;
+    }
+
+    private void RenderChildren(HtmlTemplate.Element[] nodes, StringBuilder sb, int indent = 0)
+    {
+        var indentation = new string(' ', indent);
+
+        foreach (var node in nodes.Where(x => x != null))
+        {
+            var attr = "";
+            if (node.Attributes.Any())
+            {
+                foreach (var attribute in node.Attributes)
                 {
-                    var pre = value.Substring(0, iStart);
-                    var suff = value.Substring(iEnd + 1);
-
-                    value = pre + val + suff;
+                    var attributeValue = GetValue(attribute.Value);
+                    attr += $" {attribute.Key}=\"{attributeValue}\"";
                 }
             }
 
-            return value;
-        }
-        
+            var value = GetValue(node.Value);
 
-        private void RenderChildren(HtmlTemplate.Element[] nodes, StringBuilder sb, int indent = 0)
-        {
-            var indentation = new string(' ', indent);
-           
-
-            foreach (var node in nodes.Where(x => x != null))
+            if (!string.IsNullOrEmpty(value))
             {
-                var attr = "";
-                if (node.Attributes.Any())
+                sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
+            }
+
+            else if (node.Children.Any())
+            {
+                sb.AppendLine($"{indentation}<{node.Name}{attr}>");
+                indent += 4;
+                RenderChildren(node.Children, sb, indent);
+                indent -= 4;
+                if (node.Attributes.Values.Contains("post"))
                 {
-                    foreach (var attribute in node.Attributes)
+                    foreach (var recource in _htmlData.Recourses)
                     {
-                        var attributeValue = GetValue(attribute.Value);
-                        attr += $" {attribute.Key}=\"{attributeValue}\"";
+                        {
+                            var src = recource["src"];
+                            var cnt = recource["content"];
+                            if (src != "")
+                            {
+                                sb.AppendLine($"<div class=\"content-{cnt}\"><img src=\"{src}\"></div>");
+                            }
+                        }
                     }
                 }
-                
 
-                var value = GetValue(node.Value);
-
-                if (!string.IsNullOrEmpty(value))
-                {
-                    //sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
-                    sb.AppendLine($"{indentation}<{node.Name}{attr}>{value}</{node.Name}>");
-                }
-                
-                else if (node.Children.Any())
-                {
-                    sb.AppendLine($"{indentation}<{node.Name}{attr}>");
-                    indent += 4;
-                    RenderChildren(node.Children, sb, indent);
-                    indent -= 4;
-                    if (node.Attributes.Values.Contains("post"))
-                        foreach (var recource in _htmlData.Recourses)
-                        {
-                            {
-                                var src = recource["src"];
-                                var cnt = recource["content"];
-                                if (src != "")
-                                    sb.AppendLine($"<div class=\"content-{cnt}\"><img src=\"{src}\"></div>");
-                            }
-
-                        }
-                    sb.AppendLine($"{indentation}</{node.Name}/>");
-                   
-                }
-                else
-                {
-                    sb.AppendLine($"{indentation}<{node.Name}{attr}/>");
-                }
+                sb.AppendLine($"{indentation}</{node.Name}/>");
+            }
+            else
+            {
+                sb.AppendLine($"{indentation}<{node.Name}{attr}/>");
             }
         }
     }

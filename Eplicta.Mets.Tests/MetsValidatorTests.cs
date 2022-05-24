@@ -8,22 +8,6 @@ namespace Eplicta.Mets.Tests;
 public class MetsValidatorTests
 {
     [Fact(Skip = "Fix validation.")]
-    public void Empty()
-    {
-        //Arrange
-        var modsData = new ModsData();
-        var renderer = new Renderer(modsData);
-        var document = renderer.Render();
-        var sut = new MetsValidator();
-
-        //Act
-        var result = sut.Validate(document, Version.Mods_3_5);
-
-        //Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact(Skip = "Fix validation.")]
     public void Complete()
     {
         //Arrange
@@ -37,6 +21,22 @@ public class MetsValidatorTests
         var result = sut.Validate(document, Version.Mods_3_5);
 
         document.Save(@"C:\Temp\x.xml");
+
+        //Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact(Skip = "Fix validation.")]
+    public void Empty()
+    {
+        //Arrange
+        var modsData = new ModsData();
+        var renderer = new Renderer(modsData);
+        var document = renderer.Render();
+        var sut = new MetsValidator();
+
+        //Act
+        var result = sut.Validate(document, Version.Mods_3_5);
 
         //Assert
         result.Should().BeEmpty();

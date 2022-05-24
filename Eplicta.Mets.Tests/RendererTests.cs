@@ -1,7 +1,7 @@
-﻿using Eplicta.Mets.Entities;
+﻿using AutoFixture;
+using Eplicta.Mets.Entities;
 using FluentAssertions;
 using Xunit;
-using AutoFixture;
 
 namespace Eplicta.Mets.Tests;
 

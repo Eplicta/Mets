@@ -12,28 +12,32 @@ using Tharga.Toolkit.Console.Consoles;
 using Tharga.Toolkit.Console.Helpers;
 using Tharga.Toolkit.Console.Interfaces;
 
-namespace Eplicta.Mets.Console
+namespace Eplicta.Mets.Console;
+
+internal static class Program
 {
-    internal static class Program
+    [STAThread]
+    private static void Main(string[] args)
     {
-        [STAThread]
-        private static void Main(string[] args)
-        {
-            var container = GetContainer();
+        var container = GetContainer();
 
-            using var console = new ClientConsole();
-            var command = new RootCommand(console, new CommandResolver(type => (ICommand)container.Resolve(type)));
-            command.RegisterCommand<MetsConsoleCommands>();
-            command.RegisterCommand<HtmlConsoleCommands>();
-            var engine = new CommandEngine(command);
-            engine.Start(args);
-        }
+        using var console = new ClientConsole();
+        var command = new RootCommand(console, new CommandResolver(type => (ICommand)container.Resolve(type)));
+        command.RegisterCommand<MetsConsoleCommands>();
+        command.RegisterCommand<HtmlConsoleCommands>();
+        var engine = new CommandEngine(command);
+        engine.Start(args);
+    }
 
-        private static WindsorContainer GetContainer()
-        {
-            var container = new WindsorContainer();
-            container.Register(Classes.FromAssemblyInThisApplication(Assembly.GetAssembly(typeof(Program))).IncludeNonPublicTypes().BasedOn<ICommand>().Configure(x => Debug.WriteLine($"Registered in IOC: {x.Implementation.Name}")).Configure(x => x.LifeStyle.Is(LifestyleType.Transient)));
-            return container;
-        }
+    private static WindsorContainer GetContainer()
+    {
+        var container = new WindsorContainer();
+        var basedOnDescriptor = Classes.FromAssemblyInThisApplication(Assembly.GetAssembly(typeof(Program)))
+            .IncludeNonPublicTypes()
+            .BasedOn<ICommand>()
+            .Configure(x => Debug.WriteLine($"Registered in IOC: {x.Implementation.Name}"))
+            .Configure(x => x.LifeStyle.Is(LifestyleType.Transient));
+        container.Register(basedOnDescriptor);
+        return container;
     }
 }

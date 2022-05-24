@@ -10,71 +10,11 @@ namespace Eplicta.Mets.Tests;
 public class XmlValidatorTests
 {
     [Fact]
-    public void Sample()
-    {
-        //Arrange
-        var document = Resource.GetXml("sample.xml");
-        var schema = Resource.GetXml("sample.xsd");
-        var sut = new XmlValidator();
-
-        //Act
-        var result = sut.Validate(document, schema);
-
-        //Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact]
     public void A()
     {
         //Arrange
         var document = Resource.GetXml("a.xml");
         var schema = Resource.GetXml("a.xsd");
-        var sut = new XmlValidator();
-
-        //Act
-        var result = sut.Validate(document, schema);
-
-        //Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void mods_version_3_5()
-    {
-        //Arrange
-        var document = Resource.GetXml("mods99042030_linkedDataAdded.xml");
-        var schema = Mets.Helpers.Resource.GetXml("mods-3-5.xsd");
-        var sut = new XmlValidator();
-
-        //Act
-        var result = sut.Validate(document, schema);
-
-        //Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void MODS_enligt_FGS_PUBL_exempel_1()
-    {
-        //Arrange
-        var document = Resource.GetXml("MODS_enligt_FGS-PUBL_exempel_1.xml");
-        var schema = Mets.Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
-        var sut = new XmlValidator();
-
-        //Act
-        var result = sut.Validate(document, schema);
-
-        //Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void MODS_enligt_FGS_PUBL_exempel_2()
-    {
-        //Arrange
-        var document = Resource.GetXml("MODS_enligt_FGS-PUBL_exempel_2.xml");
-        var schema = Mets.Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
         var sut = new XmlValidator();
 
         //Act
@@ -109,5 +49,65 @@ public class XmlValidatorTests
         result.First().Message.Should().Be("The 'http://www.contoso.com/books:root' element is not declared.");
         result.First().XmlSeverityType.Should().Be(XmlSeverityType.Error);
         result.First().XmlSchemaException.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void MODS_enligt_FGS_PUBL_exempel_1()
+    {
+        //Arrange
+        var document = Resource.GetXml("MODS_enligt_FGS-PUBL_exempel_1.xml");
+        var schema = Mets.Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
+        var sut = new XmlValidator();
+
+        //Act
+        var result = sut.Validate(document, schema);
+
+        //Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void MODS_enligt_FGS_PUBL_exempel_2()
+    {
+        //Arrange
+        var document = Resource.GetXml("MODS_enligt_FGS-PUBL_exempel_2.xml");
+        var schema = Mets.Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
+        var sut = new XmlValidator();
+
+        //Act
+        var result = sut.Validate(document, schema);
+
+        //Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void mods_version_3_5()
+    {
+        //Arrange
+        var document = Resource.GetXml("mods99042030_linkedDataAdded.xml");
+        var schema = Mets.Helpers.Resource.GetXml("mods-3-5.xsd");
+        var sut = new XmlValidator();
+
+        //Act
+        var result = sut.Validate(document, schema);
+
+        //Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Sample()
+    {
+        //Arrange
+        var document = Resource.GetXml("sample.xml");
+        var schema = Resource.GetXml("sample.xsd");
+        var sut = new XmlValidator();
+
+        //Act
+        var result = sut.Validate(document, schema);
+
+        //Assert
+        result.Should().BeEmpty();
     }
 }

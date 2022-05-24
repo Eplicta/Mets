@@ -1,30 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Eplicta.Html;
 using Eplicta.Html.Entities;
 using Tharga.Toolkit.Console.Commands.Base;
 
+namespace Eplicta.Mets.Console.Commands.Html;
 
-namespace Eplicta.Mets.Console.Commands.Html
+public class CreateConsoleCommand : AsyncActionCommandBase
 {
-    public class CreateConsoleCommand : AsyncActionCommandBase
+    public CreateConsoleCommand() : base("create")
     {
-        public CreateConsoleCommand() : base("create")
-        {
-        }
+    }
 
-        public override async Task InvokeAsync(string[] param)
+    public override async Task InvokeAsync(string[] param)
+    {
+        var template = new HtmlTemplate
         {
-            var template = new HtmlTemplate
+            Root = new HtmlTemplate.Element
             {
-
-                Root = new HtmlTemplate.Element
-                {
-                    Name = "head",
-                    Children = new[]
+                Name = "head",
+                Children = new[]
                 {
                     new HtmlTemplate.Element
                     {
@@ -32,7 +28,7 @@ namespace Eplicta.Mets.Console.Commands.Html
                         Attributes = new Dictionary<string, string>
                         {
                             {
-                                "charset","utf-8"
+                                "charset", "utf-8"
                             }
                         }
                     },
@@ -50,10 +46,10 @@ namespace Eplicta.Mets.Console.Commands.Html
                                 "rel", "stylesheet"
                             },
                             {
-                                "href","/style.css"
+                                "href", "/style.css"
                             },
                             {
-                                "media","all"
+                                "media", "all"
                             }
                         }
                     },
@@ -64,156 +60,87 @@ namespace Eplicta.Mets.Console.Commands.Html
                         {
                             { "class", "facebook post post-image post-location" }
                         },
-                        Children = new []
-                        {
-                        new HtmlTemplate.Element
-                        {
-                        Name = "div",
-                        Attributes = new Dictionary<string, string>
-                        {
-                            {"class", "post" }
-                        },
                         Children = new[]
                         {
                             new HtmlTemplate.Element
                             {
-                                Name = "h1",
-                                Value = "{h1}"
-                            },
-                            new HtmlTemplate.Element
-                            {
-                                 Name = "div",
-                                 Attributes = new Dictionary<string, string>
-                                 {
-                                     {"class", "feed" }
-                                 },
-                                 Children = new []
-                                 {
-                                     new HtmlTemplate.Element
-                                     {
-                                         Name = "a",
-                                         Attributes = new Dictionary<string, string>
-                                         {
-                                             { "href","{ahrefp}" }
-                                         },
-                                         Children = new []
-                                         {
-                                             new HtmlTemplate.Element
-                                             {
-                                                 Name = "p",
-                                                 Value = "{creator}"
-                                             }
-                                         }
-                                     }
-                                 }
-
-                            },
-                            new HtmlTemplate.Element
-                            {
                                 Name = "div",
                                 Attributes = new Dictionary<string, string>
                                 {
-                                    {
-                                        "Class","location"
-                                    }
+                                    { "class", "post" }
                                 },
-                                Children = new []
+                                Children = new[]
                                 {
                                     new HtmlTemplate.Element
                                     {
-                                        Name = "a",
+                                        Name = "h1",
+                                        Value = "{h1}"
+                                    },
+                                    new HtmlTemplate.Element
+                                    {
+                                        Name = "div",
                                         Attributes = new Dictionary<string, string>
                                         {
-                                            {
-                                                "href","{href}"
-                                            }
+                                            { "class", "feed" }
                                         },
-                                        Children = new []
+                                        Children = new[]
                                         {
                                             new HtmlTemplate.Element
                                             {
-                                                Name = "p",
-                                                Value = "{pcity}"
+                                                Name = "a",
+                                                Attributes = new Dictionary<string, string>
+                                                {
+                                                    { "href", "{ahrefp}" }
+                                                },
+                                                Children = new[]
+                                                {
+                                                    new HtmlTemplate.Element
+                                                    {
+                                                        Name = "p",
+                                                        Value = "{creator}"
+                                                    }
+                                                }
                                             }
                                         }
-                                    }
-
-
-                                }
-                            },
-                            new HtmlTemplate.Element
-                            {
-                                Name ="div",
-                                Attributes= new Dictionary<string, string>
-                                {
-                                    {
-                                        "class", "time"
-                                    }
-                                },
-                                Children= new []
-                                {
-                                    new HtmlTemplate.Element
-                                    {
-                                        Name ="p",
-                                        Value = "{p}"
-                                    }
-                                }
-                            },
-                            new HtmlTemplate.Element
-                            {
-                                Name = "div",
-                                Attributes = new Dictionary<string, string>
-                                {
-                                    {
-                                        "class", "content-text"
-                                    }
-                                },
-                                Value = "{div}"
-
-                            },
-                            new HtmlTemplate.Element
-                            {
-                                Name="div",
-                                Attributes = new Dictionary<string, string>
-                                {
-                                    {
-                                        "class","content-image"
-                                    }
-                                },
-                                Children = new []
-                                {
-                                    new HtmlTemplate.Element
-                                    {
-                                        Name = "img",
-                                        Attributes = new Dictionary<string, string>
-                                        {
-                                            {
-                                                "src", "{src}"
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                            },
-                            new HtmlTemplate.Element
-                            {
-                                Name = "div",
-                                Attributes = new Dictionary<string, string>
-                                {
-                                    {
-                                        "class", "reactions"
-                                    }
-                                },
-                                Children = new  []
-                                {
+                                    },
                                     new HtmlTemplate.Element
                                     {
                                         Name = "div",
                                         Attributes = new Dictionary<string, string>
                                         {
                                             {
-                                                "class", "likecount"
+                                                "Class", "location"
+                                            }
+                                        },
+                                        Children = new[]
+                                        {
+                                            new HtmlTemplate.Element
+                                            {
+                                                Name = "a",
+                                                Attributes = new Dictionary<string, string>
+                                                {
+                                                    {
+                                                        "href", "{href}"
+                                                    }
+                                                },
+                                                Children = new[]
+                                                {
+                                                    new HtmlTemplate.Element
+                                                    {
+                                                        Name = "p",
+                                                        Value = "{pcity}"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    new HtmlTemplate.Element
+                                    {
+                                        Name = "div",
+                                        Attributes = new Dictionary<string, string>
+                                        {
+                                            {
+                                                "class", "time"
                                             }
                                         },
                                         Children = new[]
@@ -221,135 +148,184 @@ namespace Eplicta.Mets.Console.Commands.Html
                                             new HtmlTemplate.Element
                                             {
                                                 Name = "p",
-                                                Value = "{plikes}"
+                                                Value = "{p}"
                                             }
                                         }
                                     },
                                     new HtmlTemplate.Element
                                     {
                                         Name = "div",
-                                        Attributes = new Dictionary<string,string>
+                                        Attributes = new Dictionary<string, string>
                                         {
                                             {
-                                                "class", "sharecount"
+                                                "class", "content-text"
                                             }
                                         },
-                                        Children = new []
+                                        Value = "{div}"
+                                    },
+                                    new HtmlTemplate.Element
+                                    {
+                                        Name = "div",
+                                        Attributes = new Dictionary<string, string>
+                                        {
+                                            {
+                                                "class", "content-image"
+                                            }
+                                        },
+                                        Children = new[]
                                         {
                                             new HtmlTemplate.Element
                                             {
-                                                Name = "p",
-                                                Value = "{pshare}"
+                                                Name = "img",
+                                                Attributes = new Dictionary<string, string>
+                                                {
+                                                    {
+                                                        "src", "{src}"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    new HtmlTemplate.Element
+                                    {
+                                        Name = "div",
+                                        Attributes = new Dictionary<string, string>
+                                        {
+                                            {
+                                                "class", "reactions"
+                                            }
+                                        },
+                                        Children = new[]
+                                        {
+                                            new HtmlTemplate.Element
+                                            {
+                                                Name = "div",
+                                                Attributes = new Dictionary<string, string>
+                                                {
+                                                    {
+                                                        "class", "likecount"
+                                                    }
+                                                },
+                                                Children = new[]
+                                                {
+                                                    new HtmlTemplate.Element
+                                                    {
+                                                        Name = "p",
+                                                        Value = "{plikes}"
+                                                    }
+                                                }
+                                            },
+                                            new HtmlTemplate.Element
+                                            {
+                                                Name = "div",
+                                                Attributes = new Dictionary<string, string>
+                                                {
+                                                    {
+                                                        "class", "sharecount"
+                                                    }
+                                                },
+                                                Children = new[]
+                                                {
+                                                    new HtmlTemplate.Element
+                                                    {
+                                                        Name = "p",
+                                                        Value = "{pshare}"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    new HtmlTemplate.Element
+                                    {
+                                        Name = "div",
+                                        Attributes = new Dictionary<string, string>
+                                        {
+                                            {
+                                                "class", "{source}"
+                                            }
+                                        },
+                                        Children = new[]
+                                        {
+                                            new HtmlTemplate.Element
+                                            {
+                                                Name = "a",
+                                                Attributes = new Dictionary<string, string>
+                                                {
+                                                    {
+                                                        "href", "{ahref}"
+                                                    }
+                                                },
+                                                Children = new[]
+                                                {
+                                                    new HtmlTemplate.Element
+                                                    {
+                                                        Name = "p",
+                                                        Value = "Source"
+                                                    }
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            },
-                            new HtmlTemplate.Element
-                            {
-                               Name = "div",
-                               Attributes = new Dictionary<string, string>
-                               {
-                                   {
-                                       "class", "{source}"
-                                   }
-                               },
-                               Children= new []
-                               {
-                                   new HtmlTemplate.Element
-                                   {
-                                       Name = "a",
-                                       Attributes = new Dictionary<string,string>
-                                       {
-                                           {
-                                               "href","{ahref}"
-                                           }
-                                       },
-                                       Children = new []
-                                       {
-                                           new HtmlTemplate.Element
-                                           {
-                                               Name = "p",
-                                               Value = "Source"
-                                           }
-                                       }
-                                   }
-                               }
                             }
-
-
                         }
-                    },
-                        }
-                    }
                     }
                 }
-            };
+            }
+        };
 
-                       
- 
-                
- 
-
-            var htmlData = new HtmlData 
+        var htmlData = new HtmlData
+        {
+            Data = new Dictionary<string, string>
             {
-
-                //Title = "MyTitle"
-                Data = new Dictionary<string, string>
+                { "h1", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt dkfkdf kdf kdsf dsf dsf dsf " },
+                { "plikes", "hästkorv" },
+                { "pshare", "EF7279696F91C83870A84C51E2EB48D1" },
+                { "anka", "duck" },
+                { "source", "HDSFNFDJK" }
+            },
+            Recourses = new Dictionary<string, string>[]
+            {
+                new()
                 {
-                    {"h1", "Channel_C18D7E70CD734F8286E2CA6E6490D56E.serjutt dkfkdf kdf kdsf dsf dsf dsf " },
-                    {"plikes", "hästkorv" },
-                    {"pshare", "EF7279696F91C83870A84C51E2EB48D1"},
-                    {"anka", "duck" },
-                    {"source","HDSFNFDJK"}
-
+                    { "src", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" },
+                    { "content", "movie" }
                 },
-                Recourses = new List<Dictionary<string, string>>
+                new()
                 {
-                     new Dictionary<string, string>
-                {
-                    {"src", "Content/e8da2bddd3bc4fe8baac3bddbc4978aa.mp4" },
-                    {"content", "movie" }
+                    { "src", "ankmåös" },
+                    { "content", "attachment content-attachment-docx" }
                 },
-                    new Dictionary<string, string>
+                new()
                 {
-                    {"src", "ankmåös" },
-                    {"content", "attachment content-attachment-docx" }
+                    { "src", "Zlatmannn" },
+                    { "content", "attachment content-attachment-txt" }
                 },
-                    new Dictionary<string, string>
+                new()
                 {
-                    {"src", "Zlatmannn" },
-                    {"content", "attachment content-attachment-txt" }
+                    { "src", "hårbomb23" },
+                    { "content", "attachment contetn-attachment-jpg" }
                 },
-                    new Dictionary<string, string>
+                new()
                 {
-                    {"src", "hårbomb23" },
-                    {"content", "attachment contetn-attachment-jpg" }
+                    { "src", "Anks" },
+                    { "content", "movie" }
                 },
-                    new Dictionary<string, string>
+                new()
                 {
-                    {"src", "Anks" },
-                    {"content", "movie" }
-                },
-                    new Dictionary<string, string>
-                {
-                    {"src", "golazo"},
-                    {"content", "attachment content-attachment-pdf"}
+                    { "src", "golazo" },
+                    { "content", "attachment content-attachment-pdf" }
                 }
+            }
 
-                }
+        };
 
-            }; 
+        var renderer = new Eplicta.Html.Renderer(template, htmlData);
 
-            var renderer = new Eplicta.Html.Renderer(template, htmlData);
+        //NOTE: This code saves the metadata to the temp-folder.
+        var xmlData = renderer.Render();
+        await File.WriteAllBytesAsync("C:\\temp\\myPage.html", Encoding.UTF8.GetBytes(xmlData));
 
-            //NOTE: This code saves the metadata to the temp-folder.
-            var xmlData = renderer.Render();
-            await File.WriteAllBytesAsync("C:\\temp\\myPage.html", Encoding.UTF8.GetBytes(xmlData));
-
-            OutputInformation("Done");
-        }
-
-
+        OutputInformation("Done");
     }
 }

@@ -1,19 +1,17 @@
 ﻿using System.Xml.Schema;
 
-namespace Eplicta.Mets.Entities
+namespace Eplicta.Mets.Entities;
+
+public class XmlValidatorResult
 {
-
-    public class XmlValidatorResult
+    internal XmlValidatorResult(string message, XmlSeverityType xmlSeverityType, XmlSchemaException xmlSchemaException)
     {
-        internal XmlValidatorResult(string message, XmlSeverityType xmlSeverityType, XmlSchemaException xmlSchemaException)
-        {
-            Message = message;
-            XmlSeverityType = xmlSeverityType;
-            XmlSchemaException = xmlSchemaException;
-        }
-
-        public string Message { get; }
-        public XmlSeverityType XmlSeverityType { get; }
-        public XmlSchemaException XmlSchemaException { get; }
+        Message = message;
+        XmlSeverityType = xmlSeverityType;
+        XmlSchemaException = xmlSchemaException;
     }
+
+    public string Message { get; }
+    public XmlSeverityType XmlSeverityType { get; }
+    public XmlSchemaException XmlSchemaException { get; }
 }
