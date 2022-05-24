@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Eplicta.Mets.Entities;
 using Tharga.Toolkit.Console.Commands.Base;
+using Version = Eplicta.Mets.Entities.Version;
 
 namespace Eplicta.Mets.Console.Commands.Mets;
 
@@ -88,9 +89,9 @@ public class CreateConsoleCommand : AsyncActionCommandBase
 
     private bool Validate(XmlDocument xmlDocument)
     {
-        var sut = new XmlValidator();
-        var schema = Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
-        var result = sut.Validate(xmlDocument, schema)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
+        var sut = new MetsValidator();
+        //var schema = Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
+        var result = sut.Validate(xmlDocument, Version.ModsFgsPubl_1_0)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
         if (result.Any())
         {
             foreach (var item in result)

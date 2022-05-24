@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using AutoFixture;
 using Eplicta.Mets.Entities;
 using FluentAssertions;
@@ -37,7 +35,7 @@ public class RendererValidatorTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
-            .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)
+            .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
             .Build();
         var document = new Renderer(modsData).Render();
         var schema = Mets.Helpers.Resource.GetXml(format);
@@ -54,7 +52,6 @@ public class RendererValidatorTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            //yield return new object[] { "eARD_Paket_FGS-PUBL_mets.xsd" };
             yield return new object[] { "MODS_enligt_FGS-PUBL_xml1_0.xsd" };
             //yield return new object[] { "MODS_enligt_FGS-PUBL_xml1_1.xsd" };
             yield return new object[] { "mods-3-0.xsd" };
@@ -65,9 +62,6 @@ public class RendererValidatorTests
             yield return new object[] { "mods-3-5.xsd" };
             yield return new object[] { "mods-3-6.xsd" };
             yield return new object[] { "mods-3-7.xsd" };
-            //yield return new object[] { "xlink.xsd" };
-            //yield return new object[] { "xml.xsd" };
-            //yield return new object[] { "xmldsig-core-schema.xsd" };
         }
 
         IEnumerator IEnumerable.GetEnumerator()
