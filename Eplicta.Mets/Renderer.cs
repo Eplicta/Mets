@@ -226,7 +226,10 @@ public class Renderer
 
                 var flocat = doc.CreateElement("FLocat");
                 //flocat.SetAttribute("ns2:type", item.Ns2Type);
-                //flocat.SetAttribute("ns2:href", item.Ns2Href);
+                //if (!string.IsNullOrEmpty(item.Ns2Href))
+                //{
+                //    flocat.SetAttribute("ns2:href", item.Ns2Href);
+                //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
                 file.AppendChild(flocat);
 

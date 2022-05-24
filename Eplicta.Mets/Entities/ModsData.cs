@@ -122,5 +122,6 @@ public record ModsData
         public ELocType LocType { get; set; }
         public string FileName { get; set; }
         public byte[] Data { get; set; }
+        //public string Ns2Href { get; set; }
     }
 }

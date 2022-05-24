@@ -52,33 +52,41 @@ public class Builder
             created ??= fileInfo.CreationTime;
         }
 
-        id ??= data.ToHash();
-
-        var mimeType = GetMimeType(fileName);
+        if (data == null) throw new NullReferenceException("No data provided or found.");
 
         var fileData = new ModsData.FileData
         {
-            Id = id,
+            Id = id ?? data.ToHash(),
             Use = fileSource.Use, //TODO: "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"
-            MimeType = mimeType,
-            Data = data ?? throw new NullReferenceException("No data provided or found."),
-            Size = data.Length,
+            MimeType = fileSource.MimeType ?? GetMimeType(fileName),
+            Data = data,
+            Size = fileSource.Size ?? data.Length,
             Created = created ?? DateTime.MinValue,
             LocType = ModsData.ELocType.Url,
             FileName = fileName
+            //Ns2Href = fileSource.Ns2Href
         };
 
         if (fileSource.ChecksumType != null)
         {
-            var checksum = data.ToHash(fileSource.ChecksumType.Value, HashExtensions.Style.Base64);
             fileData = fileData with
             {
-                Checksum = checksum,
                 ChecksumType = fileSource.ChecksumType.Value,
+                Checksum = fileSource.Checksum ?? data.ToHash(fileSource.ChecksumType.Value, HashExtensions.Style.Base64),
             };
         }
 
         _fileDatas.Add(fileData);
+
+        return this;
+    }
+
+    public Builder AddFiles(IEnumerable<FileSource> fileSources)
+    {
+        foreach (var fileSource in fileSources)
+        {
+            AddFile(fileSource);
+        }
 
         return this;
     }
