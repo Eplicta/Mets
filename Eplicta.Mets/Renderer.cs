@@ -231,6 +231,9 @@ public class Renderer
                 //    flocat.SetAttribute("ns2:href", item.Ns2Href);
                 //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
+                flocat.SetAttribute("xlink:href", item.FileName);
+                flocat.SetAttribute("xlink:type", "simple");
+
                 file.AppendChild(flocat);
 
                 filegrp.AppendChild(file);
