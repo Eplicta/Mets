@@ -231,7 +231,7 @@ public class Renderer
                 //    flocat.SetAttribute("ns2:href", item.Ns2Href);
                 //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
-                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", item.FileName);
+                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", $"file://{item.FileName}");
                 flocat.SetAttribute("type", "simple");
 
                 file.AppendChild(flocat);
@@ -361,12 +361,12 @@ public class Renderer
     //    }
     //}
 
-    public MemoryStream GetArchiveStream()
+    public MemoryStream GetArchiveStream(string name = null)
     {
         using var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
-        AddFile(zipArchive, "metadata.xml", Render().OuterXml);
+        AddFile(zipArchive, name ?? "metadata.xml", Render().OuterXml);
 
         if (_modsData.Files != null)
         {
