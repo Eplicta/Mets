@@ -372,7 +372,7 @@ public class Renderer
         {
             foreach (var resource in _modsData.Files)
             {
-                AddFile(zipArchive, $"data/{resource.FileName}", resource.Data);
+                AddFile(zipArchive, $"{resource.FileName}", resource.Data);
             }
         }
 
