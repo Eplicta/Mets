@@ -16,6 +16,8 @@
 
 	<ItemGroup>
 		<None Remove="Eplicta.Mets.csproj.DotSettings" />
+		<None Remove="Resources\CSPackageExtensionMETS.xsd" />
+		<None Remove="Resources\CSPackageMETS.xsd" />
 		<None Remove="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<None Remove="Resources\mods-3-0.xsd" />
 		<None Remove="Resources\mods-3-1.xsd" />
@@ -39,6 +41,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="Resources\CSPackageExtensionMETS.xsd" />
+		<EmbeddedResource Include="Resources\CSPackageMETS.xsd" />
 		<EmbeddedResource Include="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<EmbeddedResource Include="Resources\mods-3-0.xsd" />
 		<EmbeddedResource Include="Resources\mods-3-1.xsd" />
