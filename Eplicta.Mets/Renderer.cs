@@ -239,13 +239,13 @@ public class Renderer
                 filegrp.AppendChild(file);
             }
 
-            var struktmap = doc.CreateElement("structMap");
-            struktmap.SetAttribute("TYPE", "physical");
-            root.AppendChild(struktmap);
+            var structMap = doc.CreateElement("structMap");
+            structMap.SetAttribute("TYPE", "physical");
+            root.AppendChild(structMap);
 
             var div = doc.CreateElement("div");
             div.SetAttribute("TYPE", "files");
-            struktmap.AppendChild(div);
+            structMap.AppendChild(div);
 
             var div2 = doc.CreateElement("div");
             div2.SetAttribute("TYPE", "publication");
