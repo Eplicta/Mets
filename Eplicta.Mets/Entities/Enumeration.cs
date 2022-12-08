@@ -42,8 +42,8 @@ public abstract class Enumeration<TContainer, TItem>
         var items = _items ??= typeof(TContainer)
             .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
             .Select(f => f.GetValue(null))
-            .Cast<TItem>()
-            .ToDictionary(x => x.Name, x => x);
+            .OfType<TItem>()
+            .ToDictionary(x => x.Key, x => x);
 
         return items;
     }

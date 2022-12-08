@@ -70,7 +70,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
             .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
             .Build();
 
-        var renderer = new Renderer(metsData);
+        var renderer = new Renderer(metsData, Version.ModsFgsPubl_1_0);
 
         var xmlDocument = renderer.Render();
 

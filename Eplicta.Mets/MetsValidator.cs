@@ -18,7 +18,7 @@ public class MetsValidator
     private static XmlDocument GetSchema(Version version)
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var resourceName = $"Eplicta.Mets.Resources.{version.Name}.xsd";
+        var resourceName = $"Eplicta.Mets.Resources.{version.Key}.xsd";
 
         using var stream = assembly.GetManifestResourceStream(resourceName);
         using var reader = new StreamReader(stream);

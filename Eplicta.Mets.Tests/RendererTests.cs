@@ -3,6 +3,7 @@ using AutoFixture;
 using Eplicta.Mets.Entities;
 using FluentAssertions;
 using Xunit;
+using Version = Eplicta.Mets.Entities.Version;
 
 namespace Eplicta.Mets.Tests;
 
@@ -16,7 +17,7 @@ public class RendererTests
     {
         //Arrange
         var metsData = new Fixture().Build<ModsData>().Create();
-        var sut = new Renderer(metsData);
+        var sut = new Renderer(metsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.Render();
@@ -31,7 +32,7 @@ public class RendererTests
     {
         //Arrange
         var modsData = new ModsData();
-        var sut = new Renderer(modsData);
+        var sut = new Renderer(modsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.Render(DateTime.MinValue);
@@ -51,7 +52,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddFile(new FileSource { Data = Array.Empty<byte>()})
             .Build();
-        var sut = new Renderer(metsData);
+        var sut = new Renderer(metsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.Render(DateTime.MinValue);
@@ -79,7 +80,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
-        var sut = new Renderer(metsData);
+        var sut = new Renderer(metsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.Render(DateTime.MinValue);
@@ -110,7 +111,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
-        var sut = new Renderer(metsData);
+        var sut = new Renderer(metsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.Render(DateTime.MinValue);
@@ -146,7 +147,7 @@ public class RendererTests
             })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
-        var sut = new Renderer(metsData);
+        var sut = new Renderer(metsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.Render(DateTime.MinValue);
@@ -178,7 +179,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
-        var sut = new Renderer(metsData);
+        var sut = new Renderer(metsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.Render(DateTime.MinValue);

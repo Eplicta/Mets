@@ -5,16 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Eplicta.Mets.Entities;
+using Version = Eplicta.Mets.Entities.Version;
 
 namespace Eplicta.Mets;
 
 public class Renderer
 {
     private readonly ModsData _modsData;
+    private readonly Version _version;
 
-    public Renderer(ModsData metsData)
+    public Renderer(ModsData metsData, Version version)
     {
         _modsData = metsData;
+        _version = version;
     }
 
     public XmlDocument Render(DateTime? now = null)
@@ -28,16 +31,31 @@ public class Renderer
 
         var root = doc.CreateElement("mets");
         doc.AppendChild(root);
-        root.SetAttribute("xmlns:mets", "http://www.loc.gov/METS/");
-        root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
-        root.SetAttribute("xmlns:ns2", "http://www.w3.org/1999/xlink");
-        if (_modsData.Mods != null)
-        {
-            root.SetAttribute("OBJID", _modsData.Mods.ObjId);
-        }
 
-        root.SetAttribute("TYPE", "SIP");
-        root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
+        switch (_version.Key)
+        {
+            case Version.Mods_3_5_Key:
+            case Version.Mods_3_6_Key:
+            case Version.Mods_3_7_Key:
+                break;
+            case Version.ModsFgsPubl_1_0_Key:
+                root.SetAttribute("xmlns:mets", "http://www.loc.gov/METS/");
+                root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
+                root.SetAttribute("xmlns:ns2", "http://www.w3.org/1999/xlink");
+                if (_modsData.Mods != null)
+                {
+                    root.SetAttribute("OBJID", _modsData.Mods.ObjId);
+                }
+
+                root.SetAttribute("TYPE", "SIP");
+                root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
+                break;
+            case Version.ModsFgsPubl_1_1_Key:
+            case Version.eARD_Paket_FGS_PUBL_mets_Key:
+                throw new NotImplementedException();
+            default:
+                throw new ArgumentOutOfRangeException($"Unknown version '{_version.Key}'.");
+        }
 
         ModsRenderer(doc, root, now.Value);
 
@@ -326,11 +344,11 @@ public class Renderer
     //    name.SetAttribute("authorityURI", "http://id.loc.gov/authorities/names");
     //    name.SetAttribute("valueURI", "http://id.loc.gov/authorities/names/n92101908");
 
-    //    if (!string.IsNullOrEmpty(_modsData.Name?.NamePart))
+    //    if (!string.IsNullOrEmpty(_modsData.Key?.NamePart))
     //    {
     //        var title = doc.CreateElement("namePart");
     //        name.AppendChild(title);
-    //        title.InnerText = _modsData.Name.NamePart;
+    //        title.InnerText = _modsData.Key.NamePart;
 
     //        var role = doc.CreateElement("role");
     //        name.AppendChild(role);

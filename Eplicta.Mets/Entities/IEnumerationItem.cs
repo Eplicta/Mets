@@ -2,5 +2,5 @@
 
 public interface IEnumerationItem
 {
-    public string Name { get; }
+    public string Key { get; }
 }

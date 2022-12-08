@@ -12,7 +12,7 @@ public class ArchiveTests
     {
         //Arrange
         var modsData = new Fixture().Build<ModsData>().Create();
-        var sut = new Renderer(modsData);
+        var sut = new Renderer(modsData, Version.ModsFgsPubl_1_0);
 
         //Act
         var result = sut.GetArchiveStream();

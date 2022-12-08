@@ -5,6 +5,7 @@ using AutoFixture;
 using Eplicta.Mets.Entities;
 using FluentAssertions;
 using Xunit;
+using Version = Eplicta.Mets.Entities.Version;
 
 namespace Eplicta.Mets.Tests;
 
@@ -12,12 +13,12 @@ public class RendererValidatorTests
 {
     [Theory]
     [ClassData(typeof(SchemaGenerator))]
-    public void Basic(string format)
+    public void Basic(Version version)
     {
         //Arrange
         var modsData = new Fixture().Build<ModsData>().Create();
-        var document = new Renderer(modsData).Render();
-        var schema = Mets.Helpers.Resource.GetXml(format);
+        var document = new Renderer(modsData, version).Render();
+        var schema = Mets.Helpers.Resource.GetXml($"{version.Key}.xsd");
         var sut = new XmlValidator();
 
         //Act
@@ -29,7 +30,7 @@ public class RendererValidatorTests
 
     [Theory]
     [ClassData(typeof(SchemaGenerator))]
-    public void Minimal(string format)
+    public void Minimal(Version version)
     {
         //Arrange
         var modsData = new Builder()
@@ -38,8 +39,8 @@ public class RendererValidatorTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
-        var document = new Renderer(modsData).Render();
-        var schema = Mets.Helpers.Resource.GetXml(format);
+        var document = new Renderer(modsData, version).Render();
+        var schema = Mets.Helpers.Resource.GetXml($"{version.Key}.xsd");
         var sut = new XmlValidator();
 
         //Act
@@ -53,16 +54,10 @@ public class RendererValidatorTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "MODS_enligt_FGS-PUBL_xml1_0.xsd" };
-            //yield return new object[] { "MODS_enligt_FGS-PUBL_xml1_1.xsd" };
-            yield return new object[] { "mods-3-0.xsd" };
-            yield return new object[] { "mods-3-1.xsd" };
-            yield return new object[] { "mods-3-2.xsd" };
-            yield return new object[] { "mods-3-3.xsd" };
-            yield return new object[] { "mods-3-4.xsd" };
-            yield return new object[] { "mods-3-5.xsd" };
-            yield return new object[] { "mods-3-6.xsd" };
-            yield return new object[] { "mods-3-7.xsd" };
+            foreach (var version in Version.All())
+            {
+                yield return new object[] { version };
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

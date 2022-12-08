@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <mets:mets xmlns:xlink="http://www.w3.org/1999/xlink"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OBJID="19029"
-           LABEL="Finansiärer och utförare inom vården, skolan och omsorgen 2011" TYPE="SIP"
-           PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml"
-           xsi:schemaLocation="http://www.loc.gov/METS/
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OBJID="19029"
+    LABEL="Finansiärer och utförare inom vården, skolan och omsorgen 2011" TYPE="SIP"
+    PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml"
+    xsi:schemaLocation="http://www.loc.gov/METS/
     http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL_mets.xsd http://www.loc.gov/mods/v3 http://www.kb.se/namespace/mods/v3/kbse_mods_0_0.xsd"
-           xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3">
+    xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3">
 	<mets:metsHdr CREATEDATE="2013-11-15T13:30:07.1855794+01:00" RECORDSTATUS="NEW">
 		<mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
 			<mets:name>Statistiska centralbyrån</mets:name>
@@ -204,28 +203,28 @@
 	<mets:fileSec>
 		<mets:fileGrp USE="web">
 			<mets:file ID="ID1" MIMETYPE="application/pdf" SIZE="239927"
-			           CREATED="2013-11-13T12:30:32.0796797+01:00"
-			           CHECKSUM="aac2e5b83c82996cf998de1a249e832c" CHECKSUMTYPE="MD5"
-			           USE="Acrobat PDF 1.6 - Portable Document Format;1.6;PRONOM:fmt/20">
+                CREATED="2013-11-13T12:30:32.0796797+01:00"
+                CHECKSUM="aac2e5b83c82996cf998de1a249e832c" CHECKSUMTYPE="MD5"
+                USE="Acrobat PDF 1.6 - Portable Document Format;1.6;PRONOM:fmt/20">
 				<mets:FLocat LOCTYPE="URL" xlink:type="simple"
-				             xlink:href="file:OE0112_2011A01_SM_OE29SM1301.pdf" />
+                    xlink:href="file:OE0112_2011A01_SM_OE29SM1301.pdf"/>
 			</mets:file>
 			<mets:file ID="ID2" MIMETYPE="image/jpeg" SIZE="459927"
-			           CREATED="2010-11-10T11:30:32.0796797+01:00"
-			           CHECKSUM="abc2e5b85c87366cf898de1a250e833d" CHECKSUMTYPE="MD5"
-			           USE="JPEG File Interchange Format;PRONOM:fmt/43">
+                CREATED="2010-11-10T11:30:32.0796797+01:00"
+                CHECKSUM="abc2e5b85c87366cf898de1a250e833d" CHECKSUMTYPE="MD5"
+                USE="JPEG File Interchange Format;PRONOM:fmt/43">
 				<mets:FLocat LOCTYPE="URL" xlink:type="simple"
-				             xlink:href="file:alt_cover_OE29SM1301.jpg" />
+                    xlink:href="file:alt_cover_OE29SM1301.jpg"/>
 			</mets:file>
 		</mets:fileGrp>
 	</mets:fileSec>
 	<mets:structMap TYPE="physical">
 		<mets:div TYPE="files">
 			<mets:div TYPE="publication" DMDID="dmdSec001">
-				<mets:fptr FILEID="ID1" />
+				<mets:fptr FILEID="ID1"/>
 			</mets:div>
 			<mets:div TYPE="coverpicture" DMDID="dmdSec002">
-				<mets:fptr FILEID="ID2" />
+				<mets:fptr FILEID="ID2"/>
 			</mets:div>
 		</mets:div>
 	</mets:structMap>
