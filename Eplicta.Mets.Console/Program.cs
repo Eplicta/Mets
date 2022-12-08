@@ -19,11 +19,6 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
-
-        foreach (var VARIABLE in Eplicta.Mets.Entities.Version.All())
-        {
-            
-        }
         var container = GetContainer();
 
         using var console = new ClientConsole();
