@@ -15,7 +15,7 @@ public class ArchiveTests
         var sut = new Renderer(modsData);
 
         //Act
-        var result = sut.GetArchiveStream();
+        var result = sut.GetArchiveStream(ArchiveFormat.Zip);
 
         //Assert
         result.ToArray().Should().NotBeNull();

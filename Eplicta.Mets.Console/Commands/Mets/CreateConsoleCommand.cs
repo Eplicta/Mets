@@ -81,7 +81,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
         //await File.WriteAllBytesAsync("C:\\temp\\metadata.xml", Encoding.UTF8.GetBytes(xmlData));
 
         //NOTE: This code craetes a zip-archive with metadata and resource-files amd saves to the temp-folder.
-        await using var archive = renderer.GetArchiveStream();
+        await using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip);
         await File.WriteAllBytesAsync("C:\\temp\\mods-archive.zip", archive.ToArray());
 
         OutputInformation("Done");
