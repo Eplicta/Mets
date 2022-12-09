@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Eplicta.Mets.Entities;
+using ICSharpCode.SharpZipLib.Tar;
 
 namespace Eplicta.Mets;
 
@@ -62,7 +63,7 @@ public class Renderer
 
             metshdr.AppendChild(agentElement);
 
-            var compName = doc.CreateElement("name");
+            var compName = doc.CreateElement("metsFileName");
             compName.InnerText = _modsData.Agent.Name;
             agentElement.AppendChild(compName);
 
@@ -80,7 +81,7 @@ public class Renderer
 
             metshdr.AppendChild(companyAgent);
 
-            var companyname = doc.CreateElement("name");
+            var companyname = doc.CreateElement("metsFileName");
             companyname.InnerText = _modsData.Company.Name;
             companyAgent.AppendChild(companyname);
 
@@ -99,7 +100,7 @@ public class Renderer
             companysoftware.SetAttribute("OTHERTYPE", _modsData.Software.OtherType.ToString().ToUpper());
             metshdr.AppendChild(companysoftware);
 
-            var softwarename = doc.CreateElement("name");
+            var softwarename = doc.CreateElement("metsFileName");
             softwarename.InnerText = _modsData.Software.Name;
             companysoftware.AppendChild(softwarename);
         }
@@ -153,7 +154,7 @@ public class Renderer
                 modslocation.AppendChild(modsurl);
             }
 
-            //Allowed values: abstract, accessCondition, classification, extension, genre, identifier, language, location, name, note, originInfo, part, physicalDescription, recordInfo, relatedItem, subject, tableOfContents, targetAudience, titleInfo, typeOfResource
+            //Allowed values: abstract, accessCondition, classification, extension, genre, identifier, language, location, metsFileName, note, originInfo, part, physicalDescription, recordInfo, relatedItem, subject, tableOfContents, targetAudience, titleInfo, typeOfResource
             var modsorigininfo = doc.CreateElement("mods", "originInfo", "http://www.loc.gov/mods/v3");
             modsmods.AppendChild(modsorigininfo);
 
@@ -319,21 +320,21 @@ public class Renderer
 
     //private void AppendName(XmlDocument doc, XmlElement root)
     //{
-    //    var name = doc.CreateElement("name");
-    //    root.AppendChild(name);
+    //    var metsFileName = doc.CreateElement("metsFileName");
+    //    root.AppendChild(metsFileName);
 
-    //    name.SetAttribute("type", "personal");
-    //    name.SetAttribute("authorityURI", "http://id.loc.gov/authorities/names");
-    //    name.SetAttribute("valueURI", "http://id.loc.gov/authorities/names/n92101908");
+    //    metsFileName.SetAttribute("type", "personal");
+    //    metsFileName.SetAttribute("authorityURI", "http://id.loc.gov/authorities/names");
+    //    metsFileName.SetAttribute("valueURI", "http://id.loc.gov/authorities/names/n92101908");
 
     //    if (!string.IsNullOrEmpty(_modsData.Name?.NamePart))
     //    {
     //        var title = doc.CreateElement("namePart");
-    //        name.AppendChild(title);
+    //        metsFileName.AppendChild(title);
     //        title.InnerText = _modsData.Name.NamePart;
 
     //        var role = doc.CreateElement("role");
-    //        name.AppendChild(role);
+    //        metsFileName.AppendChild(role);
 
     //        var roleTerm = doc.CreateElement("roleTerm");
     //        role.AppendChild(roleTerm);
@@ -362,12 +363,24 @@ public class Renderer
     //    }
     //}
 
-    public MemoryStream GetArchiveStream(string name = null)
+    public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null)
     {
+
+        //switch (archiveFormat.Name)
+        //{
+        //    case "Zip":
+        //        break;
+        //    case "Tar":
+        //        break;
+        //    default:
+        //        throw new NotImplementedException($"Archive format {archiveFormat.Name}");
+
+        //}
+
         using var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
-        AddFile(zipArchive, name ?? "metadata.xml", Render().OuterXml);
+        AddFile(zipArchive, metsFileName ?? "metadata.xml", Render().OuterXml);
 
         if (_modsData.Files != null)
         {
@@ -378,6 +391,17 @@ public class Renderer
         }
 
         return compressedFileStream;
+    }
+
+    //private ZipArchive GetZipArchive(MemoryStream compressedFileStream)
+
+    private MemoryStream GetTarArchiveStream(string metsFileName = null)
+    {
+        using var compressedFileStream = new MemoryStream();
+
+        var tarArchive = TarArchive.CreateOutputTarArchive(compressedFileStream);
+
+
     }
 
     private static void AddFile(ZipArchive zipArchive, string entryName, string data)

@@ -5,7 +5,7 @@ public class ArchiveFormat : Enumeration<ArchiveFormat, ArchiveFormat>, IEnumera
     public static ArchiveFormat Zip = new("Zip");
     public static ArchiveFormat Tar = new("Tar");
 
-    public ArchiveFormat(string name)
+    private ArchiveFormat(string name)
     {
         Name = name;
     }
