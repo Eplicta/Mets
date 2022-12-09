@@ -365,18 +365,24 @@ public class Renderer
 
     public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null)
     {
+        MemoryStream compressedFileStream;
+        switch (archiveFormat.Name)
+        {
+            case "Zip":
+                compressedFileStream = GetZipArchiveStream(metsFileName);
+                break;
+            case "Tar":
+                compressedFileStream = GetTarArchiveStream(metsFileName);
+                break;
+            default:
+                throw new NotImplementedException($"Archive format {archiveFormat.Name}");
+        }
 
-        //switch (archiveFormat.Name)
-        //{
-        //    case "Zip":
-        //        break;
-        //    case "Tar":
-        //        break;
-        //    default:
-        //        throw new NotImplementedException($"Archive format {archiveFormat.Name}");
+        return compressedFileStream;
+    }
 
-        //}
-
+    private MemoryStream GetZipArchiveStream(string metsFileName = null)
+    {
         using var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
@@ -393,15 +399,22 @@ public class Renderer
         return compressedFileStream;
     }
 
-    //private ZipArchive GetZipArchive(MemoryStream compressedFileStream)
-
     private MemoryStream GetTarArchiveStream(string metsFileName = null)
     {
         using var compressedFileStream = new MemoryStream();
+        using var tarArchive = TarArchive.CreateOutputTarArchive(compressedFileStream);
 
-        var tarArchive = TarArchive.CreateOutputTarArchive(compressedFileStream);
+        AddFile(tarArchive, metsFileName ?? "metadata.xml", Render().OuterXml);
 
+        if (_modsData.Files != null)
+        {
+            foreach (var resource in _modsData.Files)
+            {
+                AddFile(tarArchive, $"{resource.FileName}", resource.Data);
+            }
+        }
 
+        return compressedFileStream;
     }
 
     private static void AddFile(ZipArchive zipArchive, string entryName, string data)
@@ -423,4 +436,28 @@ public class Renderer
         using var zipEntryStream = entry.Open();
         originalFileStream.CopyTo(zipEntryStream);
     }
+
+    private static void AddFile(TarArchive tarArchive, string entryName, string data)
+    {
+        var bytes = Encoding.UTF8.GetBytes(data);
+        AddFile(tarArchive, entryName, bytes);
+    }
+
+    private static void AddFile(TarArchive tarArchive, string entryName, byte[] data)
+    {
+        var tarEntry = new TarEntry(data, Encoding.UTF8)
+        {
+            Name = entryName
+        };
+
+        tarArchive.WriteEntry(tarEntry, false);
+    }
+
+    private static void AddFile(TarArchive tarArchive, string entryName, MemoryStream data)
+    {
+        var bytes = data.ToArray();
+        AddFile(tarArchive, entryName, bytes);
+    }
+
+
 }
