@@ -63,7 +63,7 @@ public class Renderer
 
             metshdr.AppendChild(agentElement);
 
-            var compName = doc.CreateElement("metsFileName");
+            var compName = doc.CreateElement("name");
             compName.InnerText = _modsData.Agent.Name;
             agentElement.AppendChild(compName);
 
@@ -81,7 +81,7 @@ public class Renderer
 
             metshdr.AppendChild(companyAgent);
 
-            var companyname = doc.CreateElement("metsFileName");
+            var companyname = doc.CreateElement("name");
             companyname.InnerText = _modsData.Company.Name;
             companyAgent.AppendChild(companyname);
 
@@ -100,7 +100,7 @@ public class Renderer
             companysoftware.SetAttribute("OTHERTYPE", _modsData.Software.OtherType.ToString().ToUpper());
             metshdr.AppendChild(companysoftware);
 
-            var softwarename = doc.CreateElement("metsFileName");
+            var softwarename = doc.CreateElement("name");
             softwarename.InnerText = _modsData.Software.Name;
             companysoftware.AppendChild(softwarename);
         }
@@ -154,7 +154,7 @@ public class Renderer
                 modslocation.AppendChild(modsurl);
             }
 
-            //Allowed values: abstract, accessCondition, classification, extension, genre, identifier, language, location, metsFileName, note, originInfo, part, physicalDescription, recordInfo, relatedItem, subject, tableOfContents, targetAudience, titleInfo, typeOfResource
+            //Allowed values: abstract, accessCondition, classification, extension, genre, identifier, language, location, name, note, originInfo, part, physicalDescription, recordInfo, relatedItem, subject, tableOfContents, targetAudience, titleInfo, typeOfResource
             var modsorigininfo = doc.CreateElement("mods", "originInfo", "http://www.loc.gov/mods/v3");
             modsmods.AppendChild(modsorigininfo);
 
@@ -320,21 +320,21 @@ public class Renderer
 
     //private void AppendName(XmlDocument doc, XmlElement root)
     //{
-    //    var metsFileName = doc.CreateElement("metsFileName");
-    //    root.AppendChild(metsFileName);
+    //    var name = doc.CreateElement("name");
+    //    root.AppendChild(name);
 
-    //    metsFileName.SetAttribute("type", "personal");
-    //    metsFileName.SetAttribute("authorityURI", "http://id.loc.gov/authorities/names");
-    //    metsFileName.SetAttribute("valueURI", "http://id.loc.gov/authorities/names/n92101908");
+    //    name.SetAttribute("type", "personal");
+    //    name.SetAttribute("authorityURI", "http://id.loc.gov/authorities/names");
+    //    name.SetAttribute("valueURI", "http://id.loc.gov/authorities/names/n92101908");
 
     //    if (!string.IsNullOrEmpty(_modsData.Name?.NamePart))
     //    {
     //        var title = doc.CreateElement("namePart");
-    //        metsFileName.AppendChild(title);
+    //        name.AppendChild(title);
     //        title.InnerText = _modsData.Name.NamePart;
 
     //        var role = doc.CreateElement("role");
-    //        metsFileName.AppendChild(role);
+    //        name.AppendChild(role);
 
     //        var roleTerm = doc.CreateElement("roleTerm");
     //        role.AppendChild(roleTerm);

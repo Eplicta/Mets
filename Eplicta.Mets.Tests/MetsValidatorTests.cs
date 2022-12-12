@@ -51,7 +51,7 @@ public class MetsValidatorTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            /*yield return new object[] { Version.ModsFgsPubl_1_0 };
+            yield return new object[] { Version.ModsFgsPubl_1_0 };
             //yield return new object[] { Version.ModsFgsPubl_1_1 };
             yield return new object[] { Version.Mods_3_0 };
             yield return new object[] { Version.Mods_3_1 };
@@ -60,12 +60,12 @@ public class MetsValidatorTests
             yield return new object[] { Version.Mods_3_4 };
             yield return new object[] { Version.Mods_3_5 };
             yield return new object[] { Version.Mods_3_6 };
-            yield return new object[] { Version.Mods_3_7 };*/
+            yield return new object[] { Version.Mods_3_7 };
 
-            foreach (var version in Version.All())
-            {
-                yield return new object[] { version };
-            }
+            //foreach (var version in Version.All())
+            //{
+            //    yield return new object[] { version };
+            //}
         }
 
         IEnumerator IEnumerable.GetEnumerator()
