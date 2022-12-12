@@ -402,17 +402,19 @@ public class Renderer
     private MemoryStream GetTarArchiveStream(string metsFileName = null)
     {
         using var compressedFileStream = new MemoryStream();
-        using var tarArchive = TarArchive.CreateOutputTarArchive(compressedFileStream);
+        using var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
 
-        AddFile(tarArchive, metsFileName ?? "metadata.xml", Render().OuterXml);
+        AddFile(tarOutputStream, metsFileName ?? "metadata.xml", Render().OuterXml);
 
         if (_modsData.Files != null)
         {
             foreach (var resource in _modsData.Files)
             {
-                AddFile(tarArchive, $"{resource.FileName}", resource.Data);
+                AddFile(tarOutputStream, $"{resource.FileName}", resource.Data);
             }
         }
+
+        tarOutputStream.Finish();
 
         return compressedFileStream;
     }
@@ -437,27 +439,28 @@ public class Renderer
         originalFileStream.CopyTo(zipEntryStream);
     }
 
-    private static void AddFile(TarArchive tarArchive, string entryName, string data)
+    private static void AddFile(TarOutputStream tarStream, string entryName, string data)
     {
         var bytes = Encoding.UTF8.GetBytes(data);
-        AddFile(tarArchive, entryName, bytes);
+        AddFile(tarStream, entryName, bytes);
     }
 
-    private static void AddFile(TarArchive tarArchive, string entryName, byte[] data)
+    private static void AddFile(TarOutputStream tarStream, string entryName, byte[] data)
     {
-        var tarEntry = new TarEntry(data, Encoding.UTF8)
+        var tarEntry = new TarEntry(new TarHeader
         {
+            Size = data.Length,
             Name = entryName
-        };
+        });
 
-        tarArchive.WriteEntry(tarEntry, false);
+        tarStream.PutNextEntry(tarEntry);
+        tarStream.Write(data, 0, data.Length);
+        tarStream.CloseEntry();
     }
 
-    private static void AddFile(TarArchive tarArchive, string entryName, MemoryStream data)
+    private static void AddFile(TarOutputStream tarStream, string entryName, MemoryStream data)
     {
         var bytes = data.ToArray();
-        AddFile(tarArchive, entryName, bytes);
+        AddFile(tarStream, entryName, bytes);
     }
-
-
 }
