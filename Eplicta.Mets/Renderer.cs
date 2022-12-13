@@ -366,16 +366,16 @@ public class Renderer
     public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null)
     {
         MemoryStream compressedFileStream;
-        switch (archiveFormat.Name)
+        switch (archiveFormat)
         {
-            case "Zip":
+            case ArchiveFormat.Zip:
                 compressedFileStream = GetZipArchiveStream(metsFileName);
                 break;
-            case "Tar":
+            case ArchiveFormat.Tar:
                 compressedFileStream = GetTarArchiveStream(metsFileName);
                 break;
             default:
-                throw new NotImplementedException($"Archive format {archiveFormat.Name}");
+                throw new NotImplementedException($"Archive format {archiveFormat}");
         }
 
         return compressedFileStream;
