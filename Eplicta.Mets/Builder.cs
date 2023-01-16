@@ -23,7 +23,7 @@ public class Builder
 
     public ModsData Build()
     {
-        if (!_fileDatas.Any()) throw new InvalidOperationException("At least one file has to be added.");
+        //if (!_fileDatas.Any()) throw new InvalidOperationException("At least one file has to be added.");
         if (_altRecords.Count < 3) throw new InvalidOperationException("At least thre altRecord has to be added.");
 
         return new ModsData
@@ -32,7 +32,7 @@ public class Builder
             Company = _companyData,
             Software = _softwareData,
             Mods = _modsSectionData,
-            Files = _fileDatas.ToArray(),
+            Files = _fileDatas?.ToArray(),
             AltRecords = _altRecords.ToArray()
         };
     }
