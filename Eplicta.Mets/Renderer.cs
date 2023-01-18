@@ -29,7 +29,7 @@ public class Renderer
 
         var root = doc.CreateElement("mets");
         doc.AppendChild(root);
-        root.SetAttribute("xmlns:mets", "http://www.loc.gov/METS/");
+        root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
         root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
         root.SetAttribute("xmlns:ns2", "http://www.w3.org/1999/xlink");
         if (_modsData.Mods != null)
@@ -234,7 +234,7 @@ public class Renderer
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
                 flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", $"file:{item.FileName}");
-                flocat.SetAttribute("type", "simple");
+                flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
 
                 file.AppendChild(flocat);
 
