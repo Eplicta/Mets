@@ -57,7 +57,12 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                 AccessCondition = "gratis",
                 ModsTitle = "Moln- och virtualiseringspecialist",
                 Uri = new Uri("https://some.domain.com/"),
-                ModsTitleInfo = "https://some.domain.com/"
+                ModsTitleInfo = "https://some.domain.com/",
+                Notes = new []{ new ModsData.ModsNote
+                {
+                    InnerText = "lorem ipsum",
+                    Type = ModsData.ENoteType.PostMessage
+                }}
             })
             .SetSoftware(new ModsData.SoftwareData
             {

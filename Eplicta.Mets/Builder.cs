@@ -56,7 +56,7 @@ public class Builder
 
         var fileData = new ModsData.FileData
         {
-            Id = id ?? data.ToHash(),
+            Id = id ?? $"ID{new Guid(data.ToHash())}" ,
             Use = fileSource.Use, //TODO: "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"
             MimeType = fileSource.MimeType ?? GetMimeType(fileName),
             Data = data,
