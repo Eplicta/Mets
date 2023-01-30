@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using Eplicta.Mets.Entities;
 using ICSharpCode.SharpZipLib.Tar;
@@ -198,6 +199,19 @@ public class Renderer
                 var modstitle2 = doc.CreateElement("mods", "title", "http://www.loc.gov/mods/v3");
                 modstitle2.InnerText = _modsData.Mods.ModsTitleInfo;
                 modsTitleInfo.AppendChild(modstitle2);
+            }
+
+            if (_modsData.Mods.Notes != null && _modsData.Mods.Notes.Length > 0)
+            {
+                foreach (var note in _modsData.Mods.Notes)
+                {
+                    var noteType = Regex.Replace(note.Type.ToString(), "([A-Z])", " $1").Trim().ToLower();
+
+                    var noteNode = doc.CreateElement("mods", "note", "http://www.loc.gov/mods/v3");
+                    noteNode.SetAttribute("type", noteType);
+                    noteNode.InnerText = note.InnerText;
+                    modsmods.AppendChild(noteNode);
+                }
             }
         }
 

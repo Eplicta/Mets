@@ -59,6 +59,18 @@ public record ModsData
         Other
     }
 
+    public enum ENoteType
+    {
+        None,
+        LikeCount,
+        PostId,
+        PostMessage,
+        ShareCount,
+        Description,
+        ReplyCount,
+        RetweetCount
+    }
+
     public AgentData Agent { get; set; }
     public CompanyData Company { get; set; }
     public SoftwareData Software { get; set; }
@@ -97,6 +109,12 @@ public record ModsData
         public string InnerText { get; set; }
     }
 
+    public record ModsNote
+    {
+        public ENoteType Type { get; set; }
+        public string InnerText { get; set; }
+    }
+
     public record ModsSectionData
     {
         public string ObjId { get; set; }
@@ -108,6 +126,7 @@ public record ModsData
         public string ModsTitle { get; set; }
         public Uri Uri { get; set; }
         public string ModsTitleInfo { get; set; }
+        public ModsNote[] Notes { get; set; }
     }
 
     public record FileData
