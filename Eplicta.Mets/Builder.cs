@@ -72,7 +72,7 @@ public class Builder
             fileData = fileData with
             {
                 ChecksumType = fileSource.ChecksumType.Value,
-                Checksum = fileSource.Checksum ?? data.ToHash(fileSource.ChecksumType.Value, HashExtensions.Style.Base64),
+                Checksum = fileSource.Checksum ?? data.ToHash(fileSource.ChecksumType.Value),
             };
         }
 
