@@ -15,7 +15,7 @@ public class RendererValidatorTests
     public void Basic(string format)
     {
         //Arrange
-        var modsData = new Fixture().Build<ModsData>().Create();
+        var modsData = new Fixture().Build<ModsData>().Without(x => x.MetsHdr).Create();
         var document = new Renderer(modsData).Render();
         var schema = Mets.Helpers.Resource.GetXml(format);
         var sut = new XmlValidator();

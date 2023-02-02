@@ -15,7 +15,7 @@ public class MetsValidatorTests
     public void Basic(Version version)
     {
         //Arrange
-        var modsData = new Fixture().Build<ModsData>().Create();
+        var modsData = new Fixture().Build<ModsData>().Without(x => x.MetsHdr).Create();
         var document = new Renderer(modsData).Render();
         var sut = new MetsValidator();
 

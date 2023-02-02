@@ -9,17 +9,18 @@ namespace Eplicta.Mets;
 
 public class Builder
 {
+    private readonly List<ModsData.AltRecord> _altRecords = new();
+    private readonly List<ModsData.FileData> _fileDatas = new();
     private ModsData.AgentData _agentData = new();
     private ModsData.CompanyData _companyData = new();
-    private ModsData.SoftwareData _softwareData = new ();
-    private readonly List<ModsData.AltRecord> _altRecords = new();
+    private ModsData.SoftwareData _softwareData = new();
     private ModsData.ModsSectionData _modsSectionData = new()
     {
         Url = new Uri("https://some.url"),
         ModsTitle = "Unknown",
         ModsTitleInfo = "Unknown"
     };
-    private readonly List<ModsData.FileData> _fileDatas = new();
+    private ModsData.MetsHdrData _metsHdrData;
 
     public ModsData Build()
     {
@@ -40,7 +41,7 @@ public class Builder
     public Builder AddFile(FileSource fileSource)
     {
         var fileName = fileSource.FileName;
-        var  id = fileSource.Id;
+        var id = fileSource.Id;
         var data = fileSource.Data;
         var created = fileSource.CreationTime;
 
@@ -56,7 +57,7 @@ public class Builder
 
         var fileData = new ModsData.FileData
         {
-            Id = id ?? $"ID{new Guid(data.ToHash())}" ,
+            Id = id ?? $"ID{new Guid(data.ToHash())}",
             Use = fileSource.Use, //TODO: "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"
             MimeType = fileSource.MimeType ?? GetMimeType(fileName),
             Data = data,
@@ -126,6 +127,12 @@ public class Builder
     public Builder SetSoftware(ModsData.SoftwareData softwareData)
     {
         _softwareData = softwareData;
+        return this;
+    }
+
+    public Builder SetMetsHdr(ModsData.MetsHdrData metsHdrData)
+    {
+        _metsHdrData = metsHdrData;
         return this;
     }
 }

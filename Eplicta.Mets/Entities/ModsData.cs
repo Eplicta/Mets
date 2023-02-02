@@ -71,12 +71,23 @@ public record ModsData
         RetweetCount
     }
 
+    public enum EAttributeName
+    {
+        RecordStatus
+    }
+
+    public MetsHdrData MetsHdr { get; set; }
     public AgentData Agent { get; set; }
     public CompanyData Company { get; set; }
     public SoftwareData Software { get; set; }
     public AltRecord[] AltRecords { get; set; }
     public ModsSectionData Mods { get; set; }
     public FileData[] Files { get; set; }
+
+    public record MetsHdrData
+    {
+        public Attribute[] Attributes { get; set; }
+    }
 
     public record AgentData
     {
@@ -142,5 +153,11 @@ public record ModsData
         public string FileName { get; set; }
         public byte[] Data { get; set; }
         //public string Ns2Href { get; set; }
+    }
+
+    public record Attribute
+    {
+        public EAttributeName Name { get; set; }
+        public string Value { get; set; }
     }
 }

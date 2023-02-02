@@ -56,6 +56,14 @@ public class Renderer
         root.AppendChild(metshdr);
         metshdr.SetAttribute("CREATEDATE", dateNow);
 
+        if (_modsData.MetsHdr != null)
+        {
+            foreach (var attribute in _modsData.MetsHdr.Attributes)
+            {
+                metshdr.SetAttribute(attribute.Name.ToString().ToUpper(), attribute.Value);
+            }
+        }
+
         if (_modsData.Agent != null)
         {
             var agentElement = doc.CreateElement("agent");
