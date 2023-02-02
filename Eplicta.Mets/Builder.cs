@@ -20,7 +20,7 @@ public class Builder
         ModsTitle = "Unknown",
         ModsTitleInfo = "Unknown"
     };
-    private ModsData.MetsHdrData _metsHdrData;
+    private ModsData.MetsHdrData _metsHdrData = new();
 
     public ModsData Build()
     {
@@ -34,7 +34,8 @@ public class Builder
             Software = _softwareData,
             Mods = _modsSectionData,
             Files = _fileDatas?.ToArray(),
-            AltRecords = _altRecords.ToArray()
+            AltRecords = _altRecords.ToArray(),
+            MetsHdr = _metsHdrData
         };
     }
 

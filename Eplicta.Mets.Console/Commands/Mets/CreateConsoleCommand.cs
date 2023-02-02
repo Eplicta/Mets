@@ -72,6 +72,17 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                 Type = ModsData.EType.Other,
                 OtherType = ModsData.EOtherType.Software
             })
+            .SetMetsHdr(new ModsData.MetsHdrData
+            {
+                Attributes = new []
+                {
+                    new ModsData.Attribute
+                    {
+                        Name = ModsData.EAttributeName.RecordStatus,
+                        Value = "VERSION"
+                    }
+                }
+            })
             .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
             .Build();
 
