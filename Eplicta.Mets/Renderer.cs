@@ -282,6 +282,15 @@ public class Renderer
                 div2.AppendChild(fptr);
             }
         }
+        else
+        {
+            var structMap = doc.CreateElement("structMap");
+            structMap.SetAttribute("LABEL", "No structmap defined in this information package");
+            root.AppendChild(structMap);
+
+            var div = doc.CreateElement("div");
+            structMap.AppendChild(div);
+        }
     }
 
     //private void AppendOriginInfo(XmlDocument doc, XmlElement root)
