@@ -56,7 +56,7 @@ public class Renderer
         root.AppendChild(metshdr);
         metshdr.SetAttribute("CREATEDATE", dateNow);
 
-        if (_modsData.MetsHdr.Attributes != null)
+        if (_modsData.MetsHdr?.Attributes != null)
         {
             foreach (var attribute in _modsData.MetsHdr.Attributes)
             {
