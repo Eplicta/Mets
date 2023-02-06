@@ -68,7 +68,8 @@ public record ModsData
         ShareCount,
         Description,
         ReplyCount,
-        RetweetCount
+        RetweetCount,
+        AuthorDisplayName
     }
 
     public enum EAttributeName
