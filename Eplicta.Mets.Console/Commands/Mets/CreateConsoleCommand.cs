@@ -62,7 +62,11 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                 {
                     InnerText = "lorem ipsum",
                     Type = ModsData.ENoteType.PostMessage
-                }}
+                }},
+                Place = new ModsData.PlaceInfo
+                {
+                    PlaceTerm = "Stockholm"
+                }
             })
             .SetSoftware(new ModsData.SoftwareData
             {

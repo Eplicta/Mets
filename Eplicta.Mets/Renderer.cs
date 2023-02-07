@@ -173,6 +173,15 @@ public class Renderer
             modsDateIssued.InnerText = _modsData.Mods.DateIssued.ToString("O");
             modsorigininfo.AppendChild(modsDateIssued);
 
+            if (_modsData.Mods.Place != null)
+            {
+                var place = doc.CreateElement("mods", "place", "http://www.loc.gov/mods/v3");
+                var placeTerm = doc.CreateElement("mods", "placeTerm", "http://www.loc.gov/mods/v3");
+                placeTerm.InnerText = _modsData.Mods.Place.PlaceTerm;
+                place.AppendChild(placeTerm);
+                modsorigininfo.AppendChild(place);
+            }
+
             var modsaccesscondition = doc.CreateElement("mods", "accessCondition", "http://www.loc.gov/mods/v3");
             modsaccesscondition.InnerText = _modsData.Mods.AccessCondition;
             modsmods.AppendChild(modsaccesscondition);

@@ -138,6 +138,7 @@ public record ModsData
         public string ModsTitle { get; set; }
         public Uri Uri { get; set; }
         public string ModsTitleInfo { get; set; }
+        public PlaceInfo Place { get; set; }
         public ModsNote[] Notes { get; set; }
     }
 
@@ -160,5 +161,10 @@ public record ModsData
     {
         public EAttributeName Name { get; set; }
         public string Value { get; set; }
+    }
+
+    public record PlaceInfo
+    {
+        public string PlaceTerm { get; set; }
     }
 }
