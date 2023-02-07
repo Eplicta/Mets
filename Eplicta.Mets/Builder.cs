@@ -65,7 +65,7 @@ public class Builder
             Size = fileSource.Size ?? data.Length,
             Created = created ?? DateTime.MinValue,
             LocType = ModsData.ELocType.Url,
-            FileName = fileName
+            FileName = CheckForDuplicateFileNames(fileName)
             //Ns2Href = fileSource.Ns2Href
         };
 
@@ -81,6 +81,31 @@ public class Builder
         _fileDatas.Add(fileData);
 
         return this;
+    }
+
+    private string CheckForDuplicateFileNames(string fileName)
+    {
+        var fileNames = _fileDatas.Select(x => x.FileName).ToArray();
+
+        if (fileNames.Length == 0 || !fileNames.Any(x => x == fileName)) return fileName;
+
+        string temp;
+
+        var i = 1;
+        do
+        {
+            var name = fileName.Split('.')[0];
+            var ext = fileName.Split('.')[1];
+
+            name = $"{name}({i})";
+
+            temp = $"{name}.{ext}";
+
+            i++;
+
+        } while (fileNames.Any(x => x == temp));
+
+        return temp;
     }
 
     public Builder AddFiles(IEnumerable<FileSource> fileSources)

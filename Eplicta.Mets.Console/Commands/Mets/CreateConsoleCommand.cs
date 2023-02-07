@@ -35,17 +35,17 @@ public class CreateConsoleCommand : AsyncActionCommandBase
             .AddAltRecord(new ModsData.AltRecord
             {
                 Type = ModsData.EAltRecordType.DeliveryType,
-                InnerText = "DEPOSIT",
+                InnerText = "DEPOSIT"
             })
             .AddAltRecord(new ModsData.AltRecord
             {
                 Type = ModsData.EAltRecordType.DeliverySpecification,
-                InnerText = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/",
+                InnerText = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/"
             })
             .AddAltRecord(new ModsData.AltRecord
             {
                 Type = ModsData.EAltRecordType.SubmissionAgreement,
-                InnerText = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013",
+                InnerText = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013"
             })
             .SetModsSection(new ModsData.ModsSectionData
             {
@@ -58,11 +58,14 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                 ModsTitle = "Moln- och virtualiseringspecialist",
                 Uri = new Uri("https://some.domain.com/"),
                 ModsTitleInfo = "https://some.domain.com/",
-                Notes = new []{ new ModsData.ModsNote
+                Notes = new[]
                 {
-                    InnerText = "lorem ipsum",
-                    Type = ModsData.ENoteType.PostMessage
-                }},
+                    new ModsData.ModsNote
+                    {
+                        InnerText = "lorem ipsum",
+                        Type = ModsData.ENoteType.PostMessage
+                    }
+                },
                 Place = new ModsData.PlaceInfo
                 {
                     PlaceTerm = "Stockholm"
@@ -78,7 +81,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
             })
             .SetMetsHdr(new ModsData.MetsHdrData
             {
-                Attributes = new []
+                Attributes = new[]
                 {
                     new ModsData.Attribute
                     {
