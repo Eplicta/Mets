@@ -100,18 +100,22 @@ public class Renderer
         }
 
         //software section
-        var companysoftware = doc.CreateElement("agent");
+        var companySoftware = doc.CreateElement("agent");
 
         if (_modsData.Software != null)
         {
-            companysoftware.SetAttribute("ROLE", _modsData.Software.Role.ToString().ToUpper());
-            companysoftware.SetAttribute("TYPE", _modsData.Software.Type.ToString().ToUpper());
-            companysoftware.SetAttribute("OTHERTYPE", _modsData.Software.OtherType.ToString().ToUpper());
-            metshdr.AppendChild(companysoftware);
+            companySoftware.SetAttribute("ROLE", _modsData.Software.Role.ToString().ToUpper());
+            companySoftware.SetAttribute("TYPE", _modsData.Software.Type.ToString().ToUpper());
+            companySoftware.SetAttribute("OTHERTYPE", _modsData.Software.OtherType.ToString().ToUpper());
+            metshdr.AppendChild(companySoftware);
 
-            var softwarename = doc.CreateElement("name");
-            softwarename.InnerText = _modsData.Software.Name;
-            companysoftware.AppendChild(softwarename);
+            var softwareName = doc.CreateElement("name");
+            softwareName.InnerText = _modsData.Software.Name;
+            companySoftware.AppendChild(softwareName);
+
+            var softwareNote = doc.CreateElement("note");
+            softwareNote.InnerText = _modsData.Software.Note;
+            companySoftware.AppendChild(softwareNote);
         }
 
         if (_modsData.AltRecords != null && _modsData.AltRecords.Any())
