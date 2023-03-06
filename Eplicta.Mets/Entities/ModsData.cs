@@ -63,6 +63,7 @@ public record ModsData
     {
         None,
         LikeCount,
+        FollowerCount,
         PostId,
         PostMessage,
         ShareCount,
