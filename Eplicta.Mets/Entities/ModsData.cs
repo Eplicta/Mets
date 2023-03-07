@@ -75,7 +75,8 @@ public record ModsData
 
     public enum EAttributeName
     {
-        RecordStatus
+        RecordStatus,
+        Label
     }
 
     public MetsHdrData MetsHdr { get; set; }
