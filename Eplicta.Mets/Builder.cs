@@ -22,7 +22,7 @@ public class Builder
         ModsTitleInfo = "Unknown"
     };
     private ModsData.MetsHdrData _metsHdrData = new();
-    private ModsData.MetsAttribute[] _attributes;
+    private ModsData.MetsAttribute[] _attributes = Array.Empty<ModsData.MetsAttribute>();
 
     public ModsData Build()
     {

@@ -40,8 +40,7 @@ public class Renderer
         root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
 
 
-
-        if (_modsData.Attributes != null)
+        if (_modsData.Attributes.Length != 0)
         {
             foreach (var attribute in _modsData.Attributes)
             {

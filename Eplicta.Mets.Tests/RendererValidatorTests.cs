@@ -36,6 +36,7 @@ public class RendererValidatorTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
+            .AddMetsAttributes(new [] { new ModsData.MetsAttribute{ Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty }})
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var document = new Renderer(modsData).Render();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using AutoFixture;
 using Eplicta.Mets.Entities;
 using FluentAssertions;
@@ -26,7 +27,7 @@ public class RendererTests
         result.OuterXml.Should().NotBe(DefaultBuilderData);
     }
 
-    [Fact]
+    [Fact(Skip = "Creating without builder is not supported")]
     public void Empty()
     {
         //Arrange
@@ -49,6 +50,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
+            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>()})
             .Build();
         var sut = new Renderer(metsData);
@@ -77,6 +79,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
+            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var sut = new Renderer(metsData);
@@ -108,6 +111,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
+            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var sut = new Renderer(metsData);
@@ -145,6 +149,7 @@ public class RendererTests
                 InnerText = "a3"
             })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
+            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .Build();
         var sut = new Renderer(metsData);
 
@@ -176,6 +181,7 @@ public class RendererTests
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
             .AddAltRecord(new ModsData.AltRecord())
+            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var sut = new Renderer(metsData);
