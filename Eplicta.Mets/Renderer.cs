@@ -34,13 +34,20 @@ public class Renderer
         root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
         root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
         root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-        if (_modsData.Mods != null)
-        {
-            root.SetAttribute("OBJID", _modsData.Mods.ObjId);
-        }
+        root.SetAttribute("OBJID", null);
 
         root.SetAttribute("TYPE", "SIP");
         root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
+
+
+
+        if (_modsData.Attributes != null)
+        {
+            foreach (var attribute in _modsData.Attributes)
+            {
+                root.SetAttribute(attribute.Name.ToString().ToUpper(), attribute.Value);
+            }
+        }
 
         ModsRenderer(doc, root, now.Value);
 

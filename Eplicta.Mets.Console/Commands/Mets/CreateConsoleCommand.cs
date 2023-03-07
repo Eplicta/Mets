@@ -49,7 +49,6 @@ public class CreateConsoleCommand : AsyncActionCommandBase
             })
             .SetModsSection(new ModsData.ModsSectionData
             {
-                ObjId = "UUID:test ID",
                 Xmlns = "http://www.w3.org/1999/xlink",
                 Identifier = "C5385FBC5FC559E7C43AB6700DB28EF3",
                 Url = new Uri("https://some.domain.com"),
@@ -88,6 +87,19 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                         Name = ModsData.EMetsHdrAttributeName.RecordStatus,
                         Value = "VERSION"
                     }
+                }
+            })
+            .SetMetsAttributes(new []
+            {
+                new ModsData.MetsAttribute
+                {
+                    Name = ModsData.EMetsAttributeName.Label,
+                    Value = "Moln- och virtualiseringspecialist"
+                },
+                new ModsData.MetsAttribute
+                {
+                    Name = ModsData.EMetsAttributeName.ObjId,
+                    Value = "UUID:test ID"
                 }
             })
             .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)

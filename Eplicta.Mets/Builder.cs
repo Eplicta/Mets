@@ -11,6 +11,7 @@ public class Builder
 {
     private readonly List<ModsData.AltRecord> _altRecords = new();
     private readonly List<ModsData.FileData> _fileDatas = new();
+    private readonly ModsData.EMetsAttributeName[] _requiredMetsAttributes = { ModsData.EMetsAttributeName.ObjId };
     private ModsData.AgentData _agentData = new();
     private ModsData.CompanyData _companyData = new();
     private ModsData.SoftwareData _softwareData = new();
@@ -21,11 +22,16 @@ public class Builder
         ModsTitleInfo = "Unknown"
     };
     private ModsData.MetsHdrData _metsHdrData = new();
+    private ModsData.MetsAttribute[] _attributes;
 
     public ModsData Build()
     {
-        //if (!_fileDatas.Any()) throw new InvalidOperationException("At least one file has to be added.");
-        if (_altRecords.Count < 3) throw new InvalidOperationException("At least thre altRecord has to be added.");
+        if (_altRecords.Count < 3) throw new InvalidOperationException("At least three altRecords has to be added.");
+
+        var missingAttributes = _requiredMetsAttributes.Where(x => !_attributes.Any(y => y.Name == x)).ToArray();
+        var multiple = missingAttributes.Length > 1;
+
+        if (missingAttributes.Length > 0) throw new InvalidOperationException($"The required attribute{(multiple ? "s" : string.Empty)} {string.Join(",", missingAttributes)} {(multiple ? "are" : "is")} missing.");
 
         return new ModsData
         {
@@ -35,7 +41,8 @@ public class Builder
             Mods = _modsSectionData,
             Files = _fileDatas?.ToArray(),
             AltRecords = _altRecords.ToArray(),
-            MetsHdr = _metsHdrData
+            MetsHdr = _metsHdrData,
+            Attributes = _attributes
         };
     }
 
@@ -159,6 +166,30 @@ public class Builder
     public Builder SetMetsHdr(ModsData.MetsHdrData metsHdrData)
     {
         _metsHdrData = metsHdrData;
+        return this;
+    }
+
+    public Builder SetMetsHdrAttributes(ModsData.MetsHdrAttribute[] attributes)
+    {
+        _metsHdrData.Attributes = attributes;
+        return this;
+    }
+
+    public Builder AddMetsHdrAttributes(ModsData.MetsHdrAttribute[] attributes)
+    {
+        _metsHdrData.Attributes = _metsHdrData.Attributes.Concat(attributes).ToArray();
+        return this;
+    }
+
+    public Builder SetMetsAttributes(ModsData.MetsAttribute[] attributes)
+    {
+        _attributes = attributes;
+        return this;
+    }
+
+    public Builder AddMetsAttributes(ModsData.MetsAttribute[] attribute)
+    {
+        _attributes = _attributes.Concat(attribute).ToArray();
         return this;
     }
 }

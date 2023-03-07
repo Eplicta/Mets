@@ -80,7 +80,8 @@ public record ModsData
 
     public enum EMetsAttributeName
     {
-        Label
+        Label,
+        ObjId
     }
 
     public MetsHdrData MetsHdr { get; set; }
@@ -136,7 +137,6 @@ public record ModsData
 
     public record ModsSectionData
     {
-        public string ObjId { get; set; }
         public string Xmlns { get; set; }
         public string Identifier { get; set; }
         public Uri Url { get; set; }
@@ -163,6 +163,10 @@ public record ModsData
         public byte[] Data { get; set; }
         //public string Ns2Href { get; set; }
     }
+    public record Attribute
+    {
+        public string Value { get; set; }
+    }
 
     public record MetsHdrAttribute : Attribute
     {
@@ -172,11 +176,6 @@ public record ModsData
     public record MetsAttribute : Attribute
     {
         public EMetsAttributeName Name { get; set; }
-    }
-
-    public record Attribute
-    {
-        public string Value { get; set; }
     }
 
     public record PlaceInfo
