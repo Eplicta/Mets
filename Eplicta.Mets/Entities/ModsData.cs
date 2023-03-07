@@ -73,9 +73,13 @@ public record ModsData
         AuthorDisplayName
     }
 
-    public enum EAttributeName
+    public enum EMetsHdrAttributeName
     {
-        RecordStatus,
+        RecordStatus
+    }
+
+    public enum EMetsAttributeName
+    {
         Label
     }
 
@@ -86,10 +90,11 @@ public record ModsData
     public AltRecord[] AltRecords { get; set; }
     public ModsSectionData Mods { get; set; }
     public FileData[] Files { get; set; }
+    public MetsAttribute[] Attributes { get; set; }
 
     public record MetsHdrData
     {
-        public Attribute[] Attributes { get; set; }
+        public MetsHdrAttribute[] Attributes { get; set; }
     }
 
     public record AgentData
@@ -159,9 +164,18 @@ public record ModsData
         //public string Ns2Href { get; set; }
     }
 
+    public record MetsHdrAttribute : Attribute
+    {
+        public EMetsHdrAttributeName Name { get; set; }
+    }
+
+    public record MetsAttribute : Attribute
+    {
+        public EMetsAttributeName Name { get; set; }
+    }
+
     public record Attribute
     {
-        public EAttributeName Name { get; set; }
         public string Value { get; set; }
     }
 

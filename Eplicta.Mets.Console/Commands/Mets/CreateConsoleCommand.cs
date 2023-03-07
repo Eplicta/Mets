@@ -83,9 +83,9 @@ public class CreateConsoleCommand : AsyncActionCommandBase
             {
                 Attributes = new[]
                 {
-                    new ModsData.Attribute
+                    new ModsData.MetsHdrAttribute
                     {
-                        Name = ModsData.EAttributeName.RecordStatus,
+                        Name = ModsData.EMetsHdrAttributeName.RecordStatus,
                         Value = "VERSION"
                     }
                 }
