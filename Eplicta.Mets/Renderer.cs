@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -32,7 +33,7 @@ public class Renderer
         doc.AppendChild(root);
         root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
         root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
-        root.SetAttribute("xmlns:ns2", "http://www.w3.org/1999/xlink");
+        root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
         if (_modsData.Mods != null)
         {
             root.SetAttribute("OBJID", _modsData.Mods.ObjId);
@@ -407,16 +408,16 @@ public class Renderer
     //    }
     //}
 
-    public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null)
+    public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null, bool prettify = false)
     {
         MemoryStream compressedFileStream;
         switch (archiveFormat)
         {
             case ArchiveFormat.Zip:
-                compressedFileStream = GetZipArchiveStream(metsFileName);
+                compressedFileStream = GetZipArchiveStream(metsFileName, prettify);
                 break;
             case ArchiveFormat.Tar:
-                compressedFileStream = GetTarArchiveStream(metsFileName);
+                compressedFileStream = GetTarArchiveStream(metsFileName, prettify);
                 break;
             default:
                 throw new NotImplementedException($"Archive format {archiveFormat}");
@@ -425,12 +426,14 @@ public class Renderer
         return compressedFileStream;
     }
 
-    private MemoryStream GetZipArchiveStream(string metsFileName = null)
+    private MemoryStream GetZipArchiveStream(string metsFileName = null, bool prettify = false)
     {
         using var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
-        AddFile(zipArchive, metsFileName ?? "metadata.xml", Render().OuterXml);
+        var xmlString = Render().OuterXml;
+
+        AddFile(zipArchive, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
         if (_modsData.Files != null)
         {
@@ -443,12 +446,14 @@ public class Renderer
         return compressedFileStream;
     }
 
-    private MemoryStream GetTarArchiveStream(string metsFileName = null)
+    private MemoryStream GetTarArchiveStream(string metsFileName = null, bool prettify = false)
     {
         using var compressedFileStream = new MemoryStream();
         using var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
 
-        AddFile(tarOutputStream, metsFileName ?? "metadata.xml", Render().OuterXml);
+        var xmlString = Render().OuterXml;
+
+        AddFile(tarOutputStream, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
         if (_modsData.Files != null)
         {
@@ -506,5 +511,17 @@ public class Renderer
     {
         var bytes = data.ToArray();
         AddFile(tarStream, entryName, bytes);
+    }
+
+    private static string PrettifyXml(string xmlString)
+    {
+        var xmlDocument = new XmlDocument();
+
+        xmlDocument.LoadXml(xmlString);
+
+        var stringWriter = new StringWriter(new StringBuilder());
+        var xmlTextWriter = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented };
+        xmlDocument.Save(xmlTextWriter);
+        return stringWriter.ToString();
     }
 }
