@@ -9,6 +9,7 @@ package-lock.json
 *.DotSettings.user
 *.ncrunchsolution.user
 *.orig
+*.NCrunch_Eplicta.Mets
 
 _NCrunch*
 .fake

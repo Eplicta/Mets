@@ -83,9 +83,12 @@ public class Renderer
             compName.InnerText = _modsData.Agent.Name;
             agentElement.AppendChild(compName);
 
-            var note = doc.CreateElement("note");
-            note.InnerText = _modsData.Agent.Note;
-            agentElement.AppendChild(note);
+            if (_modsData.Agent.Note != null)
+            {
+                var note = doc.CreateElement("note");
+                note.InnerText = _modsData.Agent.Note;
+                agentElement.AppendChild(note);
+            }
         }
 
         //Static info of the company
@@ -101,9 +104,13 @@ public class Renderer
             companyname.InnerText = _modsData.Company.Name;
             companyAgent.AppendChild(companyname);
 
-            var companynote = doc.CreateElement("note");
-            companynote.InnerText = _modsData.Company.Note;
-            companyAgent.AppendChild(companynote);
+            if (_modsData.Company.Note != null)
+            {
+                var companynote = doc.CreateElement("note");
+                companynote.InnerText = _modsData.Company.Note;
+                companyAgent.AppendChild(companynote);
+            }
+
         }
 
         //software section
@@ -120,9 +127,12 @@ public class Renderer
             softwareName.InnerText = _modsData.Software.Name;
             companySoftware.AppendChild(softwareName);
 
-            var softwareNote = doc.CreateElement("note");
-            softwareNote.InnerText = _modsData.Software.Note;
-            companySoftware.AppendChild(softwareNote);
+            if (_modsData.Software.Note != null)
+            {
+                var softwareNote = doc.CreateElement("note");
+                softwareNote.InnerText = _modsData.Software.Note;
+                companySoftware.AppendChild(softwareNote);
+            }
         }
 
         if (_modsData.AltRecords != null && _modsData.AltRecords.Any())
