@@ -16,7 +16,7 @@ public class RendererTests
     public void Basic()
     {
         //Arrange
-        var metsData = new Fixture().Build<ModsData>().Create();
+        var metsData = new Fixture().Build<MetsData>().Create();
         var sut = new Renderer(metsData);
 
         //Act
@@ -31,7 +31,7 @@ public class RendererTests
     public void Empty()
     {
         //Arrange
-        var modsData = new ModsData();
+        var modsData = new MetsData();
         var sut = new Renderer(modsData);
 
         //Act
@@ -47,10 +47,10 @@ public class RendererTests
     {
         //Arrange
         var metsData = new Builder()
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddMetsAttributes(new[] { new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>()})
             .Build();
         var sut = new Renderer(metsData);
@@ -69,17 +69,17 @@ public class RendererTests
     {
         //Arrange
         var metsData = new Builder()
-            .SetAgent(new ModsData.AgentData
+            .SetAgent(new MetsData.AgentData
             {
                 Note = "a1",
-                Type = ModsData.EType.Other,
+                Type = MetsData.EType.Other,
                 Name = "a3",
-                Role = ModsData.ERole.Editor
+                Role = MetsData.ERole.Editor
             })
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddMetsAttributes(new[] { new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var sut = new Renderer(metsData);
@@ -91,9 +91,9 @@ public class RendererTests
         result.Should().NotBeNull();
         result.OuterXml.Should().NotBe(DefaultBuilderData);
         result.OuterXml.Should().Contain("a1");
-        result.OuterXml.Should().Contain(ModsData.EType.Other.ToString().ToUpper());
+        result.OuterXml.Should().Contain(MetsData.EType.Other.ToString().ToUpper());
         result.OuterXml.Should().Contain("a3");
-        result.OuterXml.Should().Contain(ModsData.ERole.Editor.ToString().ToUpper());
+        result.OuterXml.Should().Contain(MetsData.ERole.Editor.ToString().ToUpper());
     }
 
     [Fact]
@@ -101,17 +101,17 @@ public class RendererTests
     {
         //Arrange
         var metsData = new Builder()
-            .SetCompany(new ModsData.CompanyData
+            .SetCompany(new MetsData.CompanyData
             {
                 Note = "a1",
-                Type = ModsData.EType.Other,
+                Type = MetsData.EType.Other,
                 Name = "a3",
-                Role = ModsData.ERole.Editor
+                Role = MetsData.ERole.Editor
             })
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddMetsAttributes(new[] { new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var sut = new Renderer(metsData);
@@ -123,9 +123,9 @@ public class RendererTests
         result.Should().NotBeNull();
         result.OuterXml.Should().NotBe(DefaultBuilderData);
         result.OuterXml.Should().Contain("a1");
-        result.OuterXml.Should().Contain(ModsData.EType.Other.ToString().ToUpper());
+        result.OuterXml.Should().Contain(MetsData.EType.Other.ToString().ToUpper());
         result.OuterXml.Should().Contain("a3");
-        result.OuterXml.Should().Contain(ModsData.ERole.Editor.ToString().ToUpper());
+        result.OuterXml.Should().Contain(MetsData.ERole.Editor.ToString().ToUpper());
     }
 
     [Fact]
@@ -133,23 +133,23 @@ public class RendererTests
     {
         //Arrange
         var metsData = new Builder()
-            .AddAltRecord(new ModsData.AltRecord
+            .AddAltRecord(new MetsData.AltRecord
             {
-                Type = ModsData.EAltRecordType.DeliverySpecification,
+                Type = MetsData.EAltRecordType.DeliverySpecification,
                 InnerText = "a1"
             })
-            .AddAltRecord(new ModsData.AltRecord
+            .AddAltRecord(new MetsData.AltRecord
             {
-                Type = ModsData.EAltRecordType.SubmissionAgreement,
+                Type = MetsData.EAltRecordType.SubmissionAgreement,
                 InnerText = "a2"
             })
-            .AddAltRecord(new ModsData.AltRecord
+            .AddAltRecord(new MetsData.AltRecord
             {
-                Type = ModsData.EAltRecordType.PreviousSubmissionAgreement,
+                Type = MetsData.EAltRecordType.PreviousSubmissionAgreement,
                 InnerText = "a3"
             })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
-            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
+            .AddMetsAttributes(new[] { new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .Build();
         var sut = new Renderer(metsData);
 
@@ -162,9 +162,9 @@ public class RendererTests
         result.OuterXml.Should().Contain("a1");
         result.OuterXml.Should().Contain("a2");
         result.OuterXml.Should().Contain("a3");
-        result.OuterXml.Should().Contain(ModsData.EAltRecordType.DeliverySpecification.ToString().ToUpper());
-        result.OuterXml.Should().Contain(ModsData.EAltRecordType.SubmissionAgreement.ToString().ToUpper());
-        result.OuterXml.Should().Contain(ModsData.EAltRecordType.PreviousSubmissionAgreement.ToString().ToUpper());
+        result.OuterXml.Should().Contain(MetsData.EAltRecordType.DeliverySpecification.ToString().ToUpper());
+        result.OuterXml.Should().Contain(MetsData.EAltRecordType.SubmissionAgreement.ToString().ToUpper());
+        result.OuterXml.Should().Contain(MetsData.EAltRecordType.PreviousSubmissionAgreement.ToString().ToUpper());
     }
 
     [Fact]
@@ -172,16 +172,16 @@ public class RendererTests
     {
         //Arrange
         var metsData = new Builder()
-            .SetModsSection(new ModsData.ModsSectionData
+            .SetModsSection(new MetsData.ModsSectionData
             {
                 Identifier = "a1",
                 Uri = new Uri("http://aaa.bbb"),
                 Url = new Uri("http://ccc.ddd"),
             })
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddMetsAttributes(new[] { new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
         var sut = new Renderer(metsData);

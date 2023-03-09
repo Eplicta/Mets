@@ -13,9 +13,9 @@ namespace Eplicta.Mets;
 
 public class Renderer
 {
-    private readonly ModsData _modsData;
+    private readonly MetsData _modsData;
 
-    public Renderer(ModsData metsData)
+    public Renderer(MetsData metsData)
     {
         _modsData = metsData;
     }

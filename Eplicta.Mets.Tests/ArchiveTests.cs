@@ -11,7 +11,7 @@ public class ArchiveTests
     public void Basic()
     {
         //Arrange
-        var modsData = new Fixture().Build<ModsData>().Create();
+        var modsData = new Fixture().Build<MetsData>().Create();
         var sut = new Renderer(modsData);
 
         //Act

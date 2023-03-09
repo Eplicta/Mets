@@ -8,37 +8,37 @@ public static class HashExtensions
 {
     public enum Style { Regular, Base64 }
 
-    public static string ToHash(this byte[] item, ModsData.EChecksumType method = ModsData.EChecksumType.MD5, Style style = Style.Regular)
+    public static string ToHash(this byte[] item, MetsData.EChecksumType method = MetsData.EChecksumType.MD5, Style style = Style.Regular)
     {
         byte[] hash;
 
         switch (method)
         {
-            case ModsData.EChecksumType.MD5:
+            case MetsData.EChecksumType.MD5:
             {
                 using var m = MD5.Create();
                 hash = m.ComputeHash(item);
                 break;
             }
-            case ModsData.EChecksumType.SHA_1:
+            case MetsData.EChecksumType.SHA_1:
             {
                 using var m = SHA1.Create();
                 hash = m.ComputeHash(item);
                 break;
             }
-            case ModsData.EChecksumType.SHA_256:
+            case MetsData.EChecksumType.SHA_256:
             {
                 using var m = SHA256.Create();
                 hash = m.ComputeHash(item);
                 break;
             }
-            case ModsData.EChecksumType.SHA_384:
+            case MetsData.EChecksumType.SHA_384:
             {
                 using var m = SHA384.Create();
                 hash = m.ComputeHash(item);
                 break;
             }
-            case ModsData.EChecksumType.SHA_512:
+            case MetsData.EChecksumType.SHA_512:
             {
                 using var m = SHA512.Create();
                 hash = m.ComputeHash(item);

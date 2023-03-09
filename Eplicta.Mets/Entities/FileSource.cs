@@ -8,7 +8,7 @@ public record FileSource
     public string FilePath { get; set; }
     public string Use { get; set; }
     public string Checksum { get; set; }
-    public ModsData.EChecksumType? ChecksumType { get; set; } = ModsData.EChecksumType.MD5;
+    public MetsData.EChecksumType? ChecksumType { get; set; } = MetsData.EChecksumType.MD5;
     public string FileName { get; set; }
     public byte[] Data { get; set; }
     public DateTime? CreationTime { get; set; }

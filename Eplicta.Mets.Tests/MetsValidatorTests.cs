@@ -15,7 +15,7 @@ public class MetsValidatorTests
     public void Basic(Version version)
     {
         //Arrange
-        var modsData = new Fixture().Build<ModsData>().Without(x => x.MetsHdr).Create();
+        var modsData = new Fixture().Build<MetsData>().Without(x => x.MetsHdr).Create();
         var document = new Renderer(modsData).Render();
         var sut = new MetsValidator();
 
@@ -32,10 +32,10 @@ public class MetsValidatorTests
     {
         //Arrange
         var modsData = new Builder()
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddAltRecord(new ModsData.AltRecord())
-            .AddMetsAttributes(new[] { new ModsData.MetsAttribute { Name = ModsData.EMetsAttributeName.ObjId, Value = string.Empty } })
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddMetsAttributes(new[] { new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty } })
             .AddFile(new FileSource { Data = new byte[] { } })
             .Build();
         var document = new Renderer(modsData).Render();

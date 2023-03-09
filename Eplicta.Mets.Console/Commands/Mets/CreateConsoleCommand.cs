@@ -18,36 +18,36 @@ public class CreateConsoleCommand : AsyncActionCommandBase
     public override async Task InvokeAsync(string[] param)
     {
         var metsData = new Builder()
-            .SetAgent(new ModsData.AgentData
+            .SetAgent(new MetsData.AgentData
             {
                 Name = "Some Company",
                 Note = "http://id.kb.se/organisations/SE0000000000",
-                Type = ModsData.EType.Other,
-                Role = ModsData.ERole.Archivist
+                Type = MetsData.EType.Other,
+                Role = MetsData.ERole.Archivist
             })
-            .SetCompany(new ModsData.CompanyData
+            .SetCompany(new MetsData.CompanyData
             {
                 Name = "Eplicta AB",
                 Note = "http://id.kb.se/organisations/SE0000000000",
-                Role = ModsData.ERole.Editor,
-                Type = ModsData.EType.Other
+                Role = MetsData.ERole.Editor,
+                Type = MetsData.EType.Other
             })
-            .AddAltRecord(new ModsData.AltRecord
+            .AddAltRecord(new MetsData.AltRecord
             {
-                Type = ModsData.EAltRecordType.DeliveryType,
+                Type = MetsData.EAltRecordType.DeliveryType,
                 InnerText = "DEPOSIT"
             })
-            .AddAltRecord(new ModsData.AltRecord
+            .AddAltRecord(new MetsData.AltRecord
             {
-                Type = ModsData.EAltRecordType.DeliverySpecification,
+                Type = MetsData.EAltRecordType.DeliverySpecification,
                 InnerText = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/"
             })
-            .AddAltRecord(new ModsData.AltRecord
+            .AddAltRecord(new MetsData.AltRecord
             {
-                Type = ModsData.EAltRecordType.SubmissionAgreement,
+                Type = MetsData.EAltRecordType.SubmissionAgreement,
                 InnerText = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013"
             })
-            .SetModsSection(new ModsData.ModsSectionData
+            .SetModsSection(new MetsData.ModsSectionData
             {
                 Xmlns = "http://www.w3.org/1999/xlink",
                 Identifier = "C5385FBC5FC559E7C43AB6700DB28EF3",
@@ -59,46 +59,46 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                 ModsTitleInfo = "https://some.domain.com/",
                 Notes = new[]
                 {
-                    new ModsData.ModsNote
+                    new MetsData.ModsNote
                     {
                         InnerText = "lorem ipsum",
-                        Type = ModsData.ENoteType.PostMessage
+                        Type = MetsData.ENoteType.PostMessage
                     }
                 },
-                Place = new ModsData.PlaceInfo
+                Place = new MetsData.PlaceInfo
                 {
                     PlaceTerm = "Stockholm"
                 }
             })
-            .SetSoftware(new ModsData.SoftwareData
+            .SetSoftware(new MetsData.SoftwareData
             {
                 Name = "Eplicta Aggregator",
                 Note = "http://id.kb.se/organisations/SE0000000000",
-                Role = ModsData.ERole.Editor,
-                Type = ModsData.EType.Other,
-                OtherType = ModsData.EOtherType.Software
+                Role = MetsData.ERole.Editor,
+                Type = MetsData.EType.Other,
+                OtherType = MetsData.EOtherType.Software
             })
-            .SetMetsHdr(new ModsData.MetsHdrData
+            .SetMetsHdr(new MetsData.MetsHdrData
             {
                 Attributes = new[]
                 {
-                    new ModsData.MetsHdrAttribute
+                    new MetsData.MetsHdrAttribute
                     {
-                        Name = ModsData.EMetsHdrAttributeName.RecordStatus,
+                        Name = MetsData.EMetsHdrAttributeName.RecordStatus,
                         Value = "VERSION"
                     }
                 }
             })
             .SetMetsAttributes(new []
             {
-                new ModsData.MetsAttribute
+                new MetsData.MetsAttribute
                 {
-                    Name = ModsData.EMetsAttributeName.Label,
+                    Name = MetsData.EMetsAttributeName.Label,
                     Value = "Moln- och virtualiseringspecialist"
                 },
-                new ModsData.MetsAttribute
+                new MetsData.MetsAttribute
                 {
-                    Name = ModsData.EMetsAttributeName.ObjId,
+                    Name = MetsData.EMetsAttributeName.ObjId,
                     Value = "UUID:test ID"
                 }
             })

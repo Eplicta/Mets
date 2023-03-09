@@ -2,7 +2,7 @@
 
 namespace Eplicta.Mets.Entities;
 
-public record ModsData
+public record MetsData
 {
     public enum EType
     {
