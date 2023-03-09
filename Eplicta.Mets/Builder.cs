@@ -26,7 +26,7 @@ public class Builder
 
     public ModsData Build()
     {
-        if (_altRecords.Count < 3) throw new InvalidOperationException("At least three altRecords has to be added.");
+        // if (_altRecords.Count < 3) throw new InvalidOperationException("At least three altRecords has to be added.");
 
         var missingAttributes = _requiredMetsAttributes.Where(x => !_attributes.Any(y => y.Name == x)).ToArray();
         var multiple = missingAttributes.Length > 1;
