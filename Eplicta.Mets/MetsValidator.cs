@@ -8,8 +8,9 @@ namespace Eplicta.Mets;
 
 public class MetsValidator
 {
-    public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, ModsVersion version, MetsSchema metsSchema)
+    public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, ModsVersion version, MetsSchema metsSchema = null)
     {
+        metsSchema ??= MetsSchema.Default;
         var schema = GetSchema(version);
         var xmlValidator = new XmlValidator();
         return xmlValidator.Validate(document, schema, metsSchema);

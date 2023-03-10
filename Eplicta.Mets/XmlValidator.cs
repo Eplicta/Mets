@@ -13,8 +13,8 @@ public class XmlValidator
 {
     public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, XmlDocument modsSchema, MetsSchema metsSchema = null)
     {
+        metsSchema ??= MetsSchema.Default;
         if (document == null) throw new ArgumentNullException(nameof(document));
-        if (metsSchema == null) metsSchema = MetsSchema.Default;
 
         var responses = new List<XmlValidatorResult>();
 
