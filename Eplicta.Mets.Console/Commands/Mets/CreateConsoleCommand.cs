@@ -102,6 +102,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                     Value = "UUID:test ID"
                 }
             })
+            .SetMetsProfile("http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml")
             .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
             .Build();
 

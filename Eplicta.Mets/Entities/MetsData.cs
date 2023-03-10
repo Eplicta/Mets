@@ -92,6 +92,7 @@ public record MetsData
     public ModsSectionData Mods { get; set; }
     public FileData[] Files { get; set; }
     public MetsAttribute[] Attributes { get; set; }
+    public string MetsProfile {get; set;}
 
     public record MetsHdrData
     {

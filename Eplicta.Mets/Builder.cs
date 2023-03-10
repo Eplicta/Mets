@@ -23,6 +23,7 @@ public class Builder
     };
     private MetsData.MetsHdrData _metsHdrData = new();
     private MetsData.MetsAttribute[] _attributes = Array.Empty<MetsData.MetsAttribute>();
+    private string _metsProfile = "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml";
 
     public MetsData Build()
     {
@@ -42,7 +43,8 @@ public class Builder
             Files = _fileDatas?.ToArray(),
             AltRecords = _altRecords.ToArray(),
             MetsHdr = _metsHdrData,
-            Attributes = _attributes
+            Attributes = _attributes,
+            MetsProfile = _metsProfile
         };
     }
 
@@ -190,6 +192,12 @@ public class Builder
     public Builder AddMetsAttributes(MetsData.MetsAttribute[] attribute)
     {
         _attributes = _attributes.Concat(attribute).ToArray();
+        return this;
+    }
+
+    public Builder SetMetsProfile(string profile)
+    {
+        _metsProfile = profile;
         return this;
     }
 }
