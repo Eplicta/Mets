@@ -8,14 +8,14 @@ namespace Eplicta.Mets;
 
 public class MetsValidator
 {
-    public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, Version version)
+    public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, ModsVersion version)
     {
         var schema = GetSchema(version);
         var xmlValidator = new XmlValidator();
         return xmlValidator.Validate(document, schema);
     }
 
-    private static XmlDocument GetSchema(Version version)
+    private static XmlDocument GetSchema(ModsVersion version)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var resourceName = $"Eplicta.Mets.Resources.{version.Name}.xsd";

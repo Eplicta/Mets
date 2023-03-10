@@ -4,7 +4,6 @@ using AutoFixture;
 using Eplicta.Mets.Entities;
 using FluentAssertions;
 using Xunit;
-using Version = Eplicta.Mets.Entities.Version;
 
 namespace Eplicta.Mets.Tests;
 
@@ -12,7 +11,7 @@ public class MetsValidatorTests
 {
     [Theory]
     [ClassData(typeof(MetsVersionGenerator))]
-    public void Basic(Version version)
+    public void Basic(ModsVersion version)
     {
         //Arrange
         var modsData = new Fixture().Build<MetsData>().Without(x => x.MetsHdr).Create();
@@ -28,7 +27,7 @@ public class MetsValidatorTests
 
     [Theory]
     [ClassData(typeof(MetsVersionGenerator))]
-    public void Minimal(Version version)
+    public void Minimal(ModsVersion version)
     {
         //Arrange
         var modsData = new Builder()
@@ -52,16 +51,16 @@ public class MetsValidatorTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { Version.ModsFgsPubl_1_0 };
+            yield return new object[] { ModsVersion.ModsFgsPubl_1_0 };
             //yield return new object[] { Version.ModsFgsPubl_1_1 };
-            yield return new object[] { Version.Mods_3_0 };
-            yield return new object[] { Version.Mods_3_1 };
-            yield return new object[] { Version.Mods_3_2 };
-            yield return new object[] { Version.Mods_3_3 };
-            yield return new object[] { Version.Mods_3_4 };
-            yield return new object[] { Version.Mods_3_5 };
-            yield return new object[] { Version.Mods_3_6 };
-            yield return new object[] { Version.Mods_3_7 };
+            yield return new object[] { ModsVersion.Mods_3_0 };
+            yield return new object[] { ModsVersion.Mods_3_1 };
+            yield return new object[] { ModsVersion.Mods_3_2 };
+            yield return new object[] { ModsVersion.Mods_3_3 };
+            yield return new object[] { ModsVersion.Mods_3_4 };
+            yield return new object[] { ModsVersion.Mods_3_5 };
+            yield return new object[] { ModsVersion.Mods_3_6 };
+            yield return new object[] { ModsVersion.Mods_3_7 };
 
             //foreach (var version in Version.All())
             //{

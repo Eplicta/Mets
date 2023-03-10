@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using Eplicta.Mets.Entities;
 using Tharga.Toolkit.Console.Commands.Base;
-using Version = Eplicta.Mets.Entities.Version;
 
 namespace Eplicta.Mets.Console.Commands.Mets;
 
@@ -32,21 +31,21 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                 Role = MetsData.ERole.Editor,
                 Type = MetsData.EType.Other
             })
-            .AddAltRecord(new MetsData.AltRecord
-            {
-                Type = MetsData.EAltRecordType.DeliveryType,
-                InnerText = "DEPOSIT"
-            })
-            .AddAltRecord(new MetsData.AltRecord
-            {
-                Type = MetsData.EAltRecordType.DeliverySpecification,
-                InnerText = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/"
-            })
-            .AddAltRecord(new MetsData.AltRecord
-            {
-                Type = MetsData.EAltRecordType.SubmissionAgreement,
-                InnerText = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013"
-            })
+            //.AddAltRecord(new MetsData.AltRecord
+            //{
+            //    Type = MetsData.EAltRecordType.DeliveryType,
+            //    InnerText = "DEPOSIT"
+            //})
+            //.AddAltRecord(new MetsData.AltRecord
+            //{
+            //    Type = MetsData.EAltRecordType.DeliverySpecification,
+            //    InnerText = "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/v1/"
+            //})
+            //.AddAltRecord(new MetsData.AltRecord
+            //{
+            //    Type = MetsData.EAltRecordType.SubmissionAgreement,
+            //    InnerText = "http://www.kb.se/namespace/digark/submissionagreement/31-KB999-2013"
+            //})
             .SetModsSection(new MetsData.ModsSectionData
             {
                 Xmlns = "http://www.w3.org/1999/xlink",
@@ -102,7 +101,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                     Value = "UUID:test ID"
                 }
             })
-            .SetMetsProfile("http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml")
+            //.SetMetsProfile("http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml")
             .AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName)
             .Build();
 
@@ -127,7 +126,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
     {
         var sut = new MetsValidator();
         //var schema = Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
-        var result = sut.Validate(xmlDocument, Version.ModsFgsPubl_1_0)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
+        var result = sut.Validate(xmlDocument, ModsVersion.Mods_3_7)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
         if (result.Any())
         {
             foreach (var item in result)
