@@ -11,16 +11,17 @@ namespace Eplicta.Mets;
 
 public class XmlValidator
 {
-    public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, XmlDocument schema)
+    public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, XmlDocument modsSchema, MetsSchema metsSchema = null)
     {
         if (document == null) throw new ArgumentNullException(nameof(document));
+        if (metsSchema == null) metsSchema = MetsSchema.Default;
 
         var responses = new List<XmlValidatorResult>();
 
         try
         {
             var schemas = new XmlSchemaSet();
-            using var fs = new StringReader(schema.OuterXml);
+            using var fs = new StringReader(modsSchema.OuterXml);
             using var reader = XmlReader.Create(fs, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore });
             var xmlns = document.FirstChild?.Attributes?["xmlns"]?.InnerText;
 
@@ -29,7 +30,7 @@ public class XmlValidator
             LoadSchema(schemas, "xmldsig-core-schema.xsd", @"http://www.w3.org/2000/09/xmldsig#");
             LoadSchema(schemas, "xml.xsd", @"http://www.w3.org/XML/1998/namespace");
             LoadSchema(schemas, "xlink.xsd", @"http://www.w3.org/1999/xlink");
-            LoadSchema(schemas, "eARD_Paket_FGS-PUBL_mets.xsd", @"http://www.loc.gov/METS/");
+            LoadSchema(schemas, metsSchema.Name, @"http://www.loc.gov/METS/");
 
             const XmlSchemaValidationFlags validationFlags = XmlSchemaValidationFlags.ProcessInlineSchema | XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ReportValidationWarnings | XmlSchemaValidationFlags.AllowXmlAttributes;
             var settings = new XmlReaderSettings { ValidationType = ValidationType.Schema, ValidationFlags = validationFlags, DtdProcessing = DtdProcessing.Ignore };

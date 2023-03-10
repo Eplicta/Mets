@@ -19,7 +19,7 @@ public class MetsValidatorTests
         var sut = new MetsValidator();
 
         //Act
-        var result = sut.Validate(document, version);
+        var result = sut.Validate(document, version, MetsSchema.Default);
 
         //Assert
         result.Should().BeEmpty();
@@ -41,7 +41,7 @@ public class MetsValidatorTests
         var sut = new MetsValidator();
 
         //Act
-        var result = sut.Validate(document, version);
+        var result = sut.Validate(document, version, MetsSchema.Default);
 
         //Assert
         result.Should().BeEmpty();

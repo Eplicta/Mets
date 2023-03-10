@@ -19,6 +19,7 @@
 		<None Remove="Resources\CSPackageExtensionMETS.xsd" />
 		<None Remove="Resources\CSPackageMETS.xsd" />
 		<None Remove="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
+		<None Remove="Resources\mets.xsd" />
 		<None Remove="Resources\mods-3-0.xsd" />
 		<None Remove="Resources\mods-3-1.xsd" />
 		<None Remove="Resources\mods-3-2.xsd" />
@@ -44,6 +45,7 @@
 		<EmbeddedResource Include="Resources\CSPackageExtensionMETS.xsd" />
 		<EmbeddedResource Include="Resources\CSPackageMETS.xsd" />
 		<EmbeddedResource Include="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
+		<EmbeddedResource Include="Resources\mets.xsd" />
 		<EmbeddedResource Include="Resources\mods-3-0.xsd" />
 		<EmbeddedResource Include="Resources\mods-3-1.xsd" />
 		<EmbeddedResource Include="Resources\mods-3-2.xsd" />

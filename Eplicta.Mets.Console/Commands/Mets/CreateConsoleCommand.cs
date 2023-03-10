@@ -126,7 +126,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
     {
         var sut = new MetsValidator();
         //var schema = Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
-        var result = sut.Validate(xmlDocument, ModsVersion.Mods_3_7)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
+        var result = sut.Validate(xmlDocument, ModsVersion.Mods_3_7, MetsSchema.Default)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
         if (result.Any())
         {
             foreach (var item in result)
