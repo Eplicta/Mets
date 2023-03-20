@@ -201,9 +201,12 @@ public class Renderer
                 modsorigininfo.AppendChild(place);
             }
 
-            var modsaccesscondition = doc.CreateElement("mods", "accessCondition", "http://www.loc.gov/mods/v3");
-            modsaccesscondition.InnerText = _metsData.Mods.AccessCondition;
-            modsmods.AppendChild(modsaccesscondition);
+            if (!string.IsNullOrEmpty(_metsData.Mods.AccessCondition))
+            {
+                var modsaccesscondition = doc.CreateElement("mods", "accessCondition", "http://www.loc.gov/mods/v3");
+                modsaccesscondition.InnerText = _metsData.Mods.AccessCondition;
+                modsmods.AppendChild(modsaccesscondition);
+            }
 
             var modstitleinfo = doc.CreateElement("mods", "titleInfo", "http://www.loc.gov/mods/v3");
             modsmods.AppendChild(modstitleinfo);
