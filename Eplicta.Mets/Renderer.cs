@@ -249,6 +249,12 @@ public class Renderer
                     var noteNode = doc.CreateElement("mods", "note", "http://www.loc.gov/mods/v3");
                     noteNode.SetAttribute("type", noteType);
                     noteNode.InnerText = note.InnerText;
+
+                    if (!string.IsNullOrEmpty(note.Href))
+                    {
+                        noteNode.SetAttribute("href", "http://www.w3.org/1999/xlink", note.Href);
+                    }
+
                     modsmods.AppendChild(noteNode);
                 }
             }
@@ -286,7 +292,7 @@ public class Renderer
                 //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
-                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", $"file:{item.FileName}");
+                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", $"file:///{item.FileName}");
                 flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
 
                 file.AppendChild(flocat);

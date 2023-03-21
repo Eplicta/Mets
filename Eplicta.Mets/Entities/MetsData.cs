@@ -70,7 +70,8 @@ public record MetsData
         Description,
         ReplyCount,
         RetweetCount,
-        AuthorDisplayName
+        AuthorDisplayName,
+        ChannelInformationPackage
     }
 
     public enum EMetsHdrAttributeName
@@ -134,6 +135,7 @@ public record MetsData
     {
         public ENoteType Type { get; set; }
         public string InnerText { get; set; }
+        public string Href { get; set; }
     }
 
     public record ModsSectionData

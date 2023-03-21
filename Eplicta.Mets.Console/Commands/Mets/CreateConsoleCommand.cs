@@ -61,7 +61,8 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                     new MetsData.ModsNote
                     {
                         InnerText = "lorem ipsum",
-                        Type = MetsData.ENoteType.PostMessage
+                        Type = MetsData.ENoteType.PostMessage,
+                        Href = "file:///text.txt"
                     }
                 },
                 Place = new MetsData.PlaceInfo
