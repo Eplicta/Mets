@@ -71,7 +71,7 @@ public record MetsData
         ReplyCount,
         RetweetCount,
         AuthorDisplayName,
-        ChannelInformationPackage
+        ChannelInformationPackageId
     }
 
     public enum EMetsHdrAttributeName
