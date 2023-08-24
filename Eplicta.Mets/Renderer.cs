@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Eplicta.Mets.Entities;
+using Eplicta.Mets.Helpers;
 using ICSharpCode.SharpZipLib.Tar;
 
 namespace Eplicta.Mets;
@@ -542,9 +544,10 @@ public class Renderer
 
         xmlDocument.LoadXml(xmlString);
 
-        var stringWriter = new StringWriter(new StringBuilder());
+        var stringWriter = new Utf8StringWriter(new StringBuilder());
         var xmlTextWriter = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented };
         xmlDocument.Save(xmlTextWriter);
+
         return stringWriter.ToString();
     }
 }
