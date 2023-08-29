@@ -294,7 +294,7 @@ public class Renderer
                 //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
-                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", $"file:///{item.FileName}");
+                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", $"file:{item.FileName}");
                 flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
 
                 file.AppendChild(flocat);
