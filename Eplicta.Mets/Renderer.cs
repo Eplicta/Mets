@@ -18,14 +18,12 @@ public class Renderer
 
     public Renderer(MetsData metsData)
     {
-        _metsData = metsData;
-    }
+        _metsData = metsData; }
 
-    private MetsSchema _metsSchema = MetsSchema.Default;
 
     public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
     {
-        _metsSchema = schema ?? MetsSchema.Default;
+        schema = schema ?? MetsSchema.Default;
         now ??= DateTime.UtcNow;
 
         var doc = new XmlDocument();
@@ -51,12 +49,12 @@ public class Renderer
             }
         }
 
-        ModsRenderer(doc, root, now.Value);
+        ModsRenderer(doc, root, now.Value, schema);
 
         return doc;
     }
 
-    private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now)
+    private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now, MetsSchema schema = null)
     {
         // dynamic info, the create date with accordance to ISO 8601
         var dateNow = now.ToString("O");
@@ -297,7 +295,7 @@ public class Renderer
                 //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
-                var href = _metsSchema == MetsSchema.KB ? $"file:{item.FileName}" : $"file:///{item.FileName}";
+                var href = schema == MetsSchema.KB ? $"file:{item.FileName}" : $"file:///{item.FileName}";
                 flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", href);
                 flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
 
@@ -437,16 +435,17 @@ public class Renderer
     //    }
     //}
 
-    public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null, bool prettify = false)
+    public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null, bool prettify = false, MetsSchema schema = null)
     {
         MemoryStream compressedFileStream;
+        schema ??= MetsSchema.Default;
         switch (archiveFormat)
         {
             case ArchiveFormat.Zip:
-                compressedFileStream = GetZipArchiveStream(metsFileName, prettify);
+                compressedFileStream = GetZipArchiveStream(metsFileName, prettify, schema);
                 break;
             case ArchiveFormat.Tar:
-                compressedFileStream = GetTarArchiveStream(metsFileName, prettify);
+                compressedFileStream = GetTarArchiveStream(metsFileName, prettify, schema);
                 break;
             default:
                 throw new NotImplementedException($"Archive format {archiveFormat}");
@@ -455,12 +454,12 @@ public class Renderer
         return compressedFileStream;
     }
 
-    private MemoryStream GetZipArchiveStream(string metsFileName = null, bool prettify = false)
+    private MemoryStream GetZipArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
     {
         using var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
-        var xmlString = Render().OuterXml;
+        var xmlString = Render(null, schema).OuterXml;
 
         AddFile(zipArchive, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
@@ -475,12 +474,12 @@ public class Renderer
         return compressedFileStream;
     }
 
-    private MemoryStream GetTarArchiveStream(string metsFileName = null, bool prettify = false)
+    private MemoryStream GetTarArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
     {
         using var compressedFileStream = new MemoryStream();
         using var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
 
-        var xmlString = Render().OuterXml;
+        var xmlString = Render(null, schema).OuterXml;
 
         AddFile(tarOutputStream, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
