@@ -23,7 +23,7 @@ public class Renderer
 
     public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
     {
-        schema = schema ?? MetsSchema.Default;
+        schema ??= MetsSchema.Default;
         now ??= DateTime.UtcNow;
 
         var doc = new XmlDocument();
