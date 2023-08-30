@@ -21,9 +21,11 @@ public class Renderer
         _metsData = metsData;
     }
 
+    private MetsSchema _metsSchema = MetsSchema.Default;
+
     public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
     {
-        schema ??= MetsSchema.Default;
+        _metsSchema = schema ?? MetsSchema.Default;
         now ??= DateTime.UtcNow;
 
         var doc = new XmlDocument();
@@ -49,12 +51,12 @@ public class Renderer
             }
         }
 
-        ModsRenderer(doc, root, now.Value, schema);
+        ModsRenderer(doc, root, now.Value);
 
         return doc;
     }
 
-    private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now, MetsSchema schema)
+    private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now)
     {
         // dynamic info, the create date with accordance to ISO 8601
         var dateNow = now.ToString("O");
@@ -295,7 +297,8 @@ public class Renderer
                 //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
-                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", schema == MetsSchema.KB ? $"file:{item.FileName}" : $"file:///{item.FileName}");
+                var href = _metsSchema == MetsSchema.KB ? $"file:{item.FileName}" : $"file:///{item.FileName}";
+                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", href);
                 flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
 
                 file.AppendChild(flocat);
