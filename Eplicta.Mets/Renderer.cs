@@ -21,9 +21,9 @@ public class Renderer
         _metsData = metsData; }
 
 
-    public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
+    public XmlDocument Render(MetsSchema schema, DateTime? now = null)
     {
-        schema = schema ?? MetsSchema.Default;
+        schema ??= MetsSchema.Default;
         now ??= DateTime.UtcNow;
 
         var doc = new XmlDocument();
@@ -54,7 +54,7 @@ public class Renderer
         return doc;
     }
 
-    private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now, MetsSchema schema = null)
+    private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now, MetsSchema schema)
     {
         // dynamic info, the create date with accordance to ISO 8601
         var dateNow = now.ToString("O");
@@ -459,7 +459,7 @@ public class Renderer
         using var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
-        var xmlString = Render(null, schema).OuterXml;
+        var xmlString = Render(schema).OuterXml;
 
         AddFile(zipArchive, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
@@ -479,7 +479,7 @@ public class Renderer
         using var compressedFileStream = new MemoryStream();
         using var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
 
-        var xmlString = Render(null, schema).OuterXml;
+        var xmlString = Render(schema).OuterXml;
 
         AddFile(tarOutputStream, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 

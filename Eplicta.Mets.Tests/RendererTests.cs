@@ -20,7 +20,7 @@ public class RendererTests
         var sut = new Renderer(metsData);
 
         //Act
-        var result = sut.Render(null, MetsSchema.Default);
+        var result = sut.Render(MetsSchema.Default);
 
         //Assert
         result.Should().NotBeNull();
@@ -35,7 +35,7 @@ public class RendererTests
         var sut = new Renderer(modsData);
 
         //Act
-        var result = sut.Render(DateTime.MinValue);
+        var result = sut.Render(MetsSchema.Default, DateTime.MinValue);
 
         //Assert
         result.Should().NotBeNull();
@@ -56,7 +56,7 @@ public class RendererTests
         var sut = new Renderer(metsData);
 
         //Act
-        var result = sut.Render(DateTime.MinValue);
+        var result = sut.Render(MetsSchema.Default, DateTime.MinValue);
 
         //Assert
         result.Should().NotBeNull();
@@ -85,7 +85,7 @@ public class RendererTests
         var sut = new Renderer(metsData);
 
         //Act
-        var result = sut.Render(DateTime.MinValue);
+        var result = sut.Render(MetsSchema.Default, DateTime.MinValue);
 
         //Assert
         result.Should().NotBeNull();
@@ -117,7 +117,7 @@ public class RendererTests
         var sut = new Renderer(metsData);
 
         //Act
-        var result = sut.Render(DateTime.MinValue);
+        var result = sut.Render(MetsSchema.Default, DateTime.MinValue);
 
         //Assert
         result.Should().NotBeNull();
@@ -154,7 +154,7 @@ public class RendererTests
         var sut = new Renderer(metsData);
 
         //Act
-        var result = sut.Render(DateTime.MinValue);
+        var result = sut.Render(MetsSchema.Default, DateTime.MinValue);
 
         //Assert
         result.Should().NotBeNull();
@@ -187,7 +187,7 @@ public class RendererTests
         var sut = new Renderer(metsData);
 
         //Act
-        var result = sut.Render(DateTime.MinValue);
+        var result = sut.Render(MetsSchema.Default, DateTime.MinValue);
 
         //Assert
         result.Should().NotBeNull();

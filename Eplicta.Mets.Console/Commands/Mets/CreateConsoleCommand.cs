@@ -108,7 +108,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
 
         var renderer = new Renderer(metsData);
 
-        var xmlDocument = renderer.Render();
+        var xmlDocument = renderer.Render(MetsSchema.Default);
 
         if (!Validate(xmlDocument)) return;
 

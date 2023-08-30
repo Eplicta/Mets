@@ -16,7 +16,7 @@ public class RendererValidatorTests
     {
         //Arrange
         var modsData = new Fixture().Build<MetsData>().Without(x => x.MetsHdr).Create();
-        var document = new Renderer(modsData).Render();
+        var document = new Renderer(modsData).Render(MetsSchema.Default);
         var schema = Mets.Helpers.Resource.GetXml(format);
         var sut = new XmlValidator();
 
@@ -39,7 +39,7 @@ public class RendererValidatorTests
             .AddMetsAttributes(new [] { new MetsData.MetsAttribute{ Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }})
             .AddFile(new FileSource { Data = Array.Empty<byte>() })
             .Build();
-        var document = new Renderer(modsData).Render();
+        var document = new Renderer(modsData).Render(MetsSchema.Default);
         var schema = Mets.Helpers.Resource.GetXml(format);
         var sut = new XmlValidator();
 
