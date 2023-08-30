@@ -21,7 +21,7 @@ public class Renderer
         _metsData = metsData; }
 
 
-    public XmlDocument Render(MetsSchema schema, DateTime? now = null)
+    public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
     {
         schema ??= MetsSchema.Default;
         now ??= DateTime.UtcNow;
@@ -295,7 +295,7 @@ public class Renderer
                 //}
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
-                var href = schema == MetsSchema.KB ? $"file:{item.FileName}" : $"file:///{item.FileName}";
+                var href = schema.Name == "eARD_Paket_FGS-PUBL_mets.xsd" ? $"file:{item.FileName}" : $"file:///{item.FileName}";
                 flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", href);
                 flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
 
@@ -459,7 +459,7 @@ public class Renderer
         using var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
-        var xmlString = Render(schema).OuterXml;
+        var xmlString = Render(null, schema).OuterXml;
 
         AddFile(zipArchive, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
@@ -479,7 +479,7 @@ public class Renderer
         using var compressedFileStream = new MemoryStream();
         using var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
 
-        var xmlString = Render(schema).OuterXml;
+        var xmlString = Render(null, schema).OuterXml;
 
         AddFile(tarOutputStream, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 

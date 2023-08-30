@@ -108,7 +108,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
 
         var renderer = new Renderer(metsData);
 
-        var xmlDocument = renderer.Render(MetsSchema.Default);
+        var xmlDocument = renderer.Render();
 
         if (!Validate(xmlDocument)) return;
 
@@ -117,7 +117,7 @@ public class CreateConsoleCommand : AsyncActionCommandBase
         //await File.WriteAllBytesAsync("C:\\temp\\metadata.xml", Encoding.UTF8.GetBytes(xmlData));
 
         //NOTE: This code craetes a zip-archive with metadata and resource-files amd saves to the temp-folder.
-        await using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip);
+        await using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip, null, true, MetsSchema.KB);
         await File.WriteAllBytesAsync("C:\\temp\\mods-archive.zip", archive.ToArray());
 
         OutputInformation("Done");
