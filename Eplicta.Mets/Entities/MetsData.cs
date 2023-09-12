@@ -150,6 +150,7 @@ public record MetsData
         public string ModsTitleInfo { get; set; }
         public PlaceInfo Place { get; set; }
         public ModsNote[] Notes { get; set; }
+        public string Publisher { get; set; }
     }
 
     public record FileData

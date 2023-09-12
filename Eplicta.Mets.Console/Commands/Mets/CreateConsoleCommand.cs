@@ -68,7 +68,8 @@ public class CreateConsoleCommand : AsyncActionCommandBase
                 Place = new MetsData.PlaceInfo
                 {
                     PlaceTerm = "Stockholm"
-                }
+                },
+                Publisher = "James Frih"
             })
             .SetSoftware(new MetsData.SoftwareData
             {

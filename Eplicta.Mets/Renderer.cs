@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -18,8 +17,8 @@ public class Renderer
 
     public Renderer(MetsData metsData)
     {
-        _metsData = metsData; }
-
+        _metsData = metsData;
+    }
 
     public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
     {
@@ -111,7 +110,6 @@ public class Renderer
                 companynote.InnerText = _metsData.Company.Note;
                 companyAgent.AppendChild(companynote);
             }
-
         }
 
         //software section
@@ -194,6 +192,13 @@ public class Renderer
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
             modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("O");
             modsorigininfo.AppendChild(modsDateIssued);
+
+            if (!string.IsNullOrEmpty(_metsData.Mods.Publisher))
+            {
+                var modstitle = doc.CreateElement("mods", "publisher", "http://www.loc.gov/mods/v3");
+                modstitle.InnerText = _metsData.Mods.Publisher;
+                modsorigininfo.AppendChild(modstitle);
+            }
 
             if (_metsData.Mods.Place != null)
             {
