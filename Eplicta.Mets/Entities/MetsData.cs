@@ -76,7 +76,8 @@ public record MetsData
 
     public enum EMetsHdrAttributeName
     {
-        RecordStatus
+        RecordStatus,
+        CreateDate
     }
 
     public enum EMetsAttributeName
