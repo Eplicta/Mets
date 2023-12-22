@@ -1,7 +1,7 @@
 trigger:
 - master
 
-name: 1.0.$(Rev:r)
+name: 1.1.$(Rev:r)
 
 pool:
   vmImage: 'windows-latest'
@@ -13,12 +13,6 @@ variables:
   BQC.ForceNewBaseline: true
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET 6'
-  inputs:
-    version: 6.0.x
-    includePreviewVersions: false
-
 - task: DotNetCoreCLI@2
   displayName: 'Restore nuget packages'
   inputs:
