@@ -9,7 +9,7 @@
 		<Product>Eplicta Mets Mods archive renderer</Product>
 		<PackageIconUrl>https://eplicta-aggregator.azurewebsites.net/images/eplicta.toolkit.png</PackageIconUrl>
 		<LangVersion>latest</LangVersion>
-		<PackageProjectUrl>https://github.com/Eplicta/mets</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/Eplicta/Mets</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>mets mods archive</PackageTags>
 	</PropertyGroup>
