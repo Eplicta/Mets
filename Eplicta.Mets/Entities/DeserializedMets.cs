@@ -132,12 +132,6 @@ public record DeserializedMets
                         [XmlAttribute("encoding")]
                         public string Encoding { get; set; }
                     }
-
-                    public record ModsNoteElement : XmlValueElement<string>
-                    {
-                        [XmlAttribute("type")]
-                        public string Type { get; set; }
-                    }
                 }
             }
         }
@@ -222,6 +216,12 @@ public record DeserializedMets
                 public string FileId { get; set; }
             }
         }
+    }
+
+    public record ModsNoteElement : XmlValueElement<string>
+    {
+        [XmlAttribute("type")]
+        public string Type { get; set; }
     }
 }
 

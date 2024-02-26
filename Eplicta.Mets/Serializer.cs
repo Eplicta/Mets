@@ -5,16 +5,16 @@ using Eplicta.Mets.Entities;
 
 namespace Eplicta.Mets;
 
-public class Serializer
+public static class Serializer
 {
-    public DeserializedMets Deserialize(XmlDocument xmlDocument)
+    public static DeserializedMets Deserialize(XmlDocument xmlDocument)
     {
         var xmlString = xmlDocument.OuterXml;
 
         return Deserialize(xmlString);
     }
 
-    public DeserializedMets Deserialize(string xmlString)
+    public static DeserializedMets Deserialize(string xmlString)
     {
         var serializer = new XmlSerializer(typeof(DeserializedMets));
 
