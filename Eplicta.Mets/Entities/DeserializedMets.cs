@@ -8,7 +8,7 @@ namespace Eplicta.Mets.Entities;
 public record DeserializedMets
 {
     [XmlElement("metsHdr")]
-    public MetsHdrElement[] MetsHdr { get; set; }
+    public MetsHdrElement MetsHdr { get; set; }
 
     [XmlElement("dmdSec")]
     public DmdSecElement DmdSec { get; set; }
