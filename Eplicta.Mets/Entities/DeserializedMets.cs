@@ -168,7 +168,7 @@ public record DeserializedMets
                 public string CheckSum { get; set; }
 
                 [XmlAttribute("CHECKSUMTYPE")]
-                public string CheckSumType { get; set; }
+                public MetsData.EChecksumType CheckSumType { get; set; }
 
                 [XmlElement("FLocat")]
                 public FLocatElement FLocat { get; set; }
