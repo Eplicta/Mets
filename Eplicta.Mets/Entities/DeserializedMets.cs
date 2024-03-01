@@ -159,7 +159,7 @@ public record DeserializedMets
                 public string MimeType { get; set; }
 
                 [XmlAttribute("SIZE")]
-                public string Size { get; set; }
+                public long Size { get; set; }
 
                 [XmlAttribute("CREATED")]
                 public DateTime Created { get; set; }
