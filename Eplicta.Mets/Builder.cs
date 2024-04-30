@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Eplicta.Mets.Entities;
@@ -198,6 +199,14 @@ public class Builder
     public Builder SetMetsProfile(string profile)
     {
         _metsProfile = profile;
+        return this;
+    }
+
+    public Builder AddModsNote(MetsData.ModsNote note)
+    {
+        var notesArray = _modsSectionData.Notes?.Concat(new[] { note }).ToArray() ?? new []{ note };
+
+        _modsSectionData.Notes = notesArray;
         return this;
     }
 }
