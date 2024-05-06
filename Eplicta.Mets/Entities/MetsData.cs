@@ -73,7 +73,8 @@ public record MetsData
         AuthorDisplayName,
         ChannelInformationPackageId,
         SourceChannel,
-        Keywords
+        Keywords,
+        ViewCount
     }
 
     public enum EMetsHdrAttributeName
