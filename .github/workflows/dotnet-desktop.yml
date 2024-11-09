@@ -12,6 +12,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    outputs:
+      NEW_VERSION: ${{ steps.increment_version.outputs.NEW_VERSION }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -69,14 +72,10 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Extract base version from .csproj
-        id: extract_version
-        run: |
-          echo "Package version is ${{ needs.build.outputs.increment_version.outputs.NEW_VERSION }}"
-
       - name: Pack NuGet package with new version
         run: |
-          dotnet pack --configuration Release -o ./artifacts /p:PackageVersion=${{ needs.build.outputs.increment_version.outputs.NEW_VERSION }}
+          echo "Pack version is ${{ needs.build.outputs.NEW_VERSION }}"
+          dotnet pack --configuration Release -o ./artifacts /p:PackageVersion=${{ needs.build.outputs.NEW_VERSION }}
 
       - name: Publish NuGet package
         env:
@@ -86,7 +85,7 @@ jobs:
 
       - name: Tag the repository with the new version
         env:
-          VERSION: ${{ needs.build.outputs.increment_version.outputs.NEW_VERSION }}
+          VERSION: ${{ needs.build.outputs.NEW_VERSION }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"

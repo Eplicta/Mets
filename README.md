@@ -1,8 +1,10 @@
 # Eplicta Mets
+[![NuGet](https://img.shields.io/nuget/v/Eplicta.Mets)](https://www.nuget.org/packages/Eplicta.Mets)
+![Nuget](https://img.shields.io/nuget/dt/Eplicta.Mets)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![GitHub repo Issues](https://img.shields.io/github/issues/Eplicta/Mets?style=flat&logo=github&logoColor=red&label=Issues)](https://github.com/Eplicta.Mets/Eplicta.Mets/issues?q=is%3Aopen)
 
 This code helps build and verify packages used for electronic archives. The two standards **Mets** (Metadata Object Description Schema) / **Mets** (Metadata Encoding and Transmission Standard) are used for storing digital documents in electronic archives.
-
-Nuget package `Eplicta.Mets` can be found on [nuget.org](https://www.nuget.org/packages/Eplicta.Mets/).
 
 Basic example on how to create a simple Mets package and have it stored as a zip-file.
 ```
@@ -30,4 +32,4 @@ var result = validator.Validate(xmlDocument, ModsVersion.Mods_3_7, MetsSchema.De
 var errorMessage = result.FirstOrDefault()?.Message;
 ```
 
-This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License].
+This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License](LICENSE).
