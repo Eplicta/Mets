@@ -10,7 +10,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  BQC.ForceNewBaseline: true
+  BQC.ForceNewBaseline: false
 
 steps:
 - task: DotNetCoreCLI@2
