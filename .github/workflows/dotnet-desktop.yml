@@ -47,7 +47,7 @@ jobs:
           find . -name "*.csproj" -exec sed -i "s|<Version>.*</Version>|<Version>${NEW_VERSION}</Version>|g" {} +
 
       - name: Build the solution
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build --no-restore --configuration Release /p:Version=${{ steps.increment_version.outputs.NEW_VERSION }}
 
       - name: Run tests
         run: dotnet test --no-build --configuration Release --verbosity normal
@@ -69,13 +69,14 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build the solution with new version
-        run: dotnet build --configuration Release
+      - name: Extract base version from .csproj
+        id: extract_version
+        run: |
+          echo "Package version is ${{ needs.build.outputs.increment_version.outputs.NEW_VERSION }}"
 
       - name: Pack NuGet package with new version
         run: |
-          NEW_VERSION="${{ needs.build.outputs.increment_version.outputs.NEW_VERSION }}"
-          dotnet pack --configuration Release -o ./artifacts /p:PackageVersion=$NEW_VERSION
+          dotnet pack --configuration Release -o ./artifacts /p:PackageVersion=${{ needs.build.outputs.increment_version.outputs.NEW_VERSION }}
 
       - name: Publish NuGet package
         env:
