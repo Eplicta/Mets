@@ -95,7 +95,12 @@ public record MetsData
     public SoftwareData Software { get; set; }
     public AltRecord[] AltRecords { get; set; }
     public ModsSectionData Mods { get; set; }
+
+    [Obsolete("This field will be deprecated.")]
     public FileData[] Files { get; set; }
+
+    public StreamSource[] Sources { get; set; }
+
     public MetsAttribute[] Attributes { get; set; }
     public string MetsProfile {get; set;}
 

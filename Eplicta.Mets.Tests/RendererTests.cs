@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using AutoFixture;
 using Eplicta.Mets.Entities;
 using FluentAssertions;
