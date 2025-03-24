@@ -22,7 +22,7 @@ public record DeserializedMets
     public record MetsHdrElement
     {
         [XmlElement("agent")]
-        public AgentElement[] Agents { get; set; } = Array.Empty<AgentElement>();
+        public AgentElement[] Agents { get; set; } = [];
 
         [XmlAttribute("CREATEDATE")]
         public DateTime CreateDate { get; set; }

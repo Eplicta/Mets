@@ -14,7 +14,11 @@ public class MetsValidatorTests
     public void Basic(ModsVersion version)
     {
         //Arrange
-        var modsData = new Fixture().Build<MetsData>().Without(x => x.MetsHdr).Create();
+        var modsData = new Fixture().Build<MetsData>()
+            .Without(x => x.MetsHdr)
+            .Without(x => x.Files)
+            .Without(x => x.Sources)
+            .Create();
         var document = new Renderer(modsData).Render();
         var sut = new MetsValidator();
 
@@ -34,8 +38,8 @@ public class MetsValidatorTests
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
-            .AddMetsAttributes(new[] { new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty } })
-            .AddFile(new FileSource { Data = new byte[] { } })
+            .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
+            .AddFile(new FileSource { Data = [] })
             .Build();
         var document = new Renderer(modsData).Render();
         var sut = new MetsValidator();
@@ -51,21 +55,16 @@ public class MetsValidatorTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { ModsVersion.ModsFgsPubl_1_0 };
+            yield return [ModsVersion.ModsFgsPubl_1_0];
             //yield return new object[] { Version.ModsFgsPubl_1_1 };
-            yield return new object[] { ModsVersion.Mods_3_0 };
-            yield return new object[] { ModsVersion.Mods_3_1 };
-            yield return new object[] { ModsVersion.Mods_3_2 };
-            yield return new object[] { ModsVersion.Mods_3_3 };
-            yield return new object[] { ModsVersion.Mods_3_4 };
-            yield return new object[] { ModsVersion.Mods_3_5 };
-            yield return new object[] { ModsVersion.Mods_3_6 };
-            yield return new object[] { ModsVersion.Mods_3_7 };
-
-            //foreach (var version in Version.All())
-            //{
-            //    yield return new object[] { version };
-            //}
+            yield return [ModsVersion.Mods_3_0];
+            yield return [ModsVersion.Mods_3_1];
+            yield return [ModsVersion.Mods_3_2];
+            yield return [ModsVersion.Mods_3_3];
+            yield return [ModsVersion.Mods_3_4];
+            yield return [ModsVersion.Mods_3_5];
+            yield return [ModsVersion.Mods_3_6];
+            yield return [ModsVersion.Mods_3_7];
         }
 
         IEnumerator IEnumerable.GetEnumerator()

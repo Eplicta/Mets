@@ -398,13 +398,13 @@ public class Renderer
                 compressedFileStream = GetTarArchiveStream(metsFileName, prettify, schema);
                 break;
             default:
-                throw new NotImplementedException($"Archive format {archiveFormat}");
+                throw new ArgumentOutOfRangeException(nameof(archiveFormat), archiveFormat, null);
         }
 
         return compressedFileStream;
     }
 
-    private MemoryStream GetZipArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
+    private MemoryStream GetZipArchiveStream(string metsFileName, bool prettify, MetsSchema schema)
     {
         var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
@@ -509,12 +509,6 @@ public class Renderer
         tarStream.PutNextEntry(tarEntry);
         tarStream.Write(data, 0, data.Length);
         tarStream.CloseEntry();
-    }
-
-    private static void AddFile(TarOutputStream tarStream, string entryName, MemoryStream data)
-    {
-        var bytes = data.ToArray();
-        AddFile(tarStream, entryName, bytes);
     }
 
     private static string PrettifyXml(string xmlString)

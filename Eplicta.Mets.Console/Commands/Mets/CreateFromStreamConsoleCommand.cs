@@ -20,7 +20,7 @@ public class CreateFromStreamConsoleCommand : CreateConsoleCommand
         var streamSource = new StreamSource
         {
             Name = fileInfo.Name,
-            MimeType = Builder.GetMimeType(fileName),
+            MimeType = FileExtensions.GetMimeType(fileName),
             CreationTime = fileInfo.CreationTime,
             Stream = stream,
         };

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Eplicta.Mets.Entities;
-using MimeTypes;
 
 namespace Eplicta.Mets;
 
@@ -79,7 +78,7 @@ public class Builder
         {
             Id = id ?? $"ID{data.ToHash()}",
             Use = fileSource.Use, //TODO: "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"
-            MimeType = fileSource.MimeType ?? GetMimeType(fileName),
+            MimeType = fileSource.MimeType ?? FileExtensions.GetMimeType(fileName),
             Data = data,
             Size = fileSource.Size ?? data.Length,
             Created = created ?? DateTime.MinValue,
@@ -136,15 +135,6 @@ public class Builder
         }
 
         return this;
-    }
-
-    //TODO: Move to other helper class
-    public static string GetMimeType(string fileName)
-    {
-        if (string.IsNullOrEmpty(fileName)) return null;
-        var type = fileName.Split('.').Last();
-        var mimeType = MimeTypeMap.GetMimeType(type);
-        return mimeType;
     }
 
     public Builder SetAgent(MetsData.AgentData agentData)
