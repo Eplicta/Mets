@@ -94,8 +94,14 @@ public abstract class CreateConsoleCommand : AsyncActionCommandBase
 
         var renderer = new Renderer(metsData);
 
-        using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip, null, true, MetsSchema.KB);
-        await File.WriteAllBytesAsync("C:\\temp\\mods-archive.zip", archive.ToArray());
+        var archiveFormat = ArchiveFormat.Zip;
+        var extension = $"{archiveFormat}".ToLower();
+
+        //using var archive = renderer.GetArchiveStream(archiveFormat, null, true, MetsSchema.KB);
+        //await File.WriteAllBytesAsync($"C:\\temp\\mods-archive.{extension}", archive.ToArray());
+        using var archive = renderer.GetArchiveStream(archiveFormat, null, true, MetsSchema.KB);
+        await using var fileStream = File.Create($"C:\\temp\\mods-archive.{extension}");
+        await archive.CopyToAsync(fileStream);
 
         var xmlDocument = renderer.Render();
         if (!Validate(xmlDocument)) return;
