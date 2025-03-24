@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using Eplicta.Mets.Entities;
 using FluentAssertions;
 using Xunit;
@@ -9,10 +8,10 @@ namespace Eplicta.Mets.Tests;
 public class ArchiveTests
 {
     [Fact]
-    public async Task Basic()
+    public void Basic()
     {
         //Arrange
-        var modsData = new Fixture().Build<MetsData>().Create();
+        var modsData = new Fixture().Build<MetsData>().Without(x => x.Sources).Create();
         var sut = new Renderer(modsData);
 
         //Act

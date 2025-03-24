@@ -6,11 +6,47 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 using Eplicta.Mets.Entities;
 using Eplicta.Mets.Helpers;
 using ICSharpCode.SharpZipLib.Tar;
 
 namespace Eplicta.Mets;
+
+public class Parser
+{
+    public (MetsData MetsData, DateTime CreateTime) GetMetsData(string xmlString)
+    {
+        var doc = new XmlDocument();
+        doc.LoadXml(xmlString);
+
+        var namespaceManager = new XmlNamespaceManager(doc.NameTable);
+        namespaceManager.AddNamespace("mets", "http://www.loc.gov/METS/");
+
+        var createTime = GetDateTime(doc, namespaceManager);
+
+        //TODO: Unpack all data
+        var metsData = new MetsData
+        {
+            Attributes = []
+        };
+
+        return (metsData, createTime);
+    }
+
+    private static DateTime GetDateTime(XmlDocument document, XmlNamespaceManager namespaceManager)
+    {
+        var metsHdrNode = document.DocumentElement?.SelectSingleNode("//mets:metsHdr", namespaceManager) as XmlElement;
+        var createdDate = metsHdrNode?.GetAttribute("CREATEDATE");
+
+        if (!DateTime.TryParse(createdDate, out var created))
+        {
+            throw new InvalidOperationException($"Cannot parse CREATEDATE {createdDate} to {nameof(DateTime)}.");
+        }
+
+        return created;
+    }
+}
 
 public class Renderer
 {
@@ -41,7 +77,7 @@ public class Renderer
         root.SetAttribute("TYPE", "SIP");
         root.SetAttribute("PROFILE", _metsData.MetsProfile);
 
-        if (_metsData.Attributes.Length != 0)
+        if (_metsData.Attributes != null && _metsData.Attributes.Length != 0)
         {
             foreach (var attribute in _metsData.Attributes)
             {
@@ -409,7 +445,7 @@ public class Renderer
         var compressedFileStream = new MemoryStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
 
-        foreach (var source in _metsData.Sources)
+        foreach (var source in _metsData.Sources ?? [])
         {
             using var md5 = MD5.Create();
             var entry = zipArchive.CreateEntry(source.Name);
