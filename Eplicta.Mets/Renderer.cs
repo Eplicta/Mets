@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Linq;
 using Eplicta.Mets.Entities;
 using Eplicta.Mets.Helpers;
 using ICSharpCode.SharpZipLib.Tar;
@@ -421,29 +420,31 @@ public class Renderer
         }
     }
 
-    public MemoryStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null, bool prettify = false, MetsSchema schema = null)
+    public ArchiveStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null, bool prettify = false, MetsSchema schema = null)
     {
-        MemoryStream compressedFileStream;
         schema ??= MetsSchema.Default;
+        ArchiveStream archive;
         switch (archiveFormat)
         {
             case ArchiveFormat.Zip:
-                compressedFileStream = GetZipArchiveStream(metsFileName, prettify, schema);
+                archive = GetZipArchiveStream(metsFileName, prettify, schema);
                 break;
             case ArchiveFormat.Tar:
-                compressedFileStream = GetTarArchiveStream(metsFileName, prettify, schema);
+                archive = GetTarArchiveStream(metsFileName, prettify, schema);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(archiveFormat), archiveFormat, null);
         }
 
-        return compressedFileStream;
+        archive.Stream.Seek(0, SeekOrigin.Begin);
+        return archive;
     }
 
-    private MemoryStream GetZipArchiveStream(string metsFileName, bool prettify, MetsSchema schema)
+    private ArchiveStream GetZipArchiveStream(string metsFileName, bool prettify, MetsSchema schema)
     {
         var compressedFileStream = new MemoryStream();
-        using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false);
+        using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, true);
+        var archiveStream = new ArchiveStream(compressedFileStream, null, zipArchive);
 
         foreach (var source in _metsData.Sources ?? [])
         {
@@ -471,41 +472,41 @@ public class Renderer
             }
         }
 
+        foreach (var resource in _metsData.Files ?? [])
+        {
+            AddFile(zipArchive, $"{resource.FileName}", resource.Data);
+        }
+
         var xmlString = Render(null, schema).OuterXml;
 
         AddFile(zipArchive, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
-        if (_metsData.Files != null)
-        {
-            foreach (var resource in _metsData.Files)
-            {
-                AddFile(zipArchive, $"{resource.FileName}", resource.Data);
-            }
-        }
-
-        return compressedFileStream;
+        return archiveStream;
     }
 
-    private MemoryStream GetTarArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
+    private ArchiveStream GetTarArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
     {
         var compressedFileStream = new MemoryStream();
-        using var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
+        var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
+        var archiveStream = new ArchiveStream(compressedFileStream, tarOutputStream);
+
+        foreach (var source in _metsData.Sources ?? [])
+        {
+            throw new NotImplementedException("Stream resources from sources has not yet been implemented for Tar-archives.");
+        }
+
+        foreach (var resource in _metsData.Files ?? [])
+        {
+            AddFile(tarOutputStream, $"{resource.FileName}", resource.Data);
+        }
 
         var xmlString = Render(null, schema).OuterXml;
 
         AddFile(tarOutputStream, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
-        if (_metsData.Files != null)
-        {
-            foreach (var resource in _metsData.Files)
-            {
-                AddFile(tarOutputStream, $"{resource.FileName}", resource.Data);
-            }
-        }
-
         tarOutputStream.Finish();
 
-        return compressedFileStream;
+        return archiveStream;
     }
 
     private static void AddFile(ZipArchive zipArchive, string entryName, string data)
@@ -516,7 +517,7 @@ public class Renderer
 
     private static void AddFile(ZipArchive zipArchive, string entryName, byte[] data)
     {
-        var stream = new MemoryStream(data);
+        using var stream = new MemoryStream(data);
         AddFile(zipArchive, entryName, stream);
     }
 
