@@ -11,11 +11,11 @@ public class ArchiveTests
     public void Basic()
     {
         //Arrange
-        var modsData = new Fixture().Build<MetsData>().Create();
+        var modsData = new Fixture().Build<MetsData>().Without(x => x.Sources).Create();
         var sut = new Renderer(modsData);
 
         //Act
-        var result = sut.GetArchiveStream(ArchiveFormat.Zip);
+        using var result = sut.GetArchiveStream(ArchiveFormat.Zip);
 
         //Assert
         result.ToArray().Should().NotBeNull();

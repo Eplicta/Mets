@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
-using Eplicta.Mets.Entities;
 using Eplicta.Mets.Tests.Helpers;
 using FluentAssertions;
 using Xunit;

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Eplicta.Mets.Entities;
-using MimeTypes;
 
 namespace Eplicta.Mets;
 
@@ -12,6 +10,7 @@ public class Builder
 {
     private readonly List<MetsData.AltRecord> _altRecords = new();
     private readonly List<MetsData.FileData> _fileDatas = new();
+    private readonly List<StreamSource> _streamSources = new();
     private readonly MetsData.EMetsAttributeName[] _requiredMetsAttributes = { MetsData.EMetsAttributeName.ObjId };
     private MetsData.AgentData _agentData = new();
     private MetsData.CompanyData _companyData = new();
@@ -23,14 +22,14 @@ public class Builder
         ModsTitleInfo = "Unknown"
     };
     private MetsData.MetsHdrData _metsHdrData = new();
-    private MetsData.MetsAttribute[] _attributes = Array.Empty<MetsData.MetsAttribute>();
+    private MetsData.MetsAttribute[] _attributes = [];
     private string _metsProfile = "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml";
 
     public MetsData Build()
     {
         // if (_altRecords.Count < 3) throw new InvalidOperationException("At least three altRecords has to be added.");
 
-        var missingAttributes = _requiredMetsAttributes.Where(x => !_attributes.Any(y => y.Name == x)).ToArray();
+        var missingAttributes = _requiredMetsAttributes.Where(x => _attributes.All(y => y.Name != x)).ToArray();
         var multiple = missingAttributes.Length > 1;
 
         if (missingAttributes.Length > 0) throw new InvalidOperationException($"The required attribute{(multiple ? "s" : string.Empty)} {string.Join(",", missingAttributes)} {(multiple ? "are" : "is")} missing.");
@@ -42,6 +41,7 @@ public class Builder
             Software = _softwareData,
             Mods = _modsSectionData,
             Files = _fileDatas?.ToArray(),
+            Sources = _streamSources.ToArray(),
             AltRecords = _altRecords.ToArray(),
             MetsHdr = _metsHdrData,
             Attributes = _attributes,
@@ -49,6 +49,14 @@ public class Builder
         };
     }
 
+    public Builder AddResource(StreamSource source)
+    {
+        source.Name = CheckForDuplicateFileNames(source.Name);
+        _streamSources.Add(source);
+        return this;
+    }
+
+    [Obsolete("Use Add resource instead.")]
     public Builder AddFile(FileSource fileSource)
     {
         var fileName = fileSource.FileName;
@@ -68,9 +76,9 @@ public class Builder
 
         var fileData = new MetsData.FileData
         {
-            Id = id ?? $"ID{new Guid(data.ToHash())}",
+            Id = id ?? $"ID{data.ToHash()}",
             Use = fileSource.Use, //TODO: "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"
-            MimeType = fileSource.MimeType ?? GetMimeType(fileName),
+            MimeType = fileSource.MimeType ?? FileExtensions.GetMimeType(fileName),
             Data = data,
             Size = fileSource.Size ?? data.Length,
             Created = created ?? DateTime.MinValue,
@@ -97,7 +105,7 @@ public class Builder
     {
         var fileNames = _fileDatas.Select(x => x.FileName).ToArray();
 
-        if (fileNames.Length == 0 || !fileNames.Any(x => x == fileName)) return fileName;
+        if (fileNames.Length == 0 || fileNames.All(x => x != fileName)) return fileName;
 
         string temp;
 
@@ -118,6 +126,7 @@ public class Builder
         return temp;
     }
 
+    [Obsolete("Use Add resource instead.")]
     public Builder AddFiles(IEnumerable<FileSource> fileSources)
     {
         foreach (var fileSource in fileSources)
@@ -126,14 +135,6 @@ public class Builder
         }
 
         return this;
-    }
-
-    private string GetMimeType(string fileName)
-    {
-        if (string.IsNullOrEmpty(fileName)) return null;
-        var type = fileName.Split('.').Last();
-        var mimeType = MimeTypeMap.GetMimeType(type);
-        return mimeType;
     }
 
     public Builder SetAgent(MetsData.AgentData agentData)
@@ -204,7 +205,7 @@ public class Builder
 
     public Builder AddModsNote(MetsData.ModsNote note)
     {
-        var notesArray = _modsSectionData.Notes?.Concat(new[] { note }).ToArray() ?? new []{ note };
+        var notesArray = _modsSectionData.Notes?.Concat([note]).ToArray() ?? [note];
 
         _modsSectionData.Notes = notesArray;
         return this;

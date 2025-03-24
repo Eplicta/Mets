@@ -6,6 +6,7 @@ public class MetsSampleConsoleCommands : ContainerCommandBase
 {
     public MetsSampleConsoleCommands() : base("sample")
     {
-        RegisterCommand<CreateConsoleCommand>();
+        RegisterCommand<CreateFromFileConsoleCommand>();
+        RegisterCommand<CreateFromStreamConsoleCommand>();
     }
 }
