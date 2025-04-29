@@ -9,6 +9,8 @@ using System.Xml;
 using Eplicta.Mets.Entities;
 using Eplicta.Mets.Helpers;
 using ICSharpCode.SharpZipLib.Tar;
+using Microsoft.IO;
+
 
 namespace Eplicta.Mets;
 
@@ -50,7 +52,7 @@ public class Parser
 public class Renderer
 {
     private readonly MetsData _metsData;
-
+    private static readonly RecyclableMemoryStreamManager _recyclableMsManager = new();
     public Renderer(MetsData metsData)
     {
         _metsData = metsData;
@@ -442,7 +444,7 @@ public class Renderer
 
     private ArchiveStream GetZipArchiveStream(string metsFileName, bool prettify, MetsSchema schema)
     {
-        var compressedFileStream = new MemoryStream();
+        var compressedFileStream = _recyclableMsManager.GetStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, true);
         var archiveStream = new ArchiveStream(compressedFileStream, null, zipArchive);
 
