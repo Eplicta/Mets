@@ -488,7 +488,7 @@ public class Renderer
 
     private ArchiveStream GetTarArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
     {
-        var compressedFileStream = new MemoryStream();
+        var compressedFileStream = _recyclableMsManager.GetStream();
         var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
         var archiveStream = new ArchiveStream(compressedFileStream, tarOutputStream);
 
