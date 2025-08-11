@@ -361,7 +361,8 @@ public class Renderer
                 div2.AppendChild(fptr);
             }
         }
-        else if (_metsData.Sources != null && _metsData.Sources.Any())
+
+        if (_metsData.Sources != null && _metsData.Sources.Any())
         {
             foreach (var item in _metsData.Sources)
             {
