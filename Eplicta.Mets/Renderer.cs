@@ -314,9 +314,18 @@ public class Renderer
         var filegrp = doc.CreateElement("fileGrp");
         filesec.AppendChild(filegrp);
 
-        if (_metsData.Files != null && _metsData.Files.Any())
+        if (_metsData.Files?.Any() == false && _metsData.Sources?.Any() == false)
         {
-            foreach (var item in _metsData.Files)
+            var structMap = doc.CreateElement("structMap");
+            structMap.SetAttribute("LABEL", "No structmap defined in this information package");
+            root.AppendChild(structMap);
+
+            var div = doc.CreateElement("div");
+            structMap.AppendChild(div);
+        }
+        else
+        {
+            foreach (var item in _metsData.Files ?? [])
             {
                 var file = doc.CreateElement("file");
                 file.SetAttribute("ID", item.Id);
@@ -342,28 +351,7 @@ public class Renderer
                 filegrp.AppendChild(file);
             }
 
-            var structMap = doc.CreateElement("structMap");
-            structMap.SetAttribute("TYPE", "physical");
-            root.AppendChild(structMap);
-
-            var div = doc.CreateElement("div");
-            div.SetAttribute("TYPE", "files");
-            structMap.AppendChild(div);
-
-            var div2 = doc.CreateElement("div");
-            div2.SetAttribute("TYPE", "publication");
-            div.AppendChild(div2);
-
-            foreach (var item in _metsData.Files)
-            {
-                var fptr = doc.CreateElement("fptr");
-                fptr.SetAttribute("FILEID", item.Id);
-                div2.AppendChild(fptr);
-            }
-        }
-        else if (_metsData.Sources != null && _metsData.Sources.Any())
-        {
-            foreach (var item in _metsData.Sources)
+            foreach (var item in _metsData.Sources ?? [])
             {
                 var created = item.CreationTime ?? DateTime.MinValue;
 
@@ -404,21 +392,21 @@ public class Renderer
             div2.SetAttribute("TYPE", "publication");
             div.AppendChild(div2);
 
-            foreach (var item in _metsData.Sources)
+            foreach (var item in _metsData.Files ?? [])
             {
                 var fptr = doc.CreateElement("fptr");
                 fptr.SetAttribute("FILEID", item.Id);
                 div2.AppendChild(fptr);
             }
-        }
-        else
-        {
-            var structMap = doc.CreateElement("structMap");
-            structMap.SetAttribute("LABEL", "No structmap defined in this information package");
-            root.AppendChild(structMap);
 
-            var div = doc.CreateElement("div");
-            structMap.AppendChild(div);
+            foreach (var item in _metsData.Sources ?? [])
+            {
+                var fptr = doc.CreateElement("fptr");
+                fptr.SetAttribute("FILEID", item.Id);
+                div2.AppendChild(fptr);
+            }
+
+
         }
     }
 
