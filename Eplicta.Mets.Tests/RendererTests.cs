@@ -50,7 +50,7 @@ public class RendererTests
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
             .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
-            .AddFile(new FileSource { Data = []})
+            .AddFile(new DataFileSource { Data = []})
             .Build();
         var sut = new Renderer(metsData);
 
@@ -78,7 +78,7 @@ public class RendererTests
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
             .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
-            .AddFile(new FileSource { Data = [] })
+            .AddFile(new DataFileSource { Data = [] })
             .Build();
         var sut = new Renderer(metsData);
 
@@ -110,7 +110,7 @@ public class RendererTests
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
             .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
-            .AddFile(new FileSource { Data = [] })
+            .AddFile(new DataFileSource { Data = [] })
             .Build();
         var sut = new Renderer(metsData);
 
@@ -146,7 +146,7 @@ public class RendererTests
                 Type = MetsData.EAltRecordType.PreviousSubmissionAgreement,
                 InnerText = "a3"
             })
-            .AddFile(new FileSource { Data = [] })
+            .AddFile(new DataFileSource { Data = [] })
             .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
             .Build();
         var sut = new Renderer(metsData);
@@ -180,7 +180,7 @@ public class RendererTests
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
             .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
-            .AddFile(new FileSource { Data = [] })
+            .AddFile(new DataFileSource { Data = [] })
             .Build();
         var sut = new Renderer(metsData);
 
