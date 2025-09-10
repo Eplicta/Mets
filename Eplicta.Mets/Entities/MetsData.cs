@@ -97,7 +97,7 @@ public record MetsData
     public ModsSectionData Mods { get; set; }
     public FileData[] Files { get; set; }
 
-    public StreamSource[] Sources { get; set; }
+    public StreamFileSource[] Sources { get; set; }
 
     public MetsAttribute[] Attributes { get; set; }
     public string MetsProfile {get; set;}
