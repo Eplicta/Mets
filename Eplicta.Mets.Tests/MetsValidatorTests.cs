@@ -39,7 +39,7 @@ public class MetsValidatorTests
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
             .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
-            .AddFile(new FileSource { Data = [] })
+            .AddFile(new DataFileSource { Data = [] })
             .Build();
         var document = new Renderer(modsData).Render();
         var sut = new MetsValidator();

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Eplicta.Mets.Console.Commands.Mets;
 
@@ -10,6 +11,7 @@ public class CreateFromFileConsoleCommand : CreateConsoleCommand
 
     protected override async Task AddResourceAsync(Builder metsDataBuilder)
     {
-        metsDataBuilder.AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName);
+        throw new NotImplementedException();
+        //metsDataBuilder.AddFile(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName);
     }
 }
