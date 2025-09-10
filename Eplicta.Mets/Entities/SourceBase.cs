@@ -10,6 +10,11 @@ public abstract record SourceBase
     public string Id { get; set; }
 
     /// <summary>
+    /// Name of the resource is a mandatory field.
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
     /// Optional parameter. If not provided this field will be omitted.
     /// </summary>
     public string Use { get; set; }

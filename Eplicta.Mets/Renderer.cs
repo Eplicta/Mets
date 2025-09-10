@@ -442,6 +442,7 @@ public class Renderer
             var entry = zipArchive.CreateEntry(source.Name);
 
             using (var zipEntryStream = entry.Open())
+
             using (var hashingStream = new CryptoStream(zipEntryStream, md5, CryptoStreamMode.Write))
             {
                 source.Stream.CopyTo(hashingStream);
