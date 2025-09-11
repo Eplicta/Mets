@@ -26,6 +26,9 @@ public record DeserializedMets
 
         [XmlAttribute("CREATEDATE")]
         public DateTime CreateDate { get; set; }
+        
+        [XmlAttribute("COLLECTDATE")]
+        public DateTime CollectDate { get; set; }
 
         [XmlAttribute("RECORDSTATUS")]
         public string RecordStatus { get; set; }
