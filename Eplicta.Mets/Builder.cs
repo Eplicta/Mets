@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Eplicta.Mets.Entities;
 
@@ -10,7 +9,7 @@ public class Builder
 {
     private readonly List<MetsData.AltRecord> _altRecords = new();
     private readonly List<MetsData.FileData> _fileDatas = new();
-    private readonly List<StreamSource> _streamSources = new();
+    private readonly List<StreamFileSource> _streamSources = new();
     private readonly MetsData.EMetsAttributeName[] _requiredMetsAttributes = { MetsData.EMetsAttributeName.ObjId };
     private MetsData.AgentData _agentData = new();
     private MetsData.CompanyData _companyData = new();
@@ -27,8 +26,6 @@ public class Builder
 
     public MetsData Build()
     {
-        // if (_altRecords.Count < 3) throw new InvalidOperationException("At least three altRecords has to be added.");
-
         var missingAttributes = _requiredMetsAttributes.Where(x => _attributes.All(y => y.Name != x)).ToArray();
         var multiple = missingAttributes.Length > 1;
 
@@ -49,58 +46,55 @@ public class Builder
         };
     }
 
-    public Builder AddResource(StreamSource source)
+    public Builder AddFile(SourceBase source)
     {
-        source.Name = CheckForDuplicateFileNames(source.Name);
-        _streamSources.Add(source);
-        return this;
-    }
-
-    [Obsolete("Use Add resource instead.")]
-    public Builder AddFile(FileSource fileSource)
-    {
-        var fileName = fileSource.FileName;
-        var id = fileSource.Id;
-        var data = fileSource.Data;
-        var created = fileSource.CreationTime;
-
-        if (!string.IsNullOrEmpty(fileSource.FilePath))
+        switch (source)
         {
-            var fileInfo = new FileInfo(fileSource.FilePath);
-            data = File.ReadAllBytes(fileSource.FilePath);
-            fileName ??= fileInfo.Name;
-            created ??= fileInfo.CreationTime;
-        }
-
-        if (data == null) throw new NullReferenceException("No data provided or found.");
-
-        var fileData = new MetsData.FileData
-        {
-            Id = id ?? $"ID{data.ToHash()}",
-            Use = fileSource.Use, //TODO: "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"
-            MimeType = fileSource.MimeType ?? FileExtensions.GetMimeType(fileName),
-            Data = data,
-            Size = fileSource.Size ?? data.Length,
-            Created = created ?? DateTime.MinValue,
-            LocType = MetsData.ELocType.Url,
-            FileName = CheckForDuplicateFileNames(fileName)
-            //Ns2Href = fileSource.Ns2Href
-        };
-
-        if (fileSource.ChecksumType != null)
-        {
-            fileData = fileData with
+            case StreamFileSource streamSource:
             {
-                ChecksumType = fileSource.ChecksumType.Value,
-                Checksum = fileSource.Checksum ?? data.ToHash(fileSource.ChecksumType.Value, HashExtensions.Style.Base64)
-            };
-        }
+                source.Name = CheckForDuplicateFileNames(source.Name);
+                _streamSources.Add(streamSource);
+                break;
+            }
+            case DataFileSource fileSource:
+            {
+                var fileName = fileSource.Name;
+                var id = fileSource.Id;
+                var data = fileSource.Data;
+                var created = fileSource.CreationTime;
 
-        _fileDatas.Add(fileData);
+                if (data == null) throw new NullReferenceException("No data provided or found.");
+
+                var fileData = new MetsData.FileData
+                {
+                    Id = id ?? $"ID{data.ToHash()}",
+                    Use = fileSource.Use, //TODO: "Acrobat PDF/X - Portable Document Format - Exchange 1:1999;PRONOM:fmt/144"
+                    MimeType = fileSource.MimeType ?? FileExtensions.GetMimeType(fileName),
+                    Data = data,
+                    Size = fileSource.Size ?? data.Length,
+                    Created = created ?? DateTime.MinValue,
+                    LocType = MetsData.ELocType.Url,
+                    FileName = CheckForDuplicateFileNames(fileName)
+                };
+
+                if (fileSource.ChecksumType != null)
+                {
+                    fileData = fileData with
+                    {
+                        ChecksumType = fileSource.ChecksumType.Value,
+                        Checksum = fileSource.Checksum ?? data.ToHash(fileSource.ChecksumType.Value, HashExtensions.Style.Base64)
+                    };
+                }
+
+                _fileDatas.Add(fileData);
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(source), source, null);
+        }
 
         return this;
     }
-
     private string CheckForDuplicateFileNames(string fileName)
     {
         var fileNames = _fileDatas.Select(x => x.FileName).ToArray();
@@ -126,8 +120,7 @@ public class Builder
         return temp;
     }
 
-    [Obsolete("Use Add resource instead.")]
-    public Builder AddFiles(IEnumerable<FileSource> fileSources)
+    public Builder AddFiles(IEnumerable<DataFileSource> fileSources)
     {
         foreach (var fileSource in fileSources)
         {

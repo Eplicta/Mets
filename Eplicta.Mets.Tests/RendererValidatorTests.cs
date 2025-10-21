@@ -37,7 +37,7 @@ public class RendererValidatorTests
             .AddAltRecord(new MetsData.AltRecord())
             .AddAltRecord(new MetsData.AltRecord())
             .AddMetsAttributes(new [] { new MetsData.MetsAttribute{ Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }})
-            .AddFile(new FileSource { Data = Array.Empty<byte>() })
+            .AddFile(new DataFileSource { Data = Array.Empty<byte>() })
             .Build();
         var document = new Renderer(modsData).Render();
         var schema = Mets.Helpers.Resource.GetXml(format);

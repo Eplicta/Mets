@@ -17,14 +17,14 @@ public class CreateFromStreamConsoleCommand : CreateConsoleCommand
         var fileInfo = new FileInfo(fileName);
 
         var stream = await LoadFileIntoMemoryStreamAsync(fileName);
-        var streamSource = new StreamSource
+        var streamSource = new StreamFileSource
         {
             Name = fileInfo.Name,
             MimeType = FileExtensions.GetMimeType(fileName),
             CreationTime = fileInfo.CreationTime,
             Stream = stream,
         };
-        metsDataBuilder.AddResource(streamSource);
+        metsDataBuilder.AddFile(streamSource);
     }
 
     private async Task<MemoryStream> LoadFileIntoMemoryStreamAsync(string filePath)
