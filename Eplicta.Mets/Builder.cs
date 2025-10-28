@@ -95,6 +95,7 @@ public class Builder
 
         return this;
     }
+
     private string CheckForDuplicateFileNames(string fileName)
     {
         var fileNames = _fileDatas.Select(x => x.FileName).ToArray();
