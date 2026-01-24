@@ -83,13 +83,13 @@ public class Renderer
 
             metshdr.AppendChild(agentElement);
 
-            var compName = doc.CreateElement("mets:name");
+            var compName = doc.CreateElement("name");
             compName.InnerText = _metsData.Agent.Name;
             agentElement.AppendChild(compName);
 
             if (_metsData.Agent.Note != null)
             {
-                var note = doc.CreateElement("mets:note");
+                var note = doc.CreateElement("note");
                 note.InnerText = _metsData.Agent.Note;
                 agentElement.AppendChild(note);
             }
@@ -104,13 +104,13 @@ public class Renderer
 
             metshdr.AppendChild(companyAgent);
 
-            var companyname = doc.CreateElement("mets:name");
+            var companyname = doc.CreateElement("name");
             companyname.InnerText = _metsData.Company.Name;
             companyAgent.AppendChild(companyname);
 
             if (_metsData.Company.Note != null)
             {
-                var companynote = doc.CreateElement("mets:note");
+                var companynote = doc.CreateElement("note");
                 companynote.InnerText = _metsData.Company.Note;
                 companyAgent.AppendChild(companynote);
             }
@@ -126,13 +126,13 @@ public class Renderer
             companySoftware.SetAttribute("OTHERTYPE", _metsData.Software.OtherType.ToString().ToUpper());
             metshdr.AppendChild(companySoftware);
 
-            var softwareName = doc.CreateElement("mets:name");
+            var softwareName = doc.CreateElement("mname");
             softwareName.InnerText = _metsData.Software.Name;
             companySoftware.AppendChild(softwareName);
 
             if (_metsData.Software.Note != null)
             {
-                var softwareNote = doc.CreateElement("mets:note");
+                var softwareNote = doc.CreateElement("note");
                 softwareNote.InnerText = _metsData.Software.Note;
                 companySoftware.AppendChild(softwareNote);
             }
