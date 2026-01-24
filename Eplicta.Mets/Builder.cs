@@ -14,12 +14,7 @@ public class Builder
     private MetsData.AgentData _agentData = new();
     private MetsData.CompanyData _companyData = new();
     private MetsData.SoftwareData _softwareData = new();
-    private MetsData.ModsSectionData _modsSectionData = new()
-    {
-        Url = new Uri("https://some.url"),
-        ModsTitle = "Unknown",
-        ModsTitleInfo = "Unknown"
-    };
+    private MetsData.ModsSectionData _modsSectionData;
     private MetsData.MetsHdrData _metsHdrData = new();
     private MetsData.MetsAttribute[] _attributes = [];
     private string _metsProfile = "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml";

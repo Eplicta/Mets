@@ -135,7 +135,7 @@ public record MetsData
 
     public record AltRecord
     {
-        public EAltRecordType Type { get; set; }
+        public EAltRecordType? Type { get; set; }
         public string InnerText { get; set; }
     }
 
