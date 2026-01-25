@@ -92,7 +92,7 @@ public record MetsData
 
     public MetsHdrData MetsHdr { get; set; }
     public AgentData Agent { get; set; }
-    public CompanyData Company { get; set; }
+    //public CompanyData Company { get; set; }
     public SoftwareData Software { get; set; }
     public AltRecord[] AltRecords { get; set; }
     public ModsSectionData Mods { get; set; }
@@ -116,13 +116,13 @@ public record MetsData
         public ERole Role { get; set; }
     }
 
-    public record CompanyData
-    {
-        public string Name { get; set; }
-        public string Note { get; set; }
-        public ERole Role { get; set; }
-        public EType Type { get; set; }
-    }
+    //public record CompanyData
+    //{
+    //    public string Name { get; set; }
+    //    public string Note { get; set; }
+    //    public ERole Role { get; set; }
+    //    public EType Type { get; set; }
+    //}
 
     public record SoftwareData
     {

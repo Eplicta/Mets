@@ -24,13 +24,13 @@ public abstract class CreateConsoleCommand : AsyncActionCommandBase
                 Type = MetsData.EType.Other,
                 Role = MetsData.ERole.Archivist
             })
-            .SetCompany(new MetsData.CompanyData
-            {
-                Name = "Eplicta AB",
-                Note = "http://id.kb.se/organisations/SE0000000000",
-                Role = MetsData.ERole.Editor,
-                Type = MetsData.EType.Other
-            })
+            //.SetCompany(new MetsData.CompanyData
+            //{
+            //    Name = "Eplicta AB",
+            //    Note = "http://id.kb.se/organisations/SE0000000000",
+            //    Role = MetsData.ERole.Editor,
+            //    Type = MetsData.EType.Other
+            //})
             .SetModsSection(new MetsData.ModsSectionData
             {
                 Xmlns = "http://www.w3.org/1999/xlink",

@@ -96,25 +96,25 @@ public class Renderer
         }
 
         //Static info of the company
-        if (_metsData.Company != null)
-        {
-            var companyAgent = doc.CreateElement("company");
-            companyAgent.SetAttribute("ROLE", _metsData.Company.Role.ToString().ToUpper());
-            companyAgent.SetAttribute("TYPE", _metsData.Company.Type.ToString().ToUpper());
+        //if (_metsData.Company != null)
+        //{
+        //    var companyAgent = doc.CreateElement("company");
+        //    companyAgent.SetAttribute("ROLE", _metsData.Company.Role.ToString().ToUpper());
+        //    companyAgent.SetAttribute("TYPE", _metsData.Company.Type.ToString().ToUpper());
 
-            metshdr.AppendChild(companyAgent);
+        //    metshdr.AppendChild(companyAgent);
 
-            var companyname = doc.CreateElement("name");
-            companyname.InnerText = _metsData.Company.Name;
-            companyAgent.AppendChild(companyname);
+        //    var companyname = doc.CreateElement("name");
+        //    companyname.InnerText = _metsData.Company.Name;
+        //    companyAgent.AppendChild(companyname);
 
-            if (_metsData.Company.Note != null)
-            {
-                var companynote = doc.CreateElement("note");
-                companynote.InnerText = _metsData.Company.Note;
-                companyAgent.AppendChild(companynote);
-            }
-        }
+        //    if (_metsData.Company.Note != null)
+        //    {
+        //        var companynote = doc.CreateElement("note");
+        //        companynote.InnerText = _metsData.Company.Note;
+        //        companyAgent.AppendChild(companynote);
+        //    }
+        //}
 
         //software section
         var companySoftware = doc.CreateElement("agent");
@@ -126,7 +126,7 @@ public class Renderer
             companySoftware.SetAttribute("OTHERTYPE", _metsData.Software.OtherType.ToString().ToUpper());
             metshdr.AppendChild(companySoftware);
 
-            var softwareName = doc.CreateElement("mname");
+            var softwareName = doc.CreateElement("name");
             softwareName.InnerText = _metsData.Software.Name;
             companySoftware.AppendChild(softwareName);
 
