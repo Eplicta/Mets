@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Eplicta.Mets.Entities;
+using Eplicta.Mets.Helpers;
+using ICSharpCode.SharpZipLib.Tar;
+using Microsoft.IO;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -6,48 +10,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Eplicta.Mets.Entities;
-using Eplicta.Mets.Helpers;
-using ICSharpCode.SharpZipLib.Tar;
-using Microsoft.IO;
+using static Eplicta.Mets.Entities.MetsData;
 
 
 namespace Eplicta.Mets;
-
-public class Parser
-{
-    public (MetsData MetsData, DateTime CreateTime) GetMetsData(string xmlString)
-    {
-        var doc = new XmlDocument();
-        doc.LoadXml(xmlString);
-
-        var namespaceManager = new XmlNamespaceManager(doc.NameTable);
-        namespaceManager.AddNamespace("mets", "http://www.loc.gov/METS/");
-
-        var createTime = GetDateTime(doc, namespaceManager);
-
-        //TODO: Unpack all data
-        var metsData = new MetsData
-        {
-            Attributes = []
-        };
-
-        return (metsData, createTime);
-    }
-
-    private static DateTime GetDateTime(XmlDocument document, XmlNamespaceManager namespaceManager)
-    {
-        var metsHdrNode = document.DocumentElement?.SelectSingleNode("//mets:metsHdr", namespaceManager) as XmlElement;
-        var createdDate = metsHdrNode?.GetAttribute("CREATEDATE");
-
-        if (!DateTime.TryParse(createdDate, out var created))
-        {
-            throw new InvalidOperationException($"Cannot parse CREATEDATE {createdDate} to {nameof(DateTime)}.");
-        }
-
-        return created;
-    }
-}
 
 public class Renderer
 {
@@ -130,25 +96,25 @@ public class Renderer
         }
 
         //Static info of the company
-        if (_metsData.Company != null)
-        {
-            var companyAgent = doc.CreateElement("agent");
-            companyAgent.SetAttribute("ROLE", _metsData.Company.Role.ToString().ToUpper());
-            companyAgent.SetAttribute("TYPE", _metsData.Company.Type.ToString().ToUpper());
+        //if (_metsData.Company != null)
+        //{
+        //    var companyAgent = doc.CreateElement("company");
+        //    companyAgent.SetAttribute("ROLE", _metsData.Company.Role.ToString().ToUpper());
+        //    companyAgent.SetAttribute("TYPE", _metsData.Company.Type.ToString().ToUpper());
 
-            metshdr.AppendChild(companyAgent);
+        //    metshdr.AppendChild(companyAgent);
 
-            var companyname = doc.CreateElement("name");
-            companyname.InnerText = _metsData.Company.Name;
-            companyAgent.AppendChild(companyname);
+        //    var companyname = doc.CreateElement("name");
+        //    companyname.InnerText = _metsData.Company.Name;
+        //    companyAgent.AppendChild(companyname);
 
-            if (_metsData.Company.Note != null)
-            {
-                var companynote = doc.CreateElement("note");
-                companynote.InnerText = _metsData.Company.Note;
-                companyAgent.AppendChild(companynote);
-            }
-        }
+        //    if (_metsData.Company.Note != null)
+        //    {
+        //        var companynote = doc.CreateElement("note");
+        //        companynote.InnerText = _metsData.Company.Note;
+        //        companyAgent.AppendChild(companynote);
+        //    }
+        //}
 
         //software section
         var companySoftware = doc.CreateElement("agent");
@@ -178,26 +144,32 @@ public class Renderer
             {
                 var recordId1 = doc.CreateElement("altRecordID");
                 recordId1.InnerText = altRecord.InnerText;
-                recordId1.SetAttribute("TYPE", altRecord.Type.ToString().ToUpper());
+                if(altRecord.Type != null) recordId1.SetAttribute("TYPE", altRecord.Type.ToString().ToUpper());
                 metshdr.AppendChild(recordId1);
             }
         }
 
-        //start of dmdSec
-        var dmdSec = doc.CreateElement("dmdSec");
-        dmdSec.SetAttribute("ID", "ID1");
-        root.AppendChild(dmdSec);
+        //mets document id
+        var metsDocumentId = doc.CreateElement("metsDocumentID");
+        metsDocumentId.SetAttribute("ID", "sip.xml");
+        metshdr.AppendChild(metsDocumentId);
 
-        var mdwrap = doc.CreateElement("mdWrap");
-        mdwrap.SetAttribute("MDTYPE", "MODS");
-        dmdSec.AppendChild(mdwrap);
-
-        var xmldata = doc.CreateElement("xmlData");
-        mdwrap.AppendChild(xmldata);
-
-        //mods:mods
         if (_metsData.Mods != null)
         {
+            //start of dmdSec
+            var dmdSec = doc.CreateElement("dmdSec");
+            dmdSec.SetAttribute("ID", "ID1");
+            root.AppendChild(dmdSec);
+
+            var mdwrap = doc.CreateElement("mdWrap");
+            mdwrap.SetAttribute("MDTYPE", "MODS");
+            dmdSec.AppendChild(mdwrap);
+
+            var xmldata = doc.CreateElement("xmlData");
+            mdwrap.AppendChild(xmldata);
+
+            //mods:mods
+
             var modsmods = doc.CreateElement("mods", "mods", "http://www.loc.gov/mods/v3");
             modsmods.SetAttribute("xmlns", _metsData.Mods.Xmlns);
             xmldata.AppendChild(modsmods);

@@ -12,14 +12,9 @@ public class Builder
     private readonly List<StreamFileSource> _streamSources = new();
     private readonly MetsData.EMetsAttributeName[] _requiredMetsAttributes = { MetsData.EMetsAttributeName.ObjId };
     private MetsData.AgentData _agentData = new();
-    private MetsData.CompanyData _companyData = new();
+    //private MetsData.CompanyData _companyData = new();
     private MetsData.SoftwareData _softwareData = new();
-    private MetsData.ModsSectionData _modsSectionData = new()
-    {
-        Url = new Uri("https://some.url"),
-        ModsTitle = "Unknown",
-        ModsTitleInfo = "Unknown"
-    };
+    private MetsData.ModsSectionData _modsSectionData;
     private MetsData.MetsHdrData _metsHdrData = new();
     private MetsData.MetsAttribute[] _attributes = [];
     private string _metsProfile = "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml";
@@ -34,7 +29,7 @@ public class Builder
         return new MetsData
         {
             Agent = _agentData,
-            Company = _companyData,
+            //Company = _companyData,
             Software = _softwareData,
             Mods = _modsSectionData,
             Files = _fileDatas?.ToArray(),
@@ -136,11 +131,11 @@ public class Builder
         return this;
     }
 
-    public Builder SetCompany(MetsData.CompanyData companyData)
-    {
-        _companyData = companyData;
-        return this;
-    }
+    //public Builder SetCompany(MetsData.CompanyData companyData)
+    //{
+    //    _companyData = companyData;
+    //    return this;
+    //}
 
     public Builder AddAltRecord(MetsData.AltRecord altRecord)
     {
