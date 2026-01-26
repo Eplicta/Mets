@@ -17,20 +17,13 @@ public abstract class CreateConsoleCommand : AsyncActionCommandBase
     public override async Task InvokeAsync(string[] param)
     {
         var metsDataBuilder = new Builder()
-            .SetAgent(new MetsData.AgentData
+            .AddAgent(new MetsData.AgentData
             {
                 Name = "Some Company",
                 Note = "http://id.kb.se/organisations/SE0000000000",
                 Type = MetsData.EType.Other,
                 Role = MetsData.ERole.Archivist
             })
-            //.SetCompany(new MetsData.CompanyData
-            //{
-            //    Name = "Eplicta AB",
-            //    Note = "http://id.kb.se/organisations/SE0000000000",
-            //    Role = MetsData.ERole.Editor,
-            //    Type = MetsData.EType.Other
-            //})
             .SetModsSection(new MetsData.ModsSectionData
             {
                 Xmlns = "http://www.w3.org/1999/xlink",

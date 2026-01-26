@@ -1,8 +1,4 @@
-﻿using Eplicta.Mets.Entities;
-using Eplicta.Mets.Helpers;
-using ICSharpCode.SharpZipLib.Tar;
-using Microsoft.IO;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -10,15 +6,19 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Eplicta.Mets.Entities;
+using Eplicta.Mets.Helpers;
+using ICSharpCode.SharpZipLib.Tar;
+using Microsoft.IO;
 using static Eplicta.Mets.Entities.MetsData;
-
 
 namespace Eplicta.Mets;
 
 public class Renderer
 {
-    private readonly MetsData _metsData;
     private static readonly RecyclableMemoryStreamManager _recyclableMsManager = new();
+    private readonly MetsData _metsData;
+
     public Renderer(MetsData metsData)
     {
         _metsData = metsData;
@@ -42,7 +42,7 @@ public class Renderer
         root.SetAttribute("OBJID", null);
 
         root.SetAttribute("TYPE", "SIP");
-        root.SetAttribute("PROFILE", _metsData.MetsProfile);
+        if (schema == MetsSchema.KB) root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
 
         if (_metsData.Attributes != null && _metsData.Attributes.Length != 0)
         {
@@ -75,46 +75,25 @@ public class Renderer
             }
         }
 
-        if (_metsData.Agent != null)
+        foreach (var agent in _metsData.Agents ?? [])
         {
             var agentElement = doc.CreateElement("agent");
-            agentElement.SetAttribute("ROLE", _metsData.Agent.Role.ToString().ToUpper());
-            agentElement.SetAttribute("TYPE", _metsData.Agent.Type.ToString().ToUpper());
+            agentElement.SetAttribute("ROLE", agent.Role.ToString().ToUpper());
+            agentElement.SetAttribute("TYPE", agent.Type.ToString().ToUpper());
 
             metshdr.AppendChild(agentElement);
 
             var compName = doc.CreateElement("name");
-            compName.InnerText = _metsData.Agent.Name;
+            compName.InnerText = agent.Name;
             agentElement.AppendChild(compName);
 
-            if (_metsData.Agent.Note != null)
+            if (agent.Note != null)
             {
                 var note = doc.CreateElement("note");
-                note.InnerText = _metsData.Agent.Note;
+                note.InnerText = agent.Note;
                 agentElement.AppendChild(note);
             }
         }
-
-        //Static info of the company
-        //if (_metsData.Company != null)
-        //{
-        //    var companyAgent = doc.CreateElement("company");
-        //    companyAgent.SetAttribute("ROLE", _metsData.Company.Role.ToString().ToUpper());
-        //    companyAgent.SetAttribute("TYPE", _metsData.Company.Type.ToString().ToUpper());
-
-        //    metshdr.AppendChild(companyAgent);
-
-        //    var companyname = doc.CreateElement("name");
-        //    companyname.InnerText = _metsData.Company.Name;
-        //    companyAgent.AppendChild(companyname);
-
-        //    if (_metsData.Company.Note != null)
-        //    {
-        //        var companynote = doc.CreateElement("note");
-        //        companynote.InnerText = _metsData.Company.Note;
-        //        companyAgent.AppendChild(companynote);
-        //    }
-        //}
 
         //software section
         var companySoftware = doc.CreateElement("agent");
@@ -144,7 +123,7 @@ public class Renderer
             {
                 var recordId1 = doc.CreateElement("altRecordID");
                 recordId1.InnerText = altRecord.InnerText;
-                if(altRecord.Type != null) recordId1.SetAttribute("TYPE", altRecord.Type.ToString().ToUpper());
+                if (altRecord.Type != null) recordId1.SetAttribute("TYPE", altRecord.Type?.ToString().ToUpper());
                 metshdr.AppendChild(recordId1);
             }
         }
@@ -341,7 +320,7 @@ public class Renderer
 
                 var flocat = doc.CreateElement("FLocat");
                 //flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
-                flocat.SetAttribute("LOCTYPE", MetsData.ELocType.Url.ToString().ToUpper());
+                flocat.SetAttribute("LOCTYPE", ELocType.Url.ToString().ToUpper());
 
                 var href = schema.Name == "eARD_Paket_FGS-PUBL_mets.xsd" ? $"file:{item.Name}" : $"file:///{item.Name}";
                 flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", href);
@@ -377,8 +356,6 @@ public class Renderer
                 fptr.SetAttribute("FILEID", item.Id);
                 div2.AppendChild(fptr);
             }
-
-
         }
     }
 
@@ -431,7 +408,7 @@ public class Renderer
             if (string.IsNullOrEmpty(source.Checksum))
             {
                 source.Checksum = hash;
-                source.ChecksumType = MetsData.EChecksumType.MD5;
+                source.ChecksumType = EChecksumType.MD5;
             }
         }
 
