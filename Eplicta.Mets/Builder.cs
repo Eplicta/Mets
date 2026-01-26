@@ -11,13 +11,11 @@ public class Builder
     private readonly List<MetsData.FileData> _fileDatas = new();
     private readonly List<StreamFileSource> _streamSources = new();
     private readonly MetsData.EMetsAttributeName[] _requiredMetsAttributes = { MetsData.EMetsAttributeName.ObjId };
-    private MetsData.AgentData _agentData = new();
-    //private MetsData.CompanyData _companyData = new();
+    private MetsData.AgentData[] _agentDatas = [];
     private MetsData.SoftwareData _softwareData = new();
     private MetsData.ModsSectionData _modsSectionData;
     private MetsData.MetsHdrData _metsHdrData = new();
     private MetsData.MetsAttribute[] _attributes = [];
-    private string _metsProfile = "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml";
 
     public MetsData Build()
     {
@@ -28,8 +26,7 @@ public class Builder
 
         return new MetsData
         {
-            Agent = _agentData,
-            //Company = _companyData,
+            Agents = _agentDatas,
             Software = _softwareData,
             Mods = _modsSectionData,
             Files = _fileDatas?.ToArray(),
@@ -37,7 +34,6 @@ public class Builder
             AltRecords = _altRecords.ToArray(),
             MetsHdr = _metsHdrData,
             Attributes = _attributes,
-            MetsProfile = _metsProfile
         };
     }
 
@@ -125,17 +121,11 @@ public class Builder
         return this;
     }
 
-    public Builder SetAgent(MetsData.AgentData agentData)
+    public Builder AddAgent(MetsData.AgentData agentData)
     {
-        _agentData = agentData;
+        _agentDatas = _agentDatas.Union([agentData]).ToArray();
         return this;
     }
-
-    //public Builder SetCompany(MetsData.CompanyData companyData)
-    //{
-    //    _companyData = companyData;
-    //    return this;
-    //}
 
     public Builder AddAltRecord(MetsData.AltRecord altRecord)
     {
@@ -185,11 +175,11 @@ public class Builder
         return this;
     }
 
-    public Builder SetMetsProfile(string profile)
-    {
-        _metsProfile = profile;
-        return this;
-    }
+    //public Builder SetMetsProfile(string profile)
+    //{
+    //    _metsProfile = profile;
+    //    return this;
+    //}
 
     public Builder AddModsNote(MetsData.ModsNote note)
     {

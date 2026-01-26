@@ -8,8 +8,8 @@ namespace Eplicta.Mets.Tests;
 
 public class RendererTests
 {
-    private const string DefaultBuilderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mets xmlns=\"http://www.loc.gov/METS/\" xmlns:mods=\"http://www.loc.gov/mods/v3\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" OBJID=\"\" TYPE=\"SIP\" PROFILE=\"http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml\"><metsHdr CREATEDATE=\"0001-01-01T00:00:00.0000000\"><agent ROLE=\"CREATOR\" TYPE=\"INDIVIDUAL\"><name></name></agent><agent ROLE=\"CREATOR\" TYPE=\"INDIVIDUAL\" OTHERTYPE=\"SOFTWARE\"><name></name></agent><altRecordID></altRecordID><altRecordID></altRecordID><altRecordID></altRecordID><metsDocumentID ID=\"sip.xml\" /></metsHdr><fileSec><fileGrp><file ID=\"IDD41D8CD98F00B204E9800998ECF8427E\" USE=\"\" MIMETYPE=\"\" SIZE=\"0\" CREATED=\"0001-01-01T00:00:00.0000000\" CHECKSUM=\"1B2M2Y8AsgTpgAmY7PhCfg==\" CHECKSUMTYPE=\"MD5\"><FLocat LOCTYPE=\"URL\" xlink:href=\"file:///\" xlink:type=\"simple\" /></file></fileGrp></fileSec><structMap TYPE=\"physical\"><div TYPE=\"files\"><div TYPE=\"publication\"><fptr FILEID=\"IDD41D8CD98F00B204E9800998ECF8427E\" /></div></div></structMap></mets>";
-    private const string DefaultNewData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mets xmlns=\"http://www.loc.gov/METS/\" xmlns:mods=\"http://www.loc.gov/mods/v3\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" OBJID=\"\" TYPE=\"SIP\" PROFILE=\"http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml\"><metsHdr CREATEDATE=\"0001-01-01T00:00:00.0000000\" /><dmdSec ID=\"ID1\"><mdWrap MDTYPE=\"MODS\"><xmlData /></mdWrap></dmdSec><fileSec><fileGrp /></fileSec><structMap LABEL=\"No structmap defined in this information package\"><div /></structMap></mets>";
+    private const string DefaultBuilderData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mets xmlns=\"http://www.loc.gov/METS/\" xmlns:mods=\"http://www.loc.gov/mods/v3\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" OBJID=\"\" TYPE=\"SIP\"><metsHdr CREATEDATE=\"0001-01-01T00:00:00.0000000\"><agent ROLE=\"CREATOR\" TYPE=\"INDIVIDUAL\" OTHERTYPE=\"SOFTWARE\"><name></name></agent><altRecordID></altRecordID><altRecordID></altRecordID><altRecordID></altRecordID><metsDocumentID ID=\"sip.xml\" /></metsHdr><fileSec><fileGrp><file ID=\"IDD41D8CD98F00B204E9800998ECF8427E\" USE=\"\" MIMETYPE=\"\" SIZE=\"0\" CREATED=\"0001-01-01T00:00:00.0000000\" CHECKSUM=\"1B2M2Y8AsgTpgAmY7PhCfg==\" CHECKSUMTYPE=\"MD5\"><FLocat LOCTYPE=\"URL\" xlink:href=\"file:///\" xlink:type=\"simple\" /></file></fileGrp></fileSec><structMap TYPE=\"physical\"><div TYPE=\"files\"><div TYPE=\"publication\"><fptr FILEID=\"IDD41D8CD98F00B204E9800998ECF8427E\" /></div></div></structMap></mets>";
+    private const string DefaultNewData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mets xmlns=\"http://www.loc.gov/METS/\" xmlns:mods=\"http://www.loc.gov/mods/v3\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" OBJID=\"\" TYPE=\"SIP\" ><metsHdr CREATEDATE=\"0001-01-01T00:00:00.0000000\" /><dmdSec ID=\"ID1\"><mdWrap MDTYPE=\"MODS\"><xmlData /></mdWrap></dmdSec><fileSec><fileGrp /></fileSec><structMap LABEL=\"No structmap defined in this information package\"><div /></structMap></mets>";
 
     [Fact]
     public void Basic()
@@ -67,7 +67,7 @@ public class RendererTests
     {
         //Arrange
         var metsData = new Builder()
-            .SetAgent(new MetsData.AgentData
+            .AddAgent(new MetsData.AgentData
             {
                 Note = "a1",
                 Type = MetsData.EType.Other,

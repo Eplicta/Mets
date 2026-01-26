@@ -19,7 +19,7 @@ public class ParseTests
             Role = MetsData.ERole.Editor
         };
         var metsData = new Builder()
-            .SetAgent(originalAgentData)
+            .AddAgent(originalAgentData)
             .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
             .Build();
         var renderer = new Renderer(metsData);

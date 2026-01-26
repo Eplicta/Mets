@@ -91,7 +91,7 @@ public record MetsData
     }
 
     public MetsHdrData MetsHdr { get; set; }
-    public AgentData Agent { get; set; }
+    public AgentData[] Agents { get; set; }
     //public CompanyData Company { get; set; }
     public SoftwareData Software { get; set; }
     public AltRecord[] AltRecords { get; set; }
@@ -101,7 +101,7 @@ public record MetsData
     public StreamFileSource[] Sources { get; set; }
 
     public MetsAttribute[] Attributes { get; set; }
-    public string MetsProfile {get; set;}
+    //public string MetsProfile {get; set;}
 
     public record MetsHdrData
     {
