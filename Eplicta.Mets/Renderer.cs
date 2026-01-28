@@ -18,6 +18,7 @@ public class Renderer
 {
     private static readonly RecyclableMemoryStreamManager _recyclableMsManager = new();
     private readonly MetsData _metsData;
+    private const string _metsNs = "http://www.loc.gov/METS/";
 
     public Renderer(MetsData metsData)
     {
@@ -29,20 +30,36 @@ public class Renderer
         schema ??= MetsSchema.Default;
         now ??= DateTime.UtcNow;
 
+
         var doc = new XmlDocument();
 
         var documentType = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
         doc.AppendChild(documentType);
 
-        var root = doc.CreateElement("mets");
+        var root = doc.CreateElement("mets", "mets", _metsNs); //TODO:mmm testa
         doc.AppendChild(root);
         root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
-        root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3");
+        if (_metsData.Mods != null) root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3"); //TODO:mmm testa
         root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
         root.SetAttribute("OBJID", null);
 
+
+        if (schema.Name == "mets.xsd") //TODO:mmm testa
+        {
+            root.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            root.SetAttribute("xmlns:ext", "ExtensionMETS");
+            root.SetAttribute("xsi:schemaLocation", "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd");
+            root.SetAttribute("ext:ARCHIVALNAME", "E-Arkiv");
+            root.SetAttribute("ext:APPRAISAL", "No");
+            root.SetAttribute("ext:ACCESSRESTRICT", "PuL");
+            root.SetAttribute("TYPE", "ERMS");
+        }
+
         root.SetAttribute("TYPE", "SIP");
-        if (schema == MetsSchema.KB) root.SetAttribute("PROFILE", "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml");
+        var profileUrl = schema.Name != "mets.xsd" ? "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml" : "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml";
+        root.SetAttribute("PROFILE", profileUrl); //TODO:mmm testa
+
+
 
         if (_metsData.Attributes != null && _metsData.Attributes.Length != 0)
         {
@@ -63,9 +80,11 @@ public class Renderer
         var dateNow = now.ToString("O");
 
         //Creates the metsHdr tag where agents and RecordID's will be
-        var metshdr = doc.CreateElement("metsHdr");
+        var metshdr = doc.CreateElement("mets", "metsHdr", _metsNs); //TODO:mmm testa
         root.AppendChild(metshdr);
         metshdr.SetAttribute("CREATEDATE", dateNow);
+        metshdr.SetAttribute("RECORDSTATUS", "NEW");
+        metshdr.SetAttribute("ext:OAISSTATUS", "SIP");
 
         if (_metsData.MetsHdr?.Attributes != null)
         {
@@ -77,26 +96,26 @@ public class Renderer
 
         foreach (var agent in _metsData.Agents ?? [])
         {
-            var agentElement = doc.CreateElement("agent");
+            var agentElement = doc.CreateElement("mets", "agent", _metsNs);
             agentElement.SetAttribute("ROLE", agent.Role.ToString().ToUpper());
             agentElement.SetAttribute("TYPE", agent.Type.ToString().ToUpper());
 
             metshdr.AppendChild(agentElement);
 
-            var compName = doc.CreateElement("name");
+            var compName = doc.CreateElement("mets", "name", _metsNs);
             compName.InnerText = agent.Name;
             agentElement.AppendChild(compName);
 
             if (agent.Note != null)
             {
-                var note = doc.CreateElement("note");
+                var note = doc.CreateElement("mets", "note", _metsNs);
                 note.InnerText = agent.Note;
                 agentElement.AppendChild(note);
             }
         }
 
         //software section
-        var companySoftware = doc.CreateElement("agent");
+        var companySoftware = doc.CreateElement("mets", "agent", _metsNs);
 
         if (_metsData.Software != null)
         {
@@ -105,13 +124,13 @@ public class Renderer
             companySoftware.SetAttribute("OTHERTYPE", _metsData.Software.OtherType.ToString().ToUpper());
             metshdr.AppendChild(companySoftware);
 
-            var softwareName = doc.CreateElement("name");
+            var softwareName = doc.CreateElement("mets", "name", _metsNs);
             softwareName.InnerText = _metsData.Software.Name;
             companySoftware.AppendChild(softwareName);
 
             if (_metsData.Software.Note != null)
             {
-                var softwareNote = doc.CreateElement("note");
+                var softwareNote = doc.CreateElement("mets", "note", _metsNs);
                 softwareNote.InnerText = _metsData.Software.Note;
                 companySoftware.AppendChild(softwareNote);
             }
@@ -121,78 +140,78 @@ public class Renderer
         {
             foreach (var altRecord in _metsData.AltRecords)
             {
-                var recordId1 = doc.CreateElement("altRecordID");
+                var recordId1 = doc.CreateElement("mets", "altRecordID", _metsNs);
                 recordId1.InnerText = altRecord.InnerText;
                 if (altRecord.Type != null) recordId1.SetAttribute("TYPE", altRecord.Type?.ToString().ToUpper());
                 metshdr.AppendChild(recordId1);
             }
-        }
+        }//TODO:mmm testa
 
-        //mets document id
-        var metsDocumentId = doc.CreateElement("metsDocumentID");
-        metsDocumentId.SetAttribute("ID", "sip.xml");
-        metshdr.AppendChild(metsDocumentId);
+        ////mets document id
+        //var metsDocumentId = doc.CreateElement("metsDocumentID");
+        //metsDocumentId.SetAttribute("ID", "sip.xml");
+        //metshdr.AppendChild(metsDocumentId);
 
         if (_metsData.Mods != null)
         {
             //start of dmdSec
-            var dmdSec = doc.CreateElement("dmdSec");
+            var dmdSec = doc.CreateElement("mets", "dmdSec", _metsNs);
             dmdSec.SetAttribute("ID", "ID1");
             root.AppendChild(dmdSec);
 
-            var mdwrap = doc.CreateElement("mdWrap");
+            var mdwrap = doc.CreateElement("mets", "mdWrap", _metsNs);
             mdwrap.SetAttribute("MDTYPE", "MODS");
             dmdSec.AppendChild(mdwrap);
 
-            var xmldata = doc.CreateElement("xmlData");
+            var xmldata = doc.CreateElement("mets", "xmlData", _metsNs);
             mdwrap.AppendChild(xmldata);
 
             //mods:mods
 
-            var modsmods = doc.CreateElement("mods", "mods", "http://www.loc.gov/mods/v3");
+            var modsmods = doc.CreateElement("mods", "mods", _metsNs);
             modsmods.SetAttribute("xmlns", _metsData.Mods.Xmlns);
             xmldata.AppendChild(modsmods);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.Identifier))
             {
-                var modsidentifier = doc.CreateElement("mods", "identifier", "http://www.loc.gov/mods/v3");
+                var modsidentifier = doc.CreateElement("mods", "identifier", _metsNs);
                 modsidentifier.SetAttribute("type", "local");
                 modsidentifier.InnerText = _metsData.Mods.Identifier;
                 modsmods.AppendChild(modsidentifier);
             }
 
-            var modslocation = doc.CreateElement("mods", "location", "http://www.loc.gov/mods/v3");
+            var modslocation = doc.CreateElement("mods", "location", _metsNs);
             modsmods.AppendChild(modslocation);
 
             //Allowed values: physicalLocation, shelfLocator or url
             if (_metsData.Mods.Url != null)
             {
-                var modsurl = doc.CreateElement("mods", "url", "http://www.loc.gov/mods/v3");
+                var modsurl = doc.CreateElement("mods", "url", _metsNs);
                 modsurl.InnerText = _metsData.Mods.Url.OriginalString;
                 modslocation.AppendChild(modsurl);
             }
 
             //Allowed values: abstract, accessCondition, classification, extension, genre, identifier, language, location, name, note, originInfo, part, physicalDescription, recordInfo, relatedItem, subject, tableOfContents, targetAudience, titleInfo, typeOfResource
-            var modsorigininfo = doc.CreateElement("mods", "originInfo", "http://www.loc.gov/mods/v3");
+            var modsorigininfo = doc.CreateElement("mods", "originInfo", _metsNs);
             modsmods.AppendChild(modsorigininfo);
 
             //Allowed values: place, publisher, dateIssued, dateCreated, dateCaptured, dateValid, dateModified, copyrightDate, dateOther, edition, issuance, frequency
-            var modsDateIssued = doc.CreateElement("mods", "dateIssued", "http://www.loc.gov/mods/v3");
+            var modsDateIssued = doc.CreateElement("mods", "dateIssued", _metsNs);
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
             modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("O");
             modsorigininfo.AppendChild(modsDateIssued);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.Publisher))
             {
-                var modstitle = doc.CreateElement("mods", "publisher", "http://www.loc.gov/mods/v3");
+                var modstitle = doc.CreateElement("mods", "publisher", _metsNs);
                 modstitle.InnerText = _metsData.Mods.Publisher;
                 modsorigininfo.AppendChild(modstitle);
             }
 
             if (_metsData.Mods.Place != null)
             {
-                var place = doc.CreateElement("mods", "place", "http://www.loc.gov/mods/v3");
-                var placeTerm = doc.CreateElement("mods", "placeTerm", "http://www.loc.gov/mods/v3");
+                var place = doc.CreateElement("mods", "place", _metsNs);
+                var placeTerm = doc.CreateElement("mods", "placeTerm", _metsNs);
                 placeTerm.InnerText = _metsData.Mods.Place.PlaceTerm;
                 place.AppendChild(placeTerm);
                 modsorigininfo.AppendChild(place);
@@ -200,28 +219,28 @@ public class Renderer
 
             if (!string.IsNullOrEmpty(_metsData.Mods.AccessCondition))
             {
-                var modsaccesscondition = doc.CreateElement("mods", "accessCondition", "http://www.loc.gov/mods/v3");
+                var modsaccesscondition = doc.CreateElement("mods", "accessCondition", _metsNs);
                 modsaccesscondition.InnerText = _metsData.Mods.AccessCondition;
                 modsmods.AppendChild(modsaccesscondition);
             }
 
-            var modstitleinfo = doc.CreateElement("mods", "titleInfo", "http://www.loc.gov/mods/v3");
+            var modstitleinfo = doc.CreateElement("mods", "titleInfo", _metsNs);
             modsmods.AppendChild(modstitleinfo);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.ModsTitle))
             {
-                var modstitle = doc.CreateElement("mods", "title", "http://www.loc.gov/mods/v3");
+                var modstitle = doc.CreateElement("mods", "title", _metsNs);
                 modstitle.InnerText = _metsData.Mods.ModsTitle;
                 modstitleinfo.AppendChild(modstitle);
             }
 
-            var modsrelateditem = doc.CreateElement("mods", "relatedItem", "http://www.loc.gov/mods/v3");
+            var modsrelateditem = doc.CreateElement("mods", "relatedItem", _metsNs);
             modsrelateditem.SetAttribute("type", "host");
             modsmods.AppendChild(modsrelateditem);
 
             if (_metsData.Mods.Uri != null)
             {
-                var modsidentifier2 = doc.CreateElement("mods", "identifier", "http://www.loc.gov/mods/v3");
+                var modsidentifier2 = doc.CreateElement("mods", "identifier", _metsNs);
                 modsidentifier2.SetAttribute("type", "uri");
                 modsidentifier2.InnerText = _metsData.Mods.Uri.OriginalString;
                 modsrelateditem.AppendChild(modsidentifier2);
@@ -229,10 +248,10 @@ public class Renderer
 
             if (!string.IsNullOrEmpty(_metsData.Mods.ModsTitleInfo))
             {
-                var modsTitleInfo = doc.CreateElement("mods", "titleInfo", "http://www.loc.gov/mods/v3");
+                var modsTitleInfo = doc.CreateElement("mods", "titleInfo", _metsNs);
                 modsrelateditem.AppendChild(modsTitleInfo);
 
-                var modstitle2 = doc.CreateElement("mods", "title", "http://www.loc.gov/mods/v3");
+                var modstitle2 = doc.CreateElement("mods", "title", _metsNs);
                 modstitle2.InnerText = _metsData.Mods.ModsTitleInfo;
                 modsTitleInfo.AppendChild(modstitle2);
             }
@@ -243,7 +262,7 @@ public class Renderer
                 {
                     var noteType = Regex.Replace(note.Type.ToString(), "([A-Z])", " $1").Trim().ToLower();
 
-                    var noteNode = doc.CreateElement("mods", "note", "http://www.loc.gov/mods/v3");
+                    var noteNode = doc.CreateElement("mods", "note", _metsNs);
                     noteNode.SetAttribute("type", noteType);
                     noteNode.InnerText = note.InnerText;
 
@@ -259,15 +278,16 @@ public class Renderer
 
         //From heres are the file section
 
-        var filesec = doc.CreateElement("fileSec");
+        var filesec = doc.CreateElement("mets", "fileSec", _metsNs);
         root.AppendChild(filesec);
 
-        var filegrp = doc.CreateElement("fileGrp");
+        var filegrp = doc.CreateElement("mets", "fileGrp", _metsNs);
+        filegrp.SetAttribute("USE", "FILES"); //TODO:mmm testa
         filesec.AppendChild(filegrp);
 
         if (_metsData.Files?.Any() == false && _metsData.Sources?.Any() == false)
         {
-            var structMap = doc.CreateElement("structMap");
+            var structMap = doc.CreateElement("mets", "structMap", _metsNs);
             structMap.SetAttribute("LABEL", "No structmap defined in this information package");
             root.AppendChild(structMap);
 
@@ -278,19 +298,19 @@ public class Renderer
         {
             foreach (var item in _metsData.Files ?? [])
             {
-                var file = doc.CreateElement("file");
+                var file = doc.CreateElement("mets", "file", _metsNs);
                 file.SetAttribute("ID", item.Id);
                 file.SetAttribute("USE", item.Use);
                 file.SetAttribute("MIMETYPE", item.MimeType);
                 file.SetAttribute("SIZE", item.Size.ToString());
-                file.SetAttribute("CREATED", item.Created.ToString("O"));
+                file.SetAttribute("CREATED", dateNow);
                 if (!string.IsNullOrEmpty(item.Checksum))
                 {
                     file.SetAttribute("CHECKSUM", item.Checksum);
                     file.SetAttribute("CHECKSUMTYPE", item.ChecksumType.ToString().ToUpper().Replace("_", "-"));
                 }
 
-                var flocat = doc.CreateElement("FLocat");
+                var flocat = doc.CreateElement("mets", "FLocat", _metsNs);
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
                 var href = schema.Name == "eARD_Paket_FGS-PUBL_mets.xsd" ? $"file:{item.FileName}" : $"file:///{item.FileName}";
@@ -304,23 +324,22 @@ public class Renderer
 
             foreach (var item in _metsData.Sources ?? [])
             {
-                var created = item.CreationTime ?? DateTime.MinValue;
+                //var created = item.CreationTime ?? DateTime.MinValue;
 
-                var file = doc.CreateElement("file");
+                var file = doc.CreateElement("mets", "file", _metsNs);
                 file.SetAttribute("ID", item.Id);
                 file.SetAttribute("USE", item.Use);
                 file.SetAttribute("MIMETYPE", item.MimeType);
                 file.SetAttribute("SIZE", item.Size.ToString());
-                file.SetAttribute("CREATED", created.ToString("O"));
+                file.SetAttribute("CREATED", dateNow);
                 if (!string.IsNullOrEmpty(item.Checksum))
                 {
                     file.SetAttribute("CHECKSUM", item.Checksum);
                     file.SetAttribute("CHECKSUMTYPE", item.ChecksumType.ToString().ToUpper().Replace("_", "-"));
                 }
 
-                var flocat = doc.CreateElement("FLocat");
-                //flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
-                flocat.SetAttribute("LOCTYPE", ELocType.Url.ToString().ToUpper());
+                var flocat = doc.CreateElement("mets", "FLocat", _metsNs);
+                flocat.SetAttribute("LOCTYPE", nameof(ELocType.Url).ToUpper());
 
                 var href = schema.Name == "eARD_Paket_FGS-PUBL_mets.xsd" ? $"file:{item.Name}" : $"file:///{item.Name}";
                 flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", href);
@@ -331,28 +350,28 @@ public class Renderer
                 filegrp.AppendChild(file);
             }
 
-            var structMap = doc.CreateElement("structMap");
-            structMap.SetAttribute("TYPE", "physical");
+            var structMap = doc.CreateElement("mets", "structMap", _metsNs);
+            structMap.SetAttribute("TYPE", "Package");
             root.AppendChild(structMap);
 
-            var div = doc.CreateElement("div");
-            div.SetAttribute("TYPE", "files");
-            structMap.AppendChild(div);
+            //var div = doc.CreateElement("div");
+            //div.SetAttribute("TYPE", "files");
+            //structMap.AppendChild(div);
 
-            var div2 = doc.CreateElement("div");
-            div2.SetAttribute("TYPE", "publication");
-            div.AppendChild(div2);
+            var div2 = doc.CreateElement("mets", "div", _metsNs);
+            div2.SetAttribute("TYPE", "DataFiles");
+            structMap.AppendChild(div2);
 
             foreach (var item in _metsData.Files ?? [])
             {
-                var fptr = doc.CreateElement("fptr");
+                var fptr = doc.CreateElement("mets", "fptr", _metsNs);
                 fptr.SetAttribute("FILEID", item.Id);
                 div2.AppendChild(fptr);
             }
 
             foreach (var item in _metsData.Sources ?? [])
             {
-                var fptr = doc.CreateElement("fptr");
+                var fptr = doc.CreateElement("mets", "fptr", _metsNs);
                 fptr.SetAttribute("FILEID", item.Id);
                 div2.AppendChild(fptr);
             }

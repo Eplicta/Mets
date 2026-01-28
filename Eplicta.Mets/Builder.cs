@@ -52,7 +52,6 @@ public class Builder
                 var fileName = fileSource.Name;
                 var id = fileSource.Id;
                 var data = fileSource.Data;
-                var created = fileSource.CreationTime;
 
                 if (data == null) throw new NullReferenceException("No data provided or found.");
 
@@ -63,7 +62,6 @@ public class Builder
                     MimeType = fileSource.MimeType ?? FileExtensions.GetMimeType(fileName),
                     Data = data,
                     Size = fileSource.Size ?? data.Length,
-                    Created = created ?? DateTime.MinValue,
                     LocType = MetsData.ELocType.Url,
                     FileName = CheckForDuplicateFileNames(fileName)
                 };
