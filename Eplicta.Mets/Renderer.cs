@@ -44,7 +44,7 @@ public class Renderer
         root.SetAttribute("OBJID", null);
 
 
-        if (schema.Name == "mets.xsd") //TODO:mmm testa
+        if (schema.Name == "CSPackageMETS.xsd") //TODO:mmm testa
         {
             root.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             root.SetAttribute("xmlns:ext", "ExtensionMETS");
@@ -56,10 +56,12 @@ public class Renderer
         }
 
         root.SetAttribute("TYPE", "SIP");
-        var profileUrl = schema.Name != "mets.xsd" ? "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml" : "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml";
-        root.SetAttribute("PROFILE", profileUrl); //TODO:mmm testa
 
-
+        if (schema.Name != "mets.xsd")
+        {
+            var profileUrl = schema.Name != "CSPackageMETS.xsd" ? "http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml" : "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml";
+            root.SetAttribute("PROFILE", profileUrl); //TODO:mmm testa
+        }
 
         if (_metsData.Attributes != null && _metsData.Attributes.Length != 0)
         {
@@ -83,8 +85,12 @@ public class Renderer
         var metshdr = doc.CreateElement("mets", "metsHdr", _metsNs); //TODO:mmm testa
         root.AppendChild(metshdr);
         metshdr.SetAttribute("CREATEDATE", dateNow);
-        metshdr.SetAttribute("RECORDSTATUS", "NEW");
-        metshdr.SetAttribute("ext:OAISSTATUS", "SIP");
+
+        if (schema.Name == "CSPackageMETS.xsd")
+        {
+            metshdr.SetAttribute("RECORDSTATUS", "NEW");
+            metshdr.SetAttribute("ext:OAISSTATUS", "SIP");
+        }
 
         if (_metsData.MetsHdr?.Attributes != null)
         {
@@ -145,12 +151,7 @@ public class Renderer
                 if (altRecord.Type != null) recordId1.SetAttribute("TYPE", altRecord.Type?.ToString().ToUpper());
                 metshdr.AppendChild(recordId1);
             }
-        }//TODO:mmm testa
-
-        ////mets document id
-        //var metsDocumentId = doc.CreateElement("metsDocumentID");
-        //metsDocumentId.SetAttribute("ID", "sip.xml");
-        //metshdr.AppendChild(metsDocumentId);
+        }
 
         if (_metsData.Mods != null)
         {
@@ -165,8 +166,6 @@ public class Renderer
 
             var xmldata = doc.CreateElement("mets", "xmlData", _metsNs);
             mdwrap.AppendChild(xmldata);
-
-            //mods:mods
 
             var modsmods = doc.CreateElement("mods", "mods", _metsNs);
             modsmods.SetAttribute("xmlns", _metsData.Mods.Xmlns);
@@ -324,8 +323,6 @@ public class Renderer
 
             foreach (var item in _metsData.Sources ?? [])
             {
-                //var created = item.CreationTime ?? DateTime.MinValue;
-
                 var file = doc.CreateElement("mets", "file", _metsNs);
                 file.SetAttribute("ID", item.Id);
                 file.SetAttribute("USE", item.Use);
@@ -353,10 +350,6 @@ public class Renderer
             var structMap = doc.CreateElement("mets", "structMap", _metsNs);
             structMap.SetAttribute("TYPE", "Package");
             root.AppendChild(structMap);
-
-            //var div = doc.CreateElement("div");
-            //div.SetAttribute("TYPE", "files");
-            //structMap.AppendChild(div);
 
             var div2 = doc.CreateElement("mets", "div", _metsNs);
             div2.SetAttribute("TYPE", "DataFiles");
