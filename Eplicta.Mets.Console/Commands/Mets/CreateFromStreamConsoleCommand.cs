@@ -21,8 +21,7 @@ public class CreateFromStreamConsoleCommand : CreateConsoleCommand
         {
             Name = fileInfo.Name,
             MimeType = FileExtensions.GetMimeType(fileName),
-            CreationTime = fileInfo.CreationTime,
-            Stream = stream,
+            Stream = stream
         };
         metsDataBuilder.AddFile(streamSource);
     }

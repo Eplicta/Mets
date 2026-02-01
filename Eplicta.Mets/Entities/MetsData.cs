@@ -39,7 +39,8 @@ public record MetsData
         ReferenceCode,
         PreviousReferenceCode,
         Appraisal,
-        AccessRestrict
+        AccessRestrict,
+        METS
     }
 
     public enum EChecksumType
