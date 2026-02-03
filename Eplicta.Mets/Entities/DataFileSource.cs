@@ -2,7 +2,6 @@
 
 public record DataFileSource : SourceBase
 {
-
     /// <summary>
     /// The resource Data.
     /// </summary>
