@@ -33,9 +33,6 @@ public class Renderer
 
         var doc = new XmlDocument();
 
-        var documentType = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
-        doc.AppendChild(documentType);
-
         var root = doc.CreateElement("mets", "mets", _metsNs); //TODO:mmm testa
         doc.AppendChild(root);
         root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
@@ -152,6 +149,10 @@ public class Renderer
                 metshdr.AppendChild(recordId1);
             }
         }
+
+        var metsDocumentId = doc.CreateElement("mets", "metsDocumentID", _metsNs);
+        metsDocumentId.SetAttribute("ID", "sip.xml");
+        metshdr.AppendChild(metsDocumentId);
 
         if (_metsData.Mods != null)
         {
