@@ -19,6 +19,8 @@ public class Renderer
     private static readonly RecyclableMemoryStreamManager _recyclableMsManager = new();
     private readonly MetsData _metsData;
     private const string _metsNs = "http://www.loc.gov/METS/";
+    private const string _xsi = "http://www.w3.org/2001/XMLSchema-instance";
+    private const string _ext = "ExtensionMETS";
 
     public Renderer(MetsData metsData)
     {
@@ -33,6 +35,9 @@ public class Renderer
 
         var doc = new XmlDocument();
 
+        var documentType = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+        doc.AppendChild(documentType);
+
         var root = doc.CreateElement("mets", "mets", _metsNs); //TODO:mmm testa
         doc.AppendChild(root);
         root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
@@ -43,16 +48,31 @@ public class Renderer
 
         if (schema.Name == "CSPackageMETS.xsd") //TODO:mmm testa
         {
-            root.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            root.SetAttribute("xmlns:xsi", _xsi);
             root.SetAttribute("xmlns:ext", "ExtensionMETS");
-            root.SetAttribute("xsi:schemaLocation", "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd");
-            root.SetAttribute("ext:ARCHIVALNAME", "E-Arkiv");
-            root.SetAttribute("ext:APPRAISAL", "No");
-            root.SetAttribute("ext:ACCESSRESTRICT", "PuL");
+
+            var schemaLoc = doc.CreateAttribute("xsi", "schemaLocation", _xsi);
+            schemaLoc.Value = "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd " + "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd";
+            root.Attributes.Append(schemaLoc);
+
+            var archName = doc.CreateAttribute("ext", "ARCHIVALNAME", _ext);
+            archName.Value = "E-Arkiv";
+            root.Attributes.Append(archName);
+
+            var appraisal = doc.CreateAttribute("ext", "APPRAISAL", _ext);
+            appraisal.Value = "No";
+            root.Attributes.Append(appraisal);
+
+            var accessRestrict = doc.CreateAttribute("ext", "ACCESSRESTRICT", _ext);
+            accessRestrict.Value = "PuL";
+            root.Attributes.Append(accessRestrict);
+
             root.SetAttribute("TYPE", "ERMS");
         }
-
-        root.SetAttribute("TYPE", "SIP");
+        else
+        {
+            root.SetAttribute("TYPE", "SIP");
+        }
 
         if (schema.Name != "mets.xsd")
         {
@@ -86,7 +106,10 @@ public class Renderer
         if (schema.Name == "CSPackageMETS.xsd")
         {
             metshdr.SetAttribute("RECORDSTATUS", "NEW");
-            metshdr.SetAttribute("ext:OAISSTATUS", "SIP");
+
+            var oaisStatus = doc.CreateAttribute("ext", "OAISSTATUS", _ext);
+            oaisStatus.Value = "SIP";
+            root.Attributes.Append(oaisStatus);
         }
 
         if (_metsData.MetsHdr?.Attributes != null)
@@ -150,9 +173,23 @@ public class Renderer
             }
         }
 
-        var metsDocumentId = doc.CreateElement("mets", "metsDocumentID", _metsNs);
-        metsDocumentId.SetAttribute("ID", "sip.xml");
-        metshdr.AppendChild(metsDocumentId);
+        var recordId2 = doc.CreateElement("mets", "altRecordID", _metsNs);
+        recordId2.InnerText = "OK";
+        recordId2.SetAttribute("TYPE", nameof(EAltRecordType.SubmissionAgreement).ToUpper());
+        metshdr.AppendChild(recordId2);
+
+        var recordId3 = doc.CreateElement("mets", "altRecordID", _metsNs);
+        recordId3.InnerText = "SIP";
+        metshdr.AppendChild(recordId3);
+
+        var recordId4 = doc.CreateElement("mets", "altRecordID", _metsNs);
+        recordId4.InnerText = "sip.xml";
+        metshdr.AppendChild(recordId4);
+
+
+        //var metsDocumentId = doc.CreateElement("mets", "metsDocumentID", _metsNs);
+        //metsDocumentId.SetAttribute("ID", "sip.xml");
+        //metshdr.AppendChild(metsDocumentId);
 
         if (_metsData.Mods != null)
         {
