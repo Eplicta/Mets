@@ -18,12 +18,34 @@ public class MetsValidatorTests
             .Without(x => x.MetsHdr)
             .Without(x => x.Files)
             .Without(x => x.Sources)
+            .Without(x => x.AltRecords)
             .Create();
-        var document = new Renderer(modsData).Render();
+        var document = new Renderer(modsData).Render(null, MetsSchema.Riksarkivet);
         var sut = new MetsValidator();
 
         //Act
-        var result = sut.Validate(document, version, MetsSchema.Default);
+        var result = sut.Validate(document, version, MetsSchema.Riksarkivet);
+
+        //Assert
+        result.Should().BeEmpty();
+    }
+
+    [Theory]
+    [ClassData(typeof(MetsSchemaGenerator))]
+    public void Validate_Schemas(MetsSchema schema)
+    {
+        //Arrange
+        var modsData = new Fixture().Build<MetsData>()
+            .Without(x => x.MetsHdr)
+            .Without(x => x.Files)
+            .Without(x => x.Sources)
+            .Without(x => x.AltRecords)
+            .Create();
+        var document = new Renderer(modsData).Render(null, schema);
+        var sut = new MetsValidator();
+
+        //Act
+        var result = sut.Validate(document, ModsVersion.ModsFgsPubl_1_0, schema);
 
         //Assert
         result.Should().BeEmpty();
@@ -56,7 +78,6 @@ public class MetsValidatorTests
         public IEnumerator<object[]> GetEnumerator()
         {
             yield return [ModsVersion.ModsFgsPubl_1_0];
-            //yield return new object[] { Version.ModsFgsPubl_1_1 };
             yield return [ModsVersion.Mods_3_0];
             yield return [ModsVersion.Mods_3_1];
             yield return [ModsVersion.Mods_3_2];
@@ -65,6 +86,21 @@ public class MetsValidatorTests
             yield return [ModsVersion.Mods_3_5];
             yield return [ModsVersion.Mods_3_6];
             yield return [ModsVersion.Mods_3_7];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
+    class MetsSchemaGenerator : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return [MetsSchema.Default];
+            yield return [MetsSchema.Riksarkivet];
+            yield return [MetsSchema.KB];
         }
 
         IEnumerator IEnumerable.GetEnumerator()
