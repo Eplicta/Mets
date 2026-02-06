@@ -56,10 +56,11 @@ public class XmlValidatorOffline
         using var sr = new StringReader(xsdXml);
         using var xr = XmlReader.Create(sr, new XmlReaderSettings
         {
-            DtdProcessing = DtdProcessing.Prohibit
+            DtdProcessing = DtdProcessing.Parse,
+            XmlResolver = null
         });
 
-        schemas.Add(null, xr); // null = use targetNamespace from the XSD
+        schemas.Add(null, xr);
     }
 
     private static void LoadSchema(XmlSchemaSet schemas, string name, string schemaNamespace)
@@ -67,7 +68,8 @@ public class XmlValidatorOffline
         using var sr = new StringReader(Resource.Get(name));
         using var xr = XmlReader.Create(sr, new XmlReaderSettings
         {
-            DtdProcessing = DtdProcessing.Prohibit
+            DtdProcessing = DtdProcessing.Parse,
+            XmlResolver = null
         });
 
         schemas.Add(schemaNamespace, xr);
