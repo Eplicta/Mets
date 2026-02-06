@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Eplicta.Mets.Tests;
 
-public class XmlValidatorTests
+public class OfflineXmlValidatorTests
 {
     [Fact]
     public void A()
@@ -15,7 +15,7 @@ public class XmlValidatorTests
         //Arrange
         var document = Resource.GetXml("a.xml");
         var schema = Resource.GetXml("a.xsd");
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema);
@@ -38,7 +38,7 @@ public class XmlValidatorTests
 
         var schema = Resource.GetXml("sample.xsd");
 
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema).ToArray();
@@ -57,7 +57,7 @@ public class XmlValidatorTests
         //Arrange
         var document = Resource.GetXml("MODS_enligt_FGS-PUBL_exempel_1.xml");
         var schema = Mets.Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_0.xsd");
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema);
@@ -72,7 +72,7 @@ public class XmlValidatorTests
         //Arrange
         var document = Resource.GetXml("MODS_enligt_FGS-PUBL_exempel_2_xml1_1.xml");
         var schema = Mets.Helpers.Resource.GetXml("MODS_enligt_FGS-PUBL_xml1_1.xsd");
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema);
@@ -87,7 +87,7 @@ public class XmlValidatorTests
         //Arrange
         var document = Resource.GetXml("mods99042030_linkedDataAdded.xml");
         var schema = Mets.Helpers.Resource.GetXml("mods-3-5.xsd");
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema);
@@ -102,7 +102,7 @@ public class XmlValidatorTests
         //Arrange
         var document = Resource.GetXml("sample.xml");
         var schema = Resource.GetXml("sample.xsd");
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema);

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Eplicta.Mets.Tests;
 
-public class RendererValidatorTests
+public class RendererOfflineValidatorTests
 {
     [Theory]
     [ClassData(typeof(SchemaGenerator))]
@@ -18,7 +18,7 @@ public class RendererValidatorTests
         var modsData = new Fixture().Build<MetsData>().Without(x => x.MetsHdr).Without(x => x.Sources).Create();
         var document = new Renderer(modsData).Render();
         var schema = Mets.Helpers.Resource.GetXml(format);
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema);
@@ -41,7 +41,7 @@ public class RendererValidatorTests
             .Build();
         var document = new Renderer(modsData).Render();
         var schema = Mets.Helpers.Resource.GetXml(format);
-        var sut = new XmlValidator();
+        var sut = new XmlValidatorOffline();
 
         //Act
         var result = sut.Validate(document, schema);

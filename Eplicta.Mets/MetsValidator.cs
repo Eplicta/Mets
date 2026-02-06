@@ -12,7 +12,7 @@ public class MetsValidator
     {
         metsSchema ??= MetsSchema.Default;
         var schema = GetSchema(version);
-        var xmlValidator = new XmlValidator();
+        var xmlValidator = new XmlValidatorOffline();
         return xmlValidator.Validate(document, schema, metsSchema);
     }
 
