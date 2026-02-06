@@ -23,7 +23,7 @@ public class XmlValidator
             var schemas = new XmlSchemaSet();
             using var fs = new StringReader(modsSchema.OuterXml);
             using var reader = XmlReader.Create(fs, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore });
-            var xmlns = document.FirstChild?.Attributes?["xmlns"]?.InnerText;
+            var xmlns = document.FirstChild?.Attributes?["xmlns:mods"]?.InnerText;
 
             schemas.Add(xmlns, reader);
 
