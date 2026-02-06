@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<Version>1.3.0</Version>
 		<Authors>Eplicta</Authors>
@@ -67,6 +67,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2" />
 	  <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
 	  <PackageReference Include="MimeTypeMapOfficial" Version="1.0.17" />
 	  <PackageReference Include="SharpZipLib" Version="1.4.2" />
