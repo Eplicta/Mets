@@ -4,7 +4,8 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub repo Issues](https://img.shields.io/github/issues/Eplicta/Mets?style=flat&logo=github&logoColor=red&label=Issues)](https://github.com/Eplicta/Mets/issues?q=is%3Aopen)
 
-This code helps build and verify packages used for electronic archives. The two standards **Mets** (Metadata Object Description Schema) / **Mets** (Metadata Encoding and Transmission Standard) are used for storing digital documents in electronic archives.
+This code helps build and verify packages used for electronic archives. 
+The two standards **Mets** (Metadata Encoding and Transmission Standard) and **Mods** (Metadata Object Description Schema) are used for storing digital documents in electronic archives.
 
 Basic example on how to create a simple Mets package and have it stored as a zip-file.
 ```
