@@ -40,10 +40,7 @@ public class XmlValidatorOffline
 
             var xdoc = XDocument.Load(xr, LoadOptions.SetLineInfo);
 
-            xdoc.Validate(schemas, (o, e) =>
-            {
-                results.Add(new XmlValidatorResult(e.Message, e.Severity, e.Exception));
-            }, true);
+            xdoc.Validate(schemas, (o, e) => { results.Add(new XmlValidatorResult(e.Message, e.Severity, e.Exception)); }, true);
         }
         catch (Exception e) when (e is XmlException || e is XmlSchemaException)
         {

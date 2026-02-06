@@ -1,16 +1,17 @@
-﻿using Eplicta.Mets.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Schema;
+using Eplicta.Mets.Entities;
 
 namespace Eplicta.Mets;
 
+[Obsolete("Use IValidatorService instead.")]
 public class XmlValidator
 {
+    [Obsolete("Use IValidatorService instead.")]
     public IEnumerable<XmlValidatorResult> Validate(XmlDocument document)
     {
         if (document == null)
@@ -20,69 +21,107 @@ public class XmlValidator
 
         var results = new List<XmlValidatorResult>();
 
-        // 1) Read schemaLocation pairs from the instance document
         var schemaLocations = GetSchemaLocations(document, results);
 
-        // 2) Try to download and compile the online schemas (warn if unavailable)
-        var schemas = new XmlSchemaSet();
-        var loaded = new List<LoadedSchemaInfo>();
+        // Preflight: try to fetch schemas and report "Info" + version
+        PreflightOnlineSchemas(schemaLocations, results);
 
+        // Actual validation: mimic your XmlReader-based validator to get the same warnings/errors
+        ValidateWithXmlReader(document, results);
+
+        return results;
+    }
+
+    private static void PreflightOnlineSchemas(List<SchemaLocation> schemaLocations, List<XmlValidatorResult> results)
+    {
         foreach (var sl in schemaLocations)
         {
-            if (!TryAddOnlineSchema(schemas, sl, loaded, out var warning))
+            try
             {
-                results.Add(new XmlValidatorResult(warning, XmlSeverityType.Warning, null));
+                using (var wc = new WebClient())
+                {
+                    wc.Headers.Add(HttpRequestHeader.UserAgent, "XmlValidator/1.0");
+
+                    var data = wc.DownloadData(sl.SchemaUri);
+
+                    using (var ms = new MemoryStream(data))
+                    using (var xr = XmlReader.Create(ms, new XmlReaderSettings
+                           {
+                               DtdProcessing = DtdProcessing.Prohibit
+                           }, sl.SchemaUri.ToString()))
+                    {
+                        var schema = XmlSchema.Read(xr, null);
+
+                        var targetNs = schema != null && !string.IsNullOrWhiteSpace(schema.TargetNamespace)
+                            ? schema.TargetNamespace
+                            : sl.NamespaceUri;
+
+                        var version = schema != null && !string.IsNullOrWhiteSpace(schema.Version)
+                            ? schema.Version
+                            : InferVersionFromUrl(sl.SchemaUri.ToString());
+
+                        var label = GetWellKnownLabel(targetNs);
+
+                        var msg = version != null
+                            ? $"Info: Schema reachable: {label} namespace='{targetNs}', version='{version}', url='{sl.SchemaUri}'."
+                            : $"Info: Schema reachable: {label} namespace='{targetNs}', url='{sl.SchemaUri}' (version not declared/inferable).";
+
+                        // We store "Info" as Warning severity because XmlSeverityType has no Information.
+                        results.Add(new XmlValidatorResult(msg, XmlSeverityType.Warning, null));
+                    }
+                }
+            }
+            catch (WebException e)
+            {
+                results.Add(new XmlValidatorResult(
+                    $"Warning: Schema not reachable: '{sl.SchemaUri}' for namespace '{sl.NamespaceUri}'. ({e.Message})",
+                    XmlSeverityType.Warning,
+                    null));
+            }
+            catch (Exception e) when (e is XmlException || e is XmlSchemaException)
+            {
+                var schemaEx = e as XmlSchemaException ?? new XmlSchemaException(e.Message, e);
+                results.Add(new XmlValidatorResult(
+                    $"Warning: Schema could not be read: '{sl.SchemaUri}' for namespace '{sl.NamespaceUri}'. ({e.Message})",
+                    XmlSeverityType.Warning,
+                    schemaEx));
             }
         }
+    }
 
-        try
+    private static void ValidateWithXmlReader(XmlDocument document, List<XmlValidatorResult> results)
+    {
+        var settings = new XmlReaderSettings
         {
-            schemas.Compile();
-        }
-        catch (XmlSchemaException e)
+            DtdProcessing = DtdProcessing.Prohibit,
+            ValidationType = ValidationType.Schema,
+            ValidationFlags =
+                XmlSchemaValidationFlags.ProcessSchemaLocation |
+                XmlSchemaValidationFlags.ProcessInlineSchema |
+                XmlSchemaValidationFlags.ReportValidationWarnings,
+            XmlResolver = new XmlUrlResolver()
+        };
+
+        settings.ValidationEventHandler += (_, e) =>
         {
-            results.Add(new XmlValidatorResult($"Schema compilation error: {e.Message}", XmlSeverityType.Error, e));
-            return results;
-        }
+            // Keep the same severity the framework reports
+            var ex = e.Exception;
+            results.Add(new XmlValidatorResult(e.Message, e.Severity, ex));
+        };
 
-        // 3) Report detected "versions" (best-effort)
-        foreach (var info in loaded)
-        {
-            var version = !string.IsNullOrWhiteSpace(info.SchemaVersion)
-                ? info.SchemaVersion
-                : InferVersionFromUrl(info.SchemaUri);
-
-            var label = GetWellKnownLabel(info.NamespaceUri);
-            var msg = version != null
-                ? $"Schema loaded: {label} namespace='{info.NamespaceUri}', version='{version}', url='{info.SchemaUri}'."
-                : $"Schema loaded: {label} namespace='{info.NamespaceUri}', url='{info.SchemaUri}' (version not declared/inferable).";
-
-            results.Add(new XmlValidatorResult(msg, XmlSeverityType.Warning, null));
-        }
-
-        // 4) Validate instance XML against the downloaded schema set
         try
         {
             using var sr = new StringReader(document.OuterXml);
-            using var xr = XmlReader.Create(sr, new XmlReaderSettings
+            using var reader = XmlReader.Create(sr, settings);
+            while (reader.Read())
             {
-                DtdProcessing = DtdProcessing.Prohibit
-            });
-
-            var xdoc = XDocument.Load(xr, LoadOptions.SetLineInfo);
-
-            xdoc.Validate(
-                schemas,
-                (_, e) => results.Add(new XmlValidatorResult(e.Message, e.Severity, e.Exception)),
-                addSchemaInfo: true);
+            }
         }
-        catch (Exception e) when (e is XmlException || e is XmlSchemaException)
+        catch (Exception e)
         {
             var schemaEx = e as XmlSchemaException ?? new XmlSchemaException(e.Message, e);
-            results.Add(new XmlValidatorResult(e.Message, XmlSeverityType.Error, schemaEx));
+            results.Add(new XmlValidatorResult("FAILED: " + e.Message, XmlSeverityType.Error, schemaEx));
         }
-
-        return results;
     }
 
     private static List<SchemaLocation> GetSchemaLocations(XmlDocument document, List<XmlValidatorResult> results)
@@ -91,7 +130,7 @@ public class XmlValidator
         if (root == null)
         {
             results.Add(new XmlValidatorResult("Document has no root element.", XmlSeverityType.Error, null));
-            return [];
+            return new List<SchemaLocation>();
         }
 
         var xsiNs = "http://www.w3.org/2001/XMLSchema-instance";
@@ -100,20 +139,19 @@ public class XmlValidator
         if (string.IsNullOrWhiteSpace(schemaLocationValue))
         {
             results.Add(new XmlValidatorResult(
-                "No xsi:schemaLocation found in the document. Online schema loading cannot run.",
+                "Warning: No xsi:schemaLocation found in the document. Online schema loading cannot run.",
                 XmlSeverityType.Warning,
                 null));
 
-            return [];
+            return new List<SchemaLocation>();
         }
 
-        var tokens = schemaLocationValue
-            .Split((char[])null, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.RemoveEmptyEntries);
+        var tokens = schemaLocationValue.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 
         if (tokens.Length % 2 != 0)
         {
             results.Add(new XmlValidatorResult(
-                "xsi:schemaLocation is malformed (must contain pairs: 'namespace schemaUrl').",
+                "Warning: xsi:schemaLocation is malformed (must contain pairs: 'namespace schemaUrl').",
                 XmlSeverityType.Warning,
                 null));
         }
@@ -122,13 +160,13 @@ public class XmlValidator
 
         for (var i = 0; i + 1 < tokens.Length; i += 2)
         {
-            var ns = tokens[i];
-            var url = tokens[i + 1];
+            var ns = tokens[i].Trim();
+            var url = tokens[i + 1].Trim();
 
             if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
             {
                 results.Add(new XmlValidatorResult(
-                    $"Schema URL is not absolute or invalid: '{url}' (namespace '{ns}').",
+                    $"Warning: Schema URL is not absolute or invalid: '{url}' (namespace '{ns}').",
                     XmlSeverityType.Warning,
                     null));
                 continue;
@@ -138,61 +176,6 @@ public class XmlValidator
         }
 
         return list;
-    }
-
-    private static bool TryAddOnlineSchema(
-        XmlSchemaSet schemas,
-        SchemaLocation schemaLocation,
-        List<LoadedSchemaInfo> loaded,
-        out string warning)
-    {
-        warning = "";
-
-        try
-        {
-            using var wc = new WebClient();
-            wc.Headers.Add(HttpRequestHeader.UserAgent, "XmlValidator/1.0");
-
-            // Download as bytes so we can set a base URI for includes/imports if needed
-            var data = wc.DownloadData(schemaLocation.SchemaUri);
-
-            using var ms = new MemoryStream(data);
-            using var xr = XmlReader.Create(ms, new XmlReaderSettings
-            {
-                DtdProcessing = DtdProcessing.Prohibit,
-                XmlResolver = null
-            });
-
-            var schema = XmlSchema.Read(xr, null);
-            if (schema == null)
-            {
-                warning = $"Could not parse schema from '{schemaLocation.SchemaUri}'.";
-                return false;
-            }
-
-            // Ensure target namespace aligns with the declared schemaLocation namespace.
-            // If the schema has empty targetNamespace but schemaLocation provides one, keep the declared one.
-            var schemaNs = !string.IsNullOrWhiteSpace(schema.TargetNamespace)
-                ? schema.TargetNamespace
-                : schemaLocation.NamespaceUri;
-
-            //schemas.Add(schemaNs, schema);
-            schemas.Add(schema);
-
-            loaded.Add(new LoadedSchemaInfo(schemaNs, schemaLocation.SchemaUri.ToString(), schema.Version));
-
-            return true;
-        }
-        catch (WebException e)
-        {
-            warning = $"Schema not reachable: '{schemaLocation.SchemaUri}' for namespace '{schemaLocation.NamespaceUri}'. ({e.Message})";
-            return false;
-        }
-        catch (Exception e) when (e is XmlSchemaException || e is XmlException || e is NotSupportedException)
-        {
-            warning = $"Schema could not be loaded: '{schemaLocation.SchemaUri}' for namespace '{schemaLocation.NamespaceUri}'. ({e.Message})";
-            return false;
-        }
     }
 
     private static string InferVersionFromUrl(string schemaUrl)
@@ -217,7 +200,7 @@ public class XmlValidator
             tail = tail.Substring(0, dot);
         }
 
-        var parts = tail.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+        var parts = tail.Split(['-'], StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length >= 2 && int.TryParse(parts[0], out _) && int.TryParse(parts[1], out _))
         {
             return parts[0] + "." + parts[1];
@@ -228,18 +211,29 @@ public class XmlValidator
 
     private static string GetWellKnownLabel(string ns)
     {
-        return ns switch
+        if (string.Equals(ns, "ExtensionMETS", StringComparison.OrdinalIgnoreCase))
         {
-            "http://www.loc.gov/METS/" => "METS",
-            "http://www.loc.gov/mods/v3" => "MODS",
-            "http://www.w3.org/1999/xlink" => "XLINK",
-            "http://www.w3.org/XML/1998/namespace" => "XML",
-            "http://www.w3.org/2000/09/xmldsig#" => "XMLDSIG",
-            _ => "Schema"
-        };
+            return "ExtensionMETS";
+        }
+
+        switch (ns)
+        {
+            case "http://www.loc.gov/METS/":
+                return "METS";
+            case "http://www.loc.gov/mods/v3":
+                return "MODS";
+            case "http://www.w3.org/1999/xlink":
+                return "XLINK";
+            case "http://www.w3.org/XML/1998/namespace":
+                return "XML";
+            case "http://www.w3.org/2000/09/xmldsig#":
+                return "XMLDSIG";
+            default:
+                return "Schema";
+        }
     }
 
-    private readonly struct SchemaLocation
+    private struct SchemaLocation
     {
         public SchemaLocation(string namespaceUri, Uri schemaUri)
         {
@@ -249,19 +243,5 @@ public class XmlValidator
 
         public string NamespaceUri { get; }
         public Uri SchemaUri { get; }
-    }
-
-    private readonly struct LoadedSchemaInfo
-    {
-        public LoadedSchemaInfo(string namespaceUri, string schemaUri, string schemaVersion)
-        {
-            NamespaceUri = namespaceUri;
-            SchemaUri = schemaUri;
-            SchemaVersion = schemaVersion;
-        }
-
-        public string NamespaceUri { get; }
-        public string SchemaUri { get; }
-        public string SchemaVersion { get; }
     }
 }
