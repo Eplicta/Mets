@@ -7,30 +7,39 @@
 This code helps build and verify packages used for electronic archives. 
 The two standards **Mets** (Metadata Encoding and Transmission Standard) and **Mods** (Metadata Object Description Schema) are used for storing digital documents in electronic archives.
 
-Basic example on how to create a simple Mets package and have it stored as a zip-file.
-```
-var metsData = new Builder()
-    .SetMetsAttributes(new []
-    {
-        new MetsData.MetsAttribute
-        {
-            Name = MetsData.EMetsAttributeName.ObjId,
-            Value = "UUID:test ID"
-        }
-    })
-    .Build();
-var renderer = new Renderer(metsData);
-var xmlDocument = renderer.Render();
+## How to get started
+Register the services using *AddEplictaMets*.
 
-await using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip, null, true, MetsSchema.Default);
-await File.WriteAllBytesAsync("C:\\mets-archive.zip", archive.ToArray());
+```
+var builder = WebApplication.CreateBuilder(args);
+
+//...
+
+builder.Services.AddEplictaMets();
+
+var app = builder.Build();
+
+//...
+
+app.Run();
+
 ```
 
-To validate a Mets document against a specific Mods version schema.
+## Builder
+
+
+## Validator
+Inject *IMetsValidatorService* and use it
+
 ```
-var validator = new MetsValidator();
-var result = validator.Validate(xmlDocument, ModsVersion.Mods_3_7, MetsSchema.Default)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
-var errorMessage = result.FirstOrDefault()?.Message;
+var doc = new XmlDocument();
+doc.Load("C:\\file.xml");
+
+var results = _validatorService.Validate(doc);
+foreach (var item in results)
+{
+    Console.WriteLine(item.Information ?? item.XmlReslut.Message);
+}
 ```
 
 This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License](LICENSE).
