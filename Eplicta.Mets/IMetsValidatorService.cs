@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace Eplicta.Mets;
 
-public interface IValidatorService
+public interface IMetsValidatorService
 {
     IEnumerable<ValidatorResult> Validate(XmlDocument document);
 }

@@ -89,9 +89,9 @@ public class RendererTests
         result.Should().NotBeNull();
         result.OuterXml.Should().NotBe(DefaultBuilderData);
         result.OuterXml.Should().Contain("a1");
-        result.OuterXml.Should().Contain(MetsData.EType.Other.ToString().ToUpper());
+        result.OuterXml.Should().Contain(nameof(MetsData.EType.Other).ToUpper());
         result.OuterXml.Should().Contain("a3");
-        result.OuterXml.Should().Contain(MetsData.ERole.Editor.ToString().ToUpper());
+        result.OuterXml.Should().Contain(nameof(MetsData.ERole.Editor).ToUpper());
     }
 
     //[Fact]
@@ -160,9 +160,9 @@ public class RendererTests
         result.OuterXml.Should().Contain("a1");
         result.OuterXml.Should().Contain("a2");
         result.OuterXml.Should().Contain("a3");
-        result.OuterXml.Should().Contain(MetsData.EAltRecordType.DeliverySpecification.ToString().ToUpper());
-        result.OuterXml.Should().Contain(MetsData.EAltRecordType.SubmissionAgreement.ToString().ToUpper());
-        result.OuterXml.Should().Contain(MetsData.EAltRecordType.PreviousSubmissionAgreement.ToString().ToUpper());
+        result.OuterXml.Should().Contain(nameof(MetsData.EAltRecordType.DeliverySpecification).ToUpper());
+        result.OuterXml.Should().Contain(nameof(MetsData.EAltRecordType.SubmissionAgreement).ToUpper());
+        result.OuterXml.Should().Contain(nameof(MetsData.EAltRecordType.PreviousSubmissionAgreement).ToUpper());
     }
 
     [Fact]

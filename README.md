@@ -26,7 +26,23 @@ app.Run();
 ```
 
 ## Builder
+```
+var metsData = new Builder()
+    .SetMetsAttributes(new []
+    {
+        new MetsData.MetsAttribute
+        {
+            Name = MetsData.EMetsAttributeName.ObjId,
+            Value = "UUID:test ID"
+        }
+    })
+    .Build();
+var renderer = new Renderer(metsData);
+var xmlDocument = renderer.Render();
 
+await using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip, null, true, MetsSchema.Default);
+await File.WriteAllBytesAsync("C:\\mets-archive.zip", archive.ToArray());
+```
 
 ## Validator
 Inject *IMetsValidatorService* and use it

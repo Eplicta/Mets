@@ -6,6 +6,6 @@ public static class MetsRegistrationExtensions
 {
     public static void AddEplictaMets(this IServiceCollection services)
     {
-        services.AddTransient<IValidatorService, ValidatorService>();
+        services.AddTransient<IMetsValidatorService, MetsValidatorService>();
     }
 }
