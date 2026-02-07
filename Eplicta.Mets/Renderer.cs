@@ -40,7 +40,7 @@ public class Renderer
 
         var root = doc.CreateElement("mets", "mets", _metsNs); //TODO:mmm testa
         doc.AppendChild(root);
-        root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
+        if (schema.Name != "CSPackageMETS.xsd") root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
         if (_metsData.Mods != null) root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3"); //TODO:mmm testa
         root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
         root.SetAttribute("OBJID", null);
