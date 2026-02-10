@@ -109,7 +109,7 @@ public class Renderer
 
             var oaisStatus = doc.CreateAttribute("ext", "OAISSTATUS", _ext);
             oaisStatus.Value = "SIP";
-            root.Attributes.Append(oaisStatus);
+            metshdr.Attributes.Append(oaisStatus);
         }
 
         if (_metsData.MetsHdr?.Attributes != null)
