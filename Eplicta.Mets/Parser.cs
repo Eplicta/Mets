@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Xml;
 using Eplicta.Mets.Entities;
 
@@ -6,7 +7,7 @@ namespace Eplicta.Mets;
 
 public class Parser
 {
-    public (MetsData MetsData, DateTime CreateTime) GetMetsData(string xmlString)
+    public (MetsData MetsData, string CreateTime) GetMetsData(string xmlString)
     {
         var doc = new XmlDocument();
         doc.LoadXml(xmlString);
@@ -22,19 +23,14 @@ public class Parser
             Attributes = []
         };
 
-        return (metsData, createTime);
+        return (metsData, createTime.ToString(CultureInfo.InvariantCulture));
     }
 
-    private static DateTime GetDateTime(XmlDocument document, XmlNamespaceManager namespaceManager)
+    private static string GetDateTime(XmlDocument document, XmlNamespaceManager namespaceManager)
     {
         var metsHdrNode = document.DocumentElement?.SelectSingleNode("//mets:metsHdr", namespaceManager) as XmlElement;
         var createdDate = metsHdrNode?.GetAttribute("CREATEDATE");
 
-        if (!DateTime.TryParse(createdDate, out var created))
-        {
-            throw new InvalidOperationException($"Cannot parse CREATEDATE {createdDate} to {nameof(DateTime)}.");
-        }
-
-        return created;
+        return createdDate;
     }
 }

@@ -31,7 +31,7 @@ public class ParseTests
         var unpackedMetsData = sut.GetMetsData(initialPackage.OuterXml);
 
         //Assert
-        unpackedMetsData.CreateTime.Should().Be(createTime.ToLocalTime());
+        unpackedMetsData.CreateTime.Should().Be(createTime.ToString("yyyy-MM-ddTHH:mm:ssZ"));
     }
 
     [Fact]
@@ -41,14 +41,14 @@ public class ParseTests
         var metsData1 = new MetsData();
         var renderer1 = new Renderer(metsData1);
         var sut = new Parser();
-        var result = renderer1.Render(DateTime.UtcNow.ToLocalTime());
+        var result = renderer1.Render();
 
         //Act
         var metaData2 = sut.GetMetsData(result.OuterXml);
 
         //Assert
         var renderer2 = new Renderer(metaData2.MetsData);
-        var result2 = renderer2.Render(metaData2.CreateTime);
+        var result2 = renderer2.Render();
         result.Should().BeEquivalentTo(result2);
     }
 }
