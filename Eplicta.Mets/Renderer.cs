@@ -184,10 +184,6 @@ public class Renderer
         recordId4.InnerText = "sip.xml";
         metshdr.AppendChild(recordId4);
 
-        //var metsDocumentId = doc.CreateElement("mets", "metsDocumentID", _metsNs);
-        //metsDocumentId.SetAttribute("ID", "sip.xml");
-        //metshdr.AppendChild(metsDocumentId);
-
         if (_metsData.Mods != null)
         {
             //start of dmdSec
@@ -232,7 +228,7 @@ public class Renderer
             //Allowed values: place, publisher, dateIssued, dateCreated, dateCaptured, dateValid, dateModified, copyrightDate, dateOther, edition, issuance, frequency
             var modsDateIssued = doc.CreateElement("mods", "dateIssued", _metsNs);
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
-            modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("O");
+            modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("yyyy-MM-ddTHH:mm:ssZ");
             modsorigininfo.AppendChild(modsDateIssued);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.Publisher))
