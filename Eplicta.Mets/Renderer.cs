@@ -30,8 +30,7 @@ public class Renderer
     public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
     {
         schema ??= MetsSchema.Default;
-        now ??= DateTime.UtcNow;
-
+        now ??= DateTime.UtcNow; //"yyyy-MM-ddTHH:mm:ssZ"
 
         var doc = new XmlDocument();
 
@@ -44,7 +43,6 @@ public class Renderer
         if (_metsData.Mods != null) root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3"); //TODO:mmm testa
         root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
         root.SetAttribute("OBJID", null);
-
 
         if (schema.Name == "CSPackageMETS.xsd") //TODO:mmm testa
         {
@@ -96,7 +94,7 @@ public class Renderer
     private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now, MetsSchema schema)
     {
         // dynamic info, the date of creation with accordance to ISO 8601
-        var dateNow = now.ToString("O");
+        var dateNow = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
         //Creates the metsHdr tag where agents and RecordID's will be
         var metshdr = doc.CreateElement("mets", "metsHdr", _metsNs); //TODO:mmm testa
@@ -109,7 +107,7 @@ public class Renderer
 
             var oaisStatus = doc.CreateAttribute("ext", "OAISSTATUS", _ext);
             oaisStatus.Value = "SIP";
-            root.Attributes.Append(oaisStatus);
+            metshdr.Attributes.Append(oaisStatus);
         }
 
         if (_metsData.MetsHdr?.Attributes != null)
@@ -186,11 +184,6 @@ public class Renderer
         recordId4.InnerText = "sip.xml";
         metshdr.AppendChild(recordId4);
 
-
-        //var metsDocumentId = doc.CreateElement("mets", "metsDocumentID", _metsNs);
-        //metsDocumentId.SetAttribute("ID", "sip.xml");
-        //metshdr.AppendChild(metsDocumentId);
-
         if (_metsData.Mods != null)
         {
             //start of dmdSec
@@ -235,7 +228,7 @@ public class Renderer
             //Allowed values: place, publisher, dateIssued, dateCreated, dateCaptured, dateValid, dateModified, copyrightDate, dateOther, edition, issuance, frequency
             var modsDateIssued = doc.CreateElement("mods", "dateIssued", _metsNs);
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
-            modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("O");
+            modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("yyyy-MM-ddTHH:mm:ssZ");
             modsorigininfo.AppendChild(modsDateIssued);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.Publisher))
