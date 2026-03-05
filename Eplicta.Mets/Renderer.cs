@@ -18,9 +18,11 @@ public class Renderer
 {
     private static readonly RecyclableMemoryStreamManager _recyclableMsManager = new();
     private readonly MetsData _metsData;
-    private const string _metsNs = "http://www.loc.gov/METS/";
-    private const string _xsi = "http://www.w3.org/2001/XMLSchema-instance";
-    private const string _ext = "ExtensionMETS";
+    private const string MetsNs = "http://www.loc.gov/METS/";
+    private const string ModsNs = "http://www.loc.gov/mods/v3";
+    private const string Xlink = "http://www.w3.org/1999/xlink";
+    private const string Xsi = "http://www.w3.org/2001/XMLSchema-instance";
+    private const string Ext = "ExtensionMETS";
 
     public Renderer(MetsData metsData)
     {
@@ -37,31 +39,31 @@ public class Renderer
         var documentType = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
         doc.AppendChild(documentType);
 
-        var root = doc.CreateElement("mets", "mets", _metsNs); //TODO:mmm testa
+        var root = doc.CreateElement("mets", "mets", MetsNs); //TODO:mmm testa
         doc.AppendChild(root);
-        if (schema.Name != "CSPackageMETS.xsd") root.SetAttribute("xmlns", "http://www.loc.gov/METS/");
-        if (_metsData.Mods != null) root.SetAttribute("xmlns:mods", "http://www.loc.gov/mods/v3"); //TODO:mmm testa
-        root.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+        if (schema.Name != "CSPackageMETS.xsd") root.SetAttribute("xmlns", MetsNs);
+        if (_metsData.Mods != null) root.SetAttribute("xmlns:mods", ModsNs); //TODO:mmm testa
+        root.SetAttribute("xmlns:xlink", Xlink);
         root.SetAttribute("OBJID", null);
 
         if (schema.Name == "CSPackageMETS.xsd") //TODO:mmm testa
         {
-            root.SetAttribute("xmlns:xsi", _xsi);
+            root.SetAttribute("xmlns:xsi", Xsi);
             root.SetAttribute("xmlns:ext", "ExtensionMETS");
 
-            var schemaLoc = doc.CreateAttribute("xsi", "schemaLocation", _xsi);
+            var schemaLoc = doc.CreateAttribute("xsi", "schemaLocation", Xsi);
             schemaLoc.Value = "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd " + "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd";
             root.Attributes.Append(schemaLoc);
 
-            var archName = doc.CreateAttribute("ext", "ARCHIVALNAME", _ext);
+            var archName = doc.CreateAttribute("ext", "ARCHIVALNAME", Ext);
             archName.Value = "E-Arkiv";
             root.Attributes.Append(archName);
 
-            var appraisal = doc.CreateAttribute("ext", "APPRAISAL", _ext);
+            var appraisal = doc.CreateAttribute("ext", "APPRAISAL", Ext);
             appraisal.Value = "No";
             root.Attributes.Append(appraisal);
 
-            var accessRestrict = doc.CreateAttribute("ext", "ACCESSRESTRICT", _ext);
+            var accessRestrict = doc.CreateAttribute("ext", "ACCESSRESTRICT", Ext);
             accessRestrict.Value = "PuL";
             root.Attributes.Append(accessRestrict);
 
@@ -97,7 +99,7 @@ public class Renderer
         var dateNow = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
         //Creates the metsHdr tag where agents and RecordID's will be
-        var metshdr = doc.CreateElement("mets", "metsHdr", _metsNs); //TODO:mmm testa
+        var metshdr = doc.CreateElement("mets", "metsHdr", MetsNs); //TODO:mmm testa
         root.AppendChild(metshdr);
         metshdr.SetAttribute("CREATEDATE", dateNow);
 
@@ -105,7 +107,7 @@ public class Renderer
         {
             metshdr.SetAttribute("RECORDSTATUS", "NEW");
 
-            var oaisStatus = doc.CreateAttribute("ext", "OAISSTATUS", _ext);
+            var oaisStatus = doc.CreateAttribute("ext", "OAISSTATUS", Ext);
             oaisStatus.Value = "SIP";
             metshdr.Attributes.Append(oaisStatus);
         }
@@ -120,26 +122,26 @@ public class Renderer
 
         foreach (var agent in _metsData.Agents ?? [])
         {
-            var agentElement = doc.CreateElement("mets", "agent", _metsNs);
+            var agentElement = doc.CreateElement("mets", "agent", MetsNs);
             agentElement.SetAttribute("ROLE", agent.Role.ToString().ToUpper());
             agentElement.SetAttribute("TYPE", agent.Type.ToString().ToUpper());
 
             metshdr.AppendChild(agentElement);
 
-            var compName = doc.CreateElement("mets", "name", _metsNs);
+            var compName = doc.CreateElement("mets", "name", MetsNs);
             compName.InnerText = agent.Name;
             agentElement.AppendChild(compName);
 
             if (agent.Note != null)
             {
-                var note = doc.CreateElement("mets", "note", _metsNs);
+                var note = doc.CreateElement("mets", "note", MetsNs);
                 note.InnerText = agent.Note;
                 agentElement.AppendChild(note);
             }
         }
 
         //software section
-        var companySoftware = doc.CreateElement("mets", "agent", _metsNs);
+        var companySoftware = doc.CreateElement("mets", "agent", MetsNs);
 
         if (_metsData.Software != null)
         {
@@ -148,13 +150,13 @@ public class Renderer
             companySoftware.SetAttribute("OTHERTYPE", _metsData.Software.OtherType.ToString().ToUpper());
             metshdr.AppendChild(companySoftware);
 
-            var softwareName = doc.CreateElement("mets", "name", _metsNs);
+            var softwareName = doc.CreateElement("mets", "name", MetsNs);
             softwareName.InnerText = _metsData.Software.Name;
             companySoftware.AppendChild(softwareName);
 
             if (_metsData.Software.Note != null)
             {
-                var softwareNote = doc.CreateElement("mets", "note", _metsNs);
+                var softwareNote = doc.CreateElement("mets", "note", MetsNs);
                 softwareNote.InnerText = _metsData.Software.Note;
                 companySoftware.AppendChild(softwareNote);
             }
@@ -164,84 +166,83 @@ public class Renderer
         {
             foreach (var altRecord in _metsData.AltRecords)
             {
-                var recordId1 = doc.CreateElement("mets", "altRecordID", _metsNs);
+                var recordId1 = doc.CreateElement("mets", "altRecordID", MetsNs);
                 recordId1.InnerText = altRecord.InnerText;
                 if (altRecord.Type != null) recordId1.SetAttribute("TYPE", altRecord.Type?.ToString().ToUpper());
                 metshdr.AppendChild(recordId1);
             }
         }
 
-        var recordId2 = doc.CreateElement("mets", "altRecordID", _metsNs);
+        var recordId2 = doc.CreateElement("mets", "altRecordID", MetsNs);
         recordId2.InnerText = "OK";
         recordId2.SetAttribute("TYPE", nameof(EAltRecordType.SubmissionAgreement).ToUpper());
         metshdr.AppendChild(recordId2);
 
-        var recordId3 = doc.CreateElement("mets", "altRecordID", _metsNs);
+        var recordId3 = doc.CreateElement("mets", "altRecordID", MetsNs);
         recordId3.InnerText = "SIP";
         metshdr.AppendChild(recordId3);
 
-        var recordId4 = doc.CreateElement("mets", "altRecordID", _metsNs);
+        var recordId4 = doc.CreateElement("mets", "altRecordID", MetsNs);
         recordId4.InnerText = "sip.xml";
         metshdr.AppendChild(recordId4);
 
         if (_metsData.Mods != null)
         {
             //start of dmdSec
-            var dmdSec = doc.CreateElement("mets", "dmdSec", _metsNs);
+            var dmdSec = doc.CreateElement("mets", "dmdSec", MetsNs);
             dmdSec.SetAttribute("ID", "ID1");
             root.AppendChild(dmdSec);
 
-            var mdwrap = doc.CreateElement("mets", "mdWrap", _metsNs);
+            var mdwrap = doc.CreateElement("mets", "mdWrap", MetsNs);
             mdwrap.SetAttribute("MDTYPE", "MODS");
             dmdSec.AppendChild(mdwrap);
 
-            var xmldata = doc.CreateElement("mets", "xmlData", _metsNs);
+            var xmldata = doc.CreateElement("mets", "xmlData", MetsNs);
             mdwrap.AppendChild(xmldata);
 
-            var modsmods = doc.CreateElement("mods", "mods", _metsNs);
-            modsmods.SetAttribute("xmlns", _metsData.Mods.Xmlns);
+            var modsmods = doc.CreateElement("mods", "mods", ModsNs);
             xmldata.AppendChild(modsmods);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.Identifier))
             {
-                var modsidentifier = doc.CreateElement("mods", "identifier", _metsNs);
+                var modsidentifier = doc.CreateElement("mods", "identifier", ModsNs);
                 modsidentifier.SetAttribute("type", "local");
                 modsidentifier.InnerText = _metsData.Mods.Identifier;
                 modsmods.AppendChild(modsidentifier);
             }
 
-            var modslocation = doc.CreateElement("mods", "location", _metsNs);
+            var modslocation = doc.CreateElement("mods", "location", ModsNs);
             modsmods.AppendChild(modslocation);
 
             //Allowed values: physicalLocation, shelfLocator or url
             if (_metsData.Mods.Url != null)
             {
-                var modsurl = doc.CreateElement("mods", "url", _metsNs);
+                var modsurl = doc.CreateElement("mods", "url", ModsNs);
                 modsurl.InnerText = _metsData.Mods.Url.OriginalString;
                 modslocation.AppendChild(modsurl);
             }
 
             //Allowed values: abstract, accessCondition, classification, extension, genre, identifier, language, location, name, note, originInfo, part, physicalDescription, recordInfo, relatedItem, subject, tableOfContents, targetAudience, titleInfo, typeOfResource
-            var modsorigininfo = doc.CreateElement("mods", "originInfo", _metsNs);
+            var modsorigininfo = doc.CreateElement("mods", "originInfo", ModsNs);
             modsmods.AppendChild(modsorigininfo);
 
             //Allowed values: place, publisher, dateIssued, dateCreated, dateCaptured, dateValid, dateModified, copyrightDate, dateOther, edition, issuance, frequency
-            var modsDateIssued = doc.CreateElement("mods", "dateIssued", _metsNs);
+            var modsDateIssued = doc.CreateElement("mods", "dateIssued", ModsNs);
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
             modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("yyyy-MM-ddTHH:mm:ssZ");
             modsorigininfo.AppendChild(modsDateIssued);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.Publisher))
             {
-                var modstitle = doc.CreateElement("mods", "publisher", _metsNs);
+                var modstitle = doc.CreateElement("mods", "publisher", ModsNs);
                 modstitle.InnerText = _metsData.Mods.Publisher;
                 modsorigininfo.AppendChild(modstitle);
             }
 
             if (_metsData.Mods.Place != null)
             {
-                var place = doc.CreateElement("mods", "place", _metsNs);
-                var placeTerm = doc.CreateElement("mods", "placeTerm", _metsNs);
+                var place = doc.CreateElement("mods", "place", ModsNs);
+                var placeTerm = doc.CreateElement("mods", "placeTerm", ModsNs);
                 placeTerm.InnerText = _metsData.Mods.Place.PlaceTerm;
                 place.AppendChild(placeTerm);
                 modsorigininfo.AppendChild(place);
@@ -249,28 +250,28 @@ public class Renderer
 
             if (!string.IsNullOrEmpty(_metsData.Mods.AccessCondition))
             {
-                var modsaccesscondition = doc.CreateElement("mods", "accessCondition", _metsNs);
+                var modsaccesscondition = doc.CreateElement("mods", "accessCondition", ModsNs);
                 modsaccesscondition.InnerText = _metsData.Mods.AccessCondition;
                 modsmods.AppendChild(modsaccesscondition);
             }
 
-            var modstitleinfo = doc.CreateElement("mods", "titleInfo", _metsNs);
+            var modstitleinfo = doc.CreateElement("mods", "titleInfo", ModsNs);
             modsmods.AppendChild(modstitleinfo);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.ModsTitle))
             {
-                var modstitle = doc.CreateElement("mods", "title", _metsNs);
+                var modstitle = doc.CreateElement("mods", "title", ModsNs);
                 modstitle.InnerText = _metsData.Mods.ModsTitle;
                 modstitleinfo.AppendChild(modstitle);
             }
 
-            var modsrelateditem = doc.CreateElement("mods", "relatedItem", _metsNs);
+            var modsrelateditem = doc.CreateElement("mods", "relatedItem", ModsNs);
             modsrelateditem.SetAttribute("type", "host");
             modsmods.AppendChild(modsrelateditem);
 
             if (_metsData.Mods.Uri != null)
             {
-                var modsidentifier2 = doc.CreateElement("mods", "identifier", _metsNs);
+                var modsidentifier2 = doc.CreateElement("mods", "identifier", ModsNs);
                 modsidentifier2.SetAttribute("type", "uri");
                 modsidentifier2.InnerText = _metsData.Mods.Uri.OriginalString;
                 modsrelateditem.AppendChild(modsidentifier2);
@@ -278,10 +279,10 @@ public class Renderer
 
             if (!string.IsNullOrEmpty(_metsData.Mods.ModsTitleInfo))
             {
-                var modsTitleInfo = doc.CreateElement("mods", "titleInfo", _metsNs);
+                var modsTitleInfo = doc.CreateElement("mods", "titleInfo", ModsNs);
                 modsrelateditem.AppendChild(modsTitleInfo);
 
-                var modstitle2 = doc.CreateElement("mods", "title", _metsNs);
+                var modstitle2 = doc.CreateElement("mods", "title", ModsNs);
                 modstitle2.InnerText = _metsData.Mods.ModsTitleInfo;
                 modsTitleInfo.AppendChild(modstitle2);
             }
@@ -292,13 +293,13 @@ public class Renderer
                 {
                     var noteType = Regex.Replace(note.Type.ToString(), "([A-Z])", " $1").Trim().ToLower();
 
-                    var noteNode = doc.CreateElement("mods", "note", _metsNs);
+                    var noteNode = doc.CreateElement("mods", "note", ModsNs);
                     noteNode.SetAttribute("type", noteType);
                     noteNode.InnerText = note.InnerText;
 
                     if (!string.IsNullOrEmpty(note.Href))
                     {
-                        noteNode.SetAttribute("href", "http://www.w3.org/1999/xlink", note.Href);
+                        noteNode.SetAttribute("href", Xlink, note.Href);
                     }
 
                     modsmods.AppendChild(noteNode);
@@ -308,16 +309,16 @@ public class Renderer
 
         //From heres are the file section
 
-        var filesec = doc.CreateElement("mets", "fileSec", _metsNs);
+        var filesec = doc.CreateElement("mets", "fileSec", MetsNs);
         root.AppendChild(filesec);
 
-        var filegrp = doc.CreateElement("mets", "fileGrp", _metsNs);
+        var filegrp = doc.CreateElement("mets", "fileGrp", MetsNs);
         filegrp.SetAttribute("USE", "FILES"); //TODO:mmm testa
         filesec.AppendChild(filegrp);
 
         if (_metsData.Files?.Any() == false && _metsData.Sources?.Any() == false)
         {
-            var structMap = doc.CreateElement("mets", "structMap", _metsNs);
+            var structMap = doc.CreateElement("mets", "structMap", MetsNs);
             structMap.SetAttribute("LABEL", "No structmap defined in this information package");
             root.AppendChild(structMap);
 
@@ -328,7 +329,7 @@ public class Renderer
         {
             foreach (var item in _metsData.Files ?? [])
             {
-                var file = doc.CreateElement("mets", "file", _metsNs);
+                var file = doc.CreateElement("mets", "file", MetsNs);
                 file.SetAttribute("ID", item.Id);
                 file.SetAttribute("USE", item.Use);
                 file.SetAttribute("MIMETYPE", item.MimeType);
@@ -340,12 +341,12 @@ public class Renderer
                     file.SetAttribute("CHECKSUMTYPE", item.ChecksumType.ToString().ToUpper().Replace("_", "-"));
                 }
 
-                var flocat = doc.CreateElement("mets", "FLocat", _metsNs);
+                var flocat = doc.CreateElement("mets", "FLocat", MetsNs);
                 flocat.SetAttribute("LOCTYPE", item.LocType.ToString().ToUpper());
 
                 var href = schema.Name == "eARD_Paket_FGS-PUBL_mets.xsd" ? $"file:{item.FileName}" : $"file:///{item.FileName}";
-                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", href);
-                flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
+                flocat.SetAttribute("href", Xlink, href);
+                flocat.SetAttribute("type", Xlink, "simple");
 
                 file.AppendChild(flocat);
 
@@ -354,7 +355,7 @@ public class Renderer
 
             foreach (var item in _metsData.Sources ?? [])
             {
-                var file = doc.CreateElement("mets", "file", _metsNs);
+                var file = doc.CreateElement("mets", "file", MetsNs);
                 file.SetAttribute("ID", item.Id);
                 file.SetAttribute("USE", item.Use);
                 file.SetAttribute("MIMETYPE", item.MimeType);
@@ -366,36 +367,36 @@ public class Renderer
                     file.SetAttribute("CHECKSUMTYPE", item.ChecksumType.ToString().ToUpper().Replace("_", "-"));
                 }
 
-                var flocat = doc.CreateElement("mets", "FLocat", _metsNs);
+                var flocat = doc.CreateElement("mets", "FLocat", MetsNs);
                 flocat.SetAttribute("LOCTYPE", nameof(ELocType.Url).ToUpper());
 
                 var href = schema.Name == "eARD_Paket_FGS-PUBL_mets.xsd" ? $"file:{item.Name}" : $"file:///{item.Name}";
-                flocat.SetAttribute("href", "http://www.w3.org/1999/xlink", href);
-                flocat.SetAttribute("type", "http://www.w3.org/1999/xlink", "simple");
+                flocat.SetAttribute("href", Xlink, href);
+                flocat.SetAttribute("type", Xlink, "simple");
 
                 file.AppendChild(flocat);
 
                 filegrp.AppendChild(file);
             }
 
-            var structMap = doc.CreateElement("mets", "structMap", _metsNs);
+            var structMap = doc.CreateElement("mets", "structMap", MetsNs);
             structMap.SetAttribute("TYPE", "Package");
             root.AppendChild(structMap);
 
-            var div2 = doc.CreateElement("mets", "div", _metsNs);
+            var div2 = doc.CreateElement("mets", "div", MetsNs);
             div2.SetAttribute("TYPE", "DataFiles");
             structMap.AppendChild(div2);
 
             foreach (var item in _metsData.Files ?? [])
             {
-                var fptr = doc.CreateElement("mets", "fptr", _metsNs);
+                var fptr = doc.CreateElement("mets", "fptr", MetsNs);
                 fptr.SetAttribute("FILEID", item.Id);
                 div2.AppendChild(fptr);
             }
 
             foreach (var item in _metsData.Sources ?? [])
             {
-                var fptr = doc.CreateElement("mets", "fptr", _metsNs);
+                var fptr = doc.CreateElement("mets", "fptr", MetsNs);
                 fptr.SetAttribute("FILEID", item.Id);
                 div2.AppendChild(fptr);
             }
