@@ -4,9 +4,28 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub repo Issues](https://img.shields.io/github/issues/Eplicta/Mets?style=flat&logo=github&logoColor=red&label=Issues)](https://github.com/Eplicta/Mets/issues?q=is%3Aopen)
 
-This code helps build and verify packages used for electronic archives. The two standards **Mets** (Metadata Object Description Schema) / **Mets** (Metadata Encoding and Transmission Standard) are used for storing digital documents in electronic archives.
+This code helps build and verify packages used for electronic archives. 
+The two standards **Mets** (Metadata Encoding and Transmission Standard) and **Mods** (Metadata Object Description Schema) are used for storing digital documents in electronic archives.
 
-Basic example on how to create a simple Mets package and have it stored as a zip-file.
+## How to get started
+Register the services using *AddEplictaMets*.
+
+```
+var builder = WebApplication.CreateBuilder(args);
+
+//...
+
+builder.Services.AddEplictaMets();
+
+var app = builder.Build();
+
+//...
+
+app.Run();
+
+```
+
+## Builder
 ```
 var metsData = new Builder()
     .SetMetsAttributes(new []
@@ -25,11 +44,18 @@ await using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip, null, tru
 await File.WriteAllBytesAsync("C:\\mets-archive.zip", archive.ToArray());
 ```
 
-To validate a Mets document against a specific Mods version schema.
+## Validator
+Inject *IMetsValidatorService* and use it
+
 ```
-var validator = new MetsValidator();
-var result = validator.Validate(xmlDocument, ModsVersion.Mods_3_7, MetsSchema.Default)?.ToArray() ?? Array.Empty<XmlValidatorResult>();
-var errorMessage = result.FirstOrDefault()?.Message;
+var doc = new XmlDocument();
+doc.Load("C:\\file.xml");
+
+var results = _validatorService.Validate(doc);
+foreach (var item in results)
+{
+    Console.WriteLine(item.Information ?? item.XmlReslut.Message);
+}
 ```
 
 This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License](LICENSE).

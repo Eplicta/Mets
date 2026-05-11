@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Eplicta.Mets.Entities;
+﻿namespace Eplicta.Mets.Entities;
 
 public abstract record SourceBase
 {

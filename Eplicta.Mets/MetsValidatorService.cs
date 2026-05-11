@@ -10,11 +10,11 @@ using Eplicta.Mets.Entities;
 
 namespace Eplicta.Mets;
 
-internal class ValidatorService : IValidatorService
+internal class MetsValidatorService : IMetsValidatorService
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public ValidatorService(IHttpClientFactory httpClientFactory)
+    public MetsValidatorService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
@@ -97,7 +97,7 @@ internal class ValidatorService : IValidatorService
             return;
         }
 
-        using var client = _httpClientFactory.CreateClient();
+        using var client = _httpClientFactory.CreateClient(Constants.EplictaMetsValidatorClient);
 
         foreach (var sl in schemaLocations)
         {
@@ -258,11 +258,11 @@ internal class ValidatorService : IValidatorService
 
     private sealed class HttpClientXmlResolver : XmlResolver
     {
-        private readonly IHttpClientFactory _factory;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public HttpClientXmlResolver(IHttpClientFactory factory)
         {
-            _factory = factory;
+            _httpClientFactory = factory;
         }
 
         public override ICredentials Credentials
@@ -283,7 +283,7 @@ internal class ValidatorService : IValidatorService
                 throw new XmlException($"Only http/https schemas are allowed. Uri: '{absoluteUri}'.");
             }
 
-            using var client = _factory.CreateClient();
+            using var client = _httpClientFactory.CreateClient(Constants.EplictaMetsValidatorClient);
 
             using var request = new HttpRequestMessage(HttpMethod.Get, absoluteUri);
             request.Headers.UserAgent.ParseAdd("ValidatorService/1.0");

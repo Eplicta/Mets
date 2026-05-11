@@ -1,13 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Eplicta.Mets.Entities;
 
 namespace Eplicta.Mets.Console.Commands.Mets;
 
-public class CreateFromStreamConsoleCommand : CreateConsoleCommand
+public class BuildFromStreamConsoleCommand : CreateConsoleCommand
 {
-    public CreateFromStreamConsoleCommand() : base("Stream")
+    public BuildFromStreamConsoleCommand() : base("stream")
     {
     }
 

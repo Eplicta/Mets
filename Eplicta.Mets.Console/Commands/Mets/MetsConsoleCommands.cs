@@ -6,7 +6,7 @@ public class MetsConsoleCommands : ContainerCommandBase
 {
     public MetsConsoleCommands() : base("mets")
     {
-        RegisterCommand<MetsSampleConsoleCommands>();
+        RegisterCommand<MetsBuilderConsoleCommand>();
         RegisterCommand<MetsValidateConsoleCommand>();
     }
 }
