@@ -73,6 +73,29 @@ public class MetsValidatorTests
         result.Should().BeEmpty();
     }
 
+    [Theory]
+    [ClassData(typeof(MetsVersionGenerator))]
+    public void Empty_package_has_no_structMap_div_namespace_error(ModsVersion version)
+    {
+        // EP-4404: an empty package (no files, no sources) previously emitted the structMap's child as
+        // <div xmlns=""> (empty namespace), which the METS XSD rejects ("invalid child element 'div'").
+        // Mirrors Minimal but without AddFile, so it takes the empty-package branch.
+        var modsData = new Builder()
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddAltRecord(new MetsData.AltRecord())
+            .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
+            .Build();
+        var document = new Renderer(modsData).Render();
+        var sut = new MetsValidator();
+
+        //Act
+        var result = sut.Validate(document, version, MetsSchema.Default);
+
+        //Assert
+        result.Should().BeEmpty();
+    }
+
     class MetsVersionGenerator : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()

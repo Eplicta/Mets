@@ -322,7 +322,7 @@ public class Renderer
             structMap.SetAttribute("LABEL", "No structmap defined in this information package");
             root.AppendChild(structMap);
 
-            var div = doc.CreateElement("div");
+            var div = doc.CreateElement("mets", "div", MetsNs);
             structMap.AppendChild(div);
         }
         else
