@@ -94,6 +94,9 @@ public record DeserializedMets
                     [XmlElement(ElementName = "note", Namespace = "http://www.loc.gov/mods/v3")]
                     public ModsNoteElement[] Notes { get; set; }
 
+                    [XmlElement(ElementName = "name", Namespace = "http://www.loc.gov/mods/v3")]
+                    public ModsNameElement[] Names { get; set; }
+
                     public record ModsIdentifierElement : XmlValueElement<string>
                     {
                         [XmlAttribute("type")]
@@ -222,6 +225,39 @@ public record DeserializedMets
     {
         [XmlAttribute("type")]
         public string Type { get; set; }
+    }
+
+    public record ModsNameElement
+    {
+        [XmlAttribute("type")]
+        public string Type { get; set; }
+
+        [XmlElement(ElementName = "namePart", Namespace = "http://www.loc.gov/mods/v3")]
+        public string NamePart { get; set; }
+
+        [XmlElement(ElementName = "displayForm", Namespace = "http://www.loc.gov/mods/v3")]
+        public string DisplayForm { get; set; }
+
+        [XmlElement(ElementName = "role", Namespace = "http://www.loc.gov/mods/v3")]
+        public ModsRoleElement Role { get; set; }
+
+        [XmlIgnore]
+        public string RoleTerm => Role?.RoleTerm?.Value;
+
+        public record ModsRoleElement
+        {
+            [XmlElement(ElementName = "roleTerm", Namespace = "http://www.loc.gov/mods/v3")]
+            public ModsRoleTermElement RoleTerm { get; set; }
+        }
+
+        public record ModsRoleTermElement : XmlValueElement<string>
+        {
+            [XmlAttribute("type")]
+            public string Type { get; set; }
+
+            [XmlAttribute("authority")]
+            public string Authority { get; set; }
+        }
     }
 }
 

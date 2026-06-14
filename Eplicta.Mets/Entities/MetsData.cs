@@ -91,6 +91,12 @@ public record MetsData
         ObjId
     }
 
+    public enum ENameType
+    {
+        Personal,
+        Corporate
+    }
+
     public MetsHdrData MetsHdr { get; set; }
     public AgentData[] Agents { get; set; }
     //public CompanyData Company { get; set; }
@@ -147,6 +153,12 @@ public record MetsData
         public string Href { get; set; }
     }
 
+    public record ModsName
+    {
+        public string DisplayName { get; set; }
+        public ENameType Type { get; set; }
+    }
+
     public record ModsSectionData
     {
         public string Xmlns { get; set; }
@@ -160,6 +172,7 @@ public record MetsData
         public PlaceInfo Place { get; set; }
         public ModsNote[] Notes { get; set; }
         public string Publisher { get; set; }
+        public ModsName Creator { get; set; }
     }
 
     public record FileData

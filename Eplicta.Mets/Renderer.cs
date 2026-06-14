@@ -305,6 +305,30 @@ public class Renderer
                     modsmods.AppendChild(noteNode);
                 }
             }
+
+            if (_metsData.Mods.Creator != null && !string.IsNullOrEmpty(_metsData.Mods.Creator.DisplayName))
+            {
+                var modsName = doc.CreateElement("mods", "name", ModsNs);
+                modsName.SetAttribute("type", _metsData.Mods.Creator.Type.ToString().ToLower());
+
+                var modsNamePart = doc.CreateElement("mods", "namePart", ModsNs);
+                modsNamePart.InnerText = _metsData.Mods.Creator.DisplayName;
+                modsName.AppendChild(modsNamePart);
+
+                var modsDisplayForm = doc.CreateElement("mods", "displayForm", ModsNs);
+                modsDisplayForm.InnerText = _metsData.Mods.Creator.DisplayName;
+                modsName.AppendChild(modsDisplayForm);
+
+                var modsRole = doc.CreateElement("mods", "role", ModsNs);
+                var modsRoleTerm = doc.CreateElement("mods", "roleTerm", ModsNs);
+                modsRoleTerm.SetAttribute("type", "text");
+                modsRoleTerm.SetAttribute("authority", "marcrelator");
+                modsRoleTerm.InnerText = "creator";
+                modsRole.AppendChild(modsRoleTerm);
+                modsName.AppendChild(modsRole);
+
+                modsmods.AppendChild(modsName);
+            }
         }
 
         //From heres are the file section
