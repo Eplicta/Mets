@@ -29,6 +29,24 @@ public class RendererOfflineValidatorTests
 
     [Theory]
     [ClassData(typeof(SchemaGenerator))]
+    public void CreatorEmitsValidModsNameForAllSchemas(string format)
+    {
+        //Arrange
+        var modsData = new Fixture().Build<MetsData>().Without(x => x.MetsHdr).Without(x => x.Sources).Create();
+        modsData = modsData with { Mods = modsData.Mods with { Creator = new MetsData.ModsName { DisplayName = "Uppsala Stadsarkiv", Type = MetsData.ENameType.Corporate } } };
+        var document = new Renderer(modsData).Render();
+        var schema = Mets.Helpers.Resource.GetXml(format);
+        var sut = new XmlValidatorOffline();
+
+        //Act
+        var result = sut.Validate(document, schema);
+
+        //Assert
+        result.Should().BeEmpty();
+    }
+
+    [Theory]
+    [ClassData(typeof(SchemaGenerator))]
     public void Minimal(string format)
     {
         //Arrange
