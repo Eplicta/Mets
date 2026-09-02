@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -23,6 +24,7 @@ public class Renderer
     private const string Xlink = "http://www.w3.org/1999/xlink";
     private const string Xsi = "http://www.w3.org/2001/XMLSchema-instance";
     private const string Ext = "ExtensionMETS";
+    private const string Iso8601UtcFormat = "yyyy-MM-ddTHH:mm:ss'Z'";
 
     public Renderer(MetsData metsData)
     {
@@ -32,7 +34,7 @@ public class Renderer
     public XmlDocument Render(DateTime? now = null, MetsSchema schema = null)
     {
         schema ??= MetsSchema.Default;
-        now ??= DateTime.UtcNow; //"yyyy-MM-ddTHH:mm:ssZ"
+        now ??= DateTime.UtcNow;
 
         var doc = new XmlDocument();
 
@@ -93,10 +95,16 @@ public class Renderer
         return doc;
     }
 
+    private static string ToIso8601Utc(DateTime value)
+    {
+        var utc = value.Kind == DateTimeKind.Local ? value.ToUniversalTime() : value;
+        return utc.ToString(Iso8601UtcFormat, CultureInfo.InvariantCulture);
+    }
+
     private void ModsRenderer(XmlDocument doc, XmlElement root, DateTime now, MetsSchema schema)
     {
         // dynamic info, the date of creation with accordance to ISO 8601
-        var dateNow = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
+        var dateNow = ToIso8601Utc(now);
 
         //Creates the metsHdr tag where agents and RecordID's will be
         var metshdr = doc.CreateElement("mets", "metsHdr", MetsNs); //TODO:mmm testa
@@ -229,7 +237,7 @@ public class Renderer
             //Allowed values: place, publisher, dateIssued, dateCreated, dateCaptured, dateValid, dateModified, copyrightDate, dateOther, edition, issuance, frequency
             var modsDateIssued = doc.CreateElement("mods", "dateIssued", ModsNs);
             modsDateIssued.SetAttribute("encoding", "w3cdtf");
-            modsDateIssued.InnerText = _metsData.Mods.DateIssued.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            modsDateIssued.InnerText = ToIso8601Utc(_metsData.Mods.DateIssued);
             modsorigininfo.AppendChild(modsDateIssued);
 
             if (!string.IsNullOrEmpty(_metsData.Mods.Publisher))
