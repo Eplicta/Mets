@@ -10,6 +10,7 @@ namespace Eplicta.Mets.Tests;
 public class RendererTests
 {
     private const string MetsNs = "http://www.loc.gov/METS/";
+    private const string ModsNs = "http://www.loc.gov/mods/v3";
 
     [Fact]
     public void Empty_package_emits_div_in_mets_namespace()
@@ -216,5 +217,83 @@ public class RendererTests
         result.OuterXml.Should().Contain("a1");
         result.OuterXml.Should().Contain("http://aaa.bbb");
         result.OuterXml.Should().Contain("http://ccc.ddd");
+    }
+
+    [Fact]
+    public void CreateDate_in_local_time_renders_the_utc_instant()
+    {
+        //Arrange
+        var localNow = new DateTime(2026, 8, 28, 13, 21, 5, DateTimeKind.Utc).ToLocalTime();
+        var metsData = new Builder()
+            .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
+            .Build();
+        var sut = new Renderer(metsData);
+
+        //Act
+        var result = sut.Render(localNow);
+
+        //Assert
+        var nsmgr = new XmlNamespaceManager(result.NameTable);
+        nsmgr.AddNamespace("mets", MetsNs);
+        result.SelectSingleNode("//mets:metsHdr", nsmgr).Attributes["CREATEDATE"].Value.Should().Be("2026-08-28T13:21:05Z");
+    }
+
+    [Fact]
+    public void CreateDate_with_unspecified_kind_is_not_shifted_by_the_host_time_zone()
+    {
+        //Arrange
+        var unspecified = new DateTime(2026, 8, 28, 13, 21, 5, DateTimeKind.Unspecified);
+        var metsData = new Builder()
+            .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
+            .Build();
+        var sut = new Renderer(metsData);
+
+        //Act
+        var result = sut.Render(unspecified);
+
+        //Assert
+        var nsmgr = new XmlNamespaceManager(result.NameTable);
+        nsmgr.AddNamespace("mets", MetsNs);
+        result.SelectSingleNode("//mets:metsHdr", nsmgr).Attributes["CREATEDATE"].Value.Should().Be("2026-08-28T13:21:05Z");
+    }
+
+    [Fact]
+    public void DateIssued_in_local_time_renders_the_utc_instant()
+    {
+        //Arrange
+        var localDateIssued = new DateTime(2026, 8, 28, 13, 21, 5, DateTimeKind.Utc).ToLocalTime();
+        var metsData = new Builder()
+            .SetModsSection(new MetsData.ModsSectionData { DateIssued = localDateIssued, Url = new Uri("http://ccc.ddd") })
+            .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
+            .Build();
+        var sut = new Renderer(metsData);
+
+        //Act
+        var result = sut.Render(DateTime.MinValue);
+
+        //Assert
+        var nsmgr = new XmlNamespaceManager(result.NameTable);
+        nsmgr.AddNamespace("mods", ModsNs);
+        result.SelectSingleNode("//mods:dateIssued", nsmgr).InnerText.Should().Be("2026-08-28T13:21:05Z");
+    }
+
+    [Fact]
+    public void DateIssued_in_utc_keeps_its_instant()
+    {
+        //Arrange
+        var utcDateIssued = new DateTime(2026, 8, 28, 13, 21, 5, DateTimeKind.Utc);
+        var metsData = new Builder()
+            .SetModsSection(new MetsData.ModsSectionData { DateIssued = utcDateIssued, Url = new Uri("http://ccc.ddd") })
+            .AddMetsAttributes([new MetsData.MetsAttribute { Name = MetsData.EMetsAttributeName.ObjId, Value = string.Empty }])
+            .Build();
+        var sut = new Renderer(metsData);
+
+        //Act
+        var result = sut.Render(DateTime.MinValue);
+
+        //Assert
+        var nsmgr = new XmlNamespaceManager(result.NameTable);
+        nsmgr.AddNamespace("mods", ModsNs);
+        result.SelectSingleNode("//mods:dateIssued", nsmgr).InnerText.Should().Be("2026-08-28T13:21:05Z");
     }
 }
