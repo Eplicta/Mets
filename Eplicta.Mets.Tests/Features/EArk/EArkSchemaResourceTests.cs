@@ -9,7 +9,6 @@ public class EArkSchemaResourceTests
 {
     [Theory]
     [InlineData("EArk.mets.xsd")]
-    [InlineData("EArk.xlink.xsd")]
     [InlineData("EArk.DILCISExtensionMETS.xsd")]
     [InlineData("EArk.DILCISExtensionSIPMETS.xsd")]
     [InlineData("EArk.SNAadditionalPackageInfo.xsd")]

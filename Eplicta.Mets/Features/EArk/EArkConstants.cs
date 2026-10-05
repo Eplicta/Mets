@@ -46,7 +46,11 @@ public static class EArkConstants
     public const string SoftwareVersionNoteType = "SOFTWARE VERSION";
     public const string IdentificationCodeNoteType = "IDENTIFICATIONCODE";
 
-    public const string Iso8601Format = "yyyy-MM-ddTHH:mm:ss";
+    /// <summary>
+    /// Dates are written as a true UTC instant. Riksarkivet's example omits the zone designator, which is
+    /// also valid xsd:dateTime, but an explicit instant cannot be misread in another time zone.
+    /// </summary>
+    public const string Iso8601UtcFormat = "yyyy-MM-ddTHH:mm:ss'Z'";
     public const string IdPrefix = "uuid-";
 
     /// <summary>

@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\a.xml" />
+		<EmbeddedResource Include="Resources\Riksarkivet_IP_example_1_METS.xml" />
 		<EmbeddedResource Include="Resources\a.xsd" />
 		<EmbeddedResource Include="Resources\mods99042030_linkedDataAdded.xml" />
 		<EmbeddedResource Include="Resources\MODS_enligt_FGS-PUBL_exempel_1.xml" />

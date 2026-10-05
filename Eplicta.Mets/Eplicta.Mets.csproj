@@ -21,7 +21,6 @@
 		<None Remove="Resources\EArk\DILCISExtensionSIPMETS.xsd" />
 		<None Remove="Resources\EArk\mets.xsd" />
 		<None Remove="Resources\EArk\SNAadditionalPackageInfo.xsd" />
-		<None Remove="Resources\EArk\xlink.xsd" />
 		<None Remove="Resources\CSPackageMETS.xsd" />
 		<None Remove="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<None Remove="Resources\mets.xsd" />
@@ -46,7 +45,6 @@
 		<EmbeddedResource Include="Resources\EArk\DILCISExtensionSIPMETS.xsd" />
 		<EmbeddedResource Include="Resources\EArk\mets.xsd" />
 		<EmbeddedResource Include="Resources\EArk\SNAadditionalPackageInfo.xsd" />
-		<EmbeddedResource Include="Resources\EArk\xlink.xsd" />
 		<EmbeddedResource Include="Resources\CSPackageMETS.xsd" />
 		<EmbeddedResource Include="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<EmbeddedResource Include="Resources\mets.xsd" />
