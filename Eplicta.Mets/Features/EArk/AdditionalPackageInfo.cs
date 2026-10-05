@@ -11,8 +11,13 @@ public record AdditionalPackageInfo
 {
     public enum ECreatorCodeType
     {
+        VAT,
+        DUNS,
         ORG,
-        PERS
+        HSA,
+        Local,
+        URI,
+        OTHER
     }
 
     public Guid Identification { get; init; } = Guid.NewGuid();

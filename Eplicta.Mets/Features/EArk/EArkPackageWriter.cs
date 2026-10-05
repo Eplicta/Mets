@@ -64,10 +64,40 @@ public class EArkPackageWriter
         {
             DescriptiveMetadata = _package.DescriptiveMetadata.Select(Measure).ToArray(),
             PreservationMetadata = _package.PreservationMetadata.Select(Measure).ToArray(),
-            DocumentationFiles = _package.DocumentationFiles.Select(Measure).ToArray(),
+            DocumentationFiles = DocumentationFiles().Select(Measure).ToArray(),
             SchemaFiles = SchemaFiles().Select(Measure).ToArray(),
             RepresentationFiles = _package.RepresentationFiles.Select(Measure).ToArray()
         };
+    }
+
+    private IEnumerable<EArkFile> DocumentationFiles()
+    {
+        foreach (var file in _package.DocumentationFiles)
+        {
+            yield return file;
+        }
+
+        if (_package.AdditionalPackageInfo == null) yield break;
+
+        yield return new EArkFile
+        {
+            Id = EArkPackageBuilder.NewId(),
+            Href = $"{EArkConstants.DocumentationFolderName}/{EArkConstants.AdditionalPackageInfoFileName}",
+            MimeType = "text/xml",
+            Created = _package.CreateDate,
+            Content = ToBytes(new AdditionalPackageInfoRenderer(_package.AdditionalPackageInfo, _package.ObjId).Render())
+        };
+    }
+
+    private static byte[] ToBytes(XmlDocument document)
+    {
+        using var buffer = new MemoryStream();
+        using (var writer = new XmlTextWriter(buffer, new UTF8Encoding(false)) { Formatting = Formatting.Indented })
+        {
+            document.WriteTo(writer);
+        }
+
+        return buffer.ToArray();
     }
 
     private IEnumerable<EArkFile> SchemaFiles()

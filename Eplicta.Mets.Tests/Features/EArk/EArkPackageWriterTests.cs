@@ -246,4 +246,92 @@ public class EArkPackageWriterTests : IDisposable
 
         Entries(archive).Should().OnlyContain(x => x.StartsWith("delivery-001/", StringComparison.Ordinal));
     }
+
+    [Fact]
+    public void The_riksarkivet_adaptation_adds_its_document_to_the_documentation_folder()
+    {
+        var package = Builder()
+            .SetAdditionalPackageInfo(new AdditionalPackageInfo { CreationDate = Created, CreatorName = "Sjofartsverket" })
+            .AddRepresentationFile(new EArkFile { Href = "representations/rep_1/data/a.zip", Created = Created, Content = [1] })
+            .Build();
+
+        using var archive = Write(package);
+
+        Entries(archive).Should().Contain("uuid-11111111-1111-1111-1111-111111111111/documentation/additionalPackageInfo.xml");
+    }
+
+    [Fact]
+    public void The_riksarkivet_adaptation_carries_its_own_schema()
+    {
+        var package = Builder()
+            .SetAdditionalPackageInfo(new AdditionalPackageInfo { CreationDate = Created, CreatorName = "Sjofartsverket" })
+            .AddRepresentationFile(new EArkFile { Href = "representations/rep_1/data/a.zip", Created = Created, Content = [1] })
+            .Build();
+
+        using var archive = Write(package);
+
+        Entries(archive).Should().Contain("uuid-11111111-1111-1111-1111-111111111111/schemas/SNAadditionalPackageInfo.xsd");
+    }
+
+    [Fact]
+    public void The_riksarkivet_document_is_described_in_the_mets_document()
+    {
+        var package = Builder()
+            .SetAdditionalPackageInfo(new AdditionalPackageInfo { CreationDate = Created, CreatorName = "Sjofartsverket" })
+            .AddRepresentationFile(new EArkFile { Href = "representations/rep_1/data/a.zip", Created = Created, Content = [1] })
+            .Build();
+
+        using var archive = Write(package);
+        var file = FileFor(archive, "documentation/additionalPackageInfo.xml");
+
+        file.GetAttribute("MIMETYPE").Should().Be("text/xml");
+        file.GetAttribute("CHECKSUM").Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public void The_written_riksarkivet_document_validates_against_its_schema()
+    {
+        var package = Builder()
+            .SetAdditionalPackageInfo(new AdditionalPackageInfo { CreationDate = Created, CreatorName = "Sjofartsverket", ArchiveName = "Sjofartsverkets webbarkiv" })
+            .AddRepresentationFile(new EArkFile { Href = "representations/rep_1/data/a.zip", Created = Created, Content = [1] })
+            .Build();
+
+        using var archive = Write(package);
+        var entry = archive.Entries.Single(x => x.FullName.EndsWith("additionalPackageInfo.xml", StringComparison.Ordinal));
+
+        using var stream = entry.Open();
+        var document = new XmlDocument();
+        document.Load(stream);
+
+        new AdditionalPackageInfoValidator().Validate(document).Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Without_the_riksarkivet_adaptation_neither_its_document_nor_its_schema_is_written()
+    {
+        using var archive = Write(WithWebArchive(Builder(), [1, 2, 3]));
+        var entries = Entries(archive);
+
+        entries.Should().NotContain(x => x.EndsWith("additionalPackageInfo.xml", StringComparison.Ordinal));
+        entries.Should().NotContain(x => x.EndsWith("SNAadditionalPackageInfo.xsd", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void The_riksarkivet_document_identifies_the_package_it_belongs_to()
+    {
+        var package = Builder()
+            .SetAdditionalPackageInfo(new AdditionalPackageInfo { CreationDate = Created, CreatorName = "Sjofartsverket" })
+            .AddRepresentationFile(new EArkFile { Href = "representations/rep_1/data/a.zip", Created = Created, Content = [1] })
+            .Build();
+
+        using var archive = Write(package);
+        var entry = archive.Entries.Single(x => x.FullName.EndsWith("additionalPackageInfo.xml", StringComparison.Ordinal));
+
+        using var stream = entry.Open();
+        var document = new XmlDocument();
+        document.Load(stream);
+
+        document.DocumentElement!.GetElementsByTagName("package", EArkConstants.AdditionalPackageInfoNamespace)
+            .Cast<XmlElement>().Single().GetAttribute("id").Should().Be("uuid-11111111-1111-1111-1111-111111111111");
+    }
 }
