@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets xmlns="http://www.loc.gov/METS/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:csip="https://DILCIS.eu/XML/METS/CSIPExtensionMETS" 
+    xmlns:sip="https://DILCIS.eu/XML/METS/SIPExtensionMETS" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xsi:schemaLocation="http://www.loc.gov/METS/ schemas/mets.xsd https://DILCIS.eu/XML/METS/CSIPExtensionMETS schemas/DILCISExtensionMETS.xsd https://DILCIS.eu/XML/METS/SIPExtensionMETS schemas/DILCISExtensionSIPMETS.xsd http://www.w3.org/1999/xlink schemas/xlink.xsd " 
+    OBJID="IP_exempel_1" 
+    LABEL="ERMS_records serie RA-KS 2022" 
+    TYPE="Datasets" 
+    PROFILE="https://earksip.dilcis.eu/profile/E-ARK-SIP.xml" 
+    csip:CONTENTINFORMATIONTYPE="citserms_v2_1">
+    <metsHdr 
+        CREATEDATE="2022-11-01T14:04:23" 
+        LASTMODDATE="2022-11-01T14:04:23" 
+        RECORDSTATUS="NEW" 
+        csip:OAISPACKAGETYPE="SIP">
+        <agent ROLE="CREATOR" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+            <name>SIP creation tool</name>
+            <note csip:NOTETYPE="SOFTWARE VERSION">2.5.0</note>
+        </agent>
+        <agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+            <name>Riksarkivet</name>
+            <note csip:NOTETYPE="IDENTIFICATIONCODE">ORG:2010340987</note>
+        </agent>
+        <agent ROLE="CREATOR" TYPE="ORGANIZATION">
+            <name>Riksarkivet</name>
+            <note csip:NOTETYPE="IDENTIFICATIONCODE">ORG:2010340987</note>
+        </agent>
+        <agent ROLE="CREATOR" TYPE="INDIVIDUAL">
+            <name>Sven Svensson</name>
+            <note>sven.svensson@fm.se</note>
+        </agent>
+        <agent ROLE="PRESERVATION" TYPE="ORGANIZATION">
+            <name>Riksarkivet</name>
+            <note csip:NOTETYPE="IDENTIFICATIONCODE">ORG:2010340987</note>
+        </agent>
+        <agent ROLE="EDITOR" TYPE="INDIVIDUAL">
+            <name>Konsultbolaget AB</name>
+            <note csip:NOTETYPE="IDENTIFICATIONCODE">ORG:4511340987</note>
+        </agent>
+        <agent ROLE="OTHER" OTHERROLE="PRODUCER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+            <name>W3D3</name>
+            <note csip:NOTETYPE="SOFTWARE VERSION">1.19</note>
+        </agent>
+        <altRecordID TYPE="SUBMISSIONAGREEMENT">http://submissionagreement.RA.se/RA 331-1144-2011/20120711/”</altRecordID>
+        <altRecordID TYPE="PREVIOUSSUBMISSIONAGREEMENT">RA 12-2387/12726, 2007-09-19</altRecordID>
+        <altRecordID TYPE="REFERENCECODE">SE/RA/123456/24/P</altRecordID>
+        <altRecordID TYPE="PREVIOUSREFERENCECODE">SE/RA/123456/23/P</altRecordID>
+    </metsHdr>
+    <dmdSec ID="uuid-02c00ecf-008d-4b21-b94c-c106b1f84bd7" CREATED="2022-11-02T11:37:05" STATUS="CURRENT">
+        <mdRef LOCTYPE="URL" 
+            xlink:type="simple" 
+            xlink:href="metadata\descriptive\EAD3_test.xml" 
+            MDTYPE="EAD" 
+            MIMETYPE="text/xml" 
+            SIZE="1097" 
+            CREATED="2022-11-02T11:20:08" 
+            CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+            CHECKSUMTYPE="SHA-256"/>
+    </dmdSec>
+    <amdSec>
+        <digiprovMD ID="uuid-61366485-4afb-467a-909f-ed10eee756ef" STATUS="CURRENT">
+            <mdRef LOCTYPE="URL" 
+                xlink:type="simple" 
+                xlink:href="metadata\preservation\PREMIS_test1.xml" 
+                MDTYPE="PREMIS" 
+                MIMETYPE="text/xml" 
+                SIZE="26832" 
+                CREATED="2022-11-02T11:16:11" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256"/>
+        </digiprovMD>
+        <digiprovMD ID="uuid-f3b6ba26-6a80-4774-aa50-961a7ea4dcb0" STATUS="CURRENT">
+            <mdRef LOCTYPE="URL" 
+                xlink:type="simple" 
+                xlink:href="metadata\preservation\PREMIS_test2.xml"
+                MDTYPE="PREMIS" 
+                MIMETYPE="text/xml" 
+                SIZE="26832" 
+                CREATED="2022-11-02T11:22:01" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256"/>
+        </digiprovMD>
+    </amdSec>
+    <fileSec ID="uuid-bf37ca1b-e3cc-4bf6-a2ce-9ff1d0852e66">
+        <fileGrp ID="uuid-395b676d-aefa-482e-8f33-165afe718409" USE="Documentation">
+            <file ID="uuid-d3fce6ee-ef82-4287-b32e-bcf537a7e1b8" 
+                MIMETYPE="text/xml" 
+                SIZE="453773" 
+                CREATED="2022-10-24T11:40:15" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="documentation\additionalPackageInfo.xml"/>
+            </file>
+        </fileGrp>
+        <fileGrp ID="uuid-32ca0e18-900c-432e-af00-ff66e915786b" USE="Schemas">
+            <file ID="uuid-7493107e-9bd2-4729-93ec-f1a4befe41d2" 
+                MIMETYPE="text/xsd" 
+                SIZE="255355" 
+                CREATED="2022-10-24T11:38:46" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\mets.xsd"/>
+            </file>
+            <file ID="uuid-16252f67-506f-4ab3-8193-f61372d69ce5" 
+                MIMETYPE="text/xsd" 
+                SIZE="8322" 
+                CREATED="2022-10-24T15:11:09" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\xlink.xsd"/>
+            </file>
+            <file ID="uuid-4583ef85-c075-417a-8a14-8df34fc1b7c3" 
+                MIMETYPE="text/xsd" 
+                SIZE="2038" 
+                CREATED="2022-10-24T15:11:09" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\DILCISExtensionMETS.xsd"/>
+            </file>
+            <file ID="uuid-57a793dd-83a6-453d-a2a4-6f492eae6807" 
+                MIMETYPE="text/xsd" 
+                SIZE="499" 
+                CREATED="2022-10-24T15:11:09" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\DILCISExtensionSIPMETS.xsd"/>
+            </file>
+            <file ID="uuid-8df97613-7b59-4e82-baaf-7390a2105195" 
+                MIMETYPE="text/xsd" 
+                SIZE="20465" 
+                CREATED="2022-10-19T15:38:47" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\SNAadditionalPackageInfo.xsd"/>
+            </file>
+            <file ID="uuid-927292a8-d071-4b31-924a-e36df56a5b5b" 
+                MIMETYPE="text/xsd" 
+                SIZE="86994" 
+                CREATED="2022-03-01T13:51:28" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\ERMS.xsd"/>
+            </file>
+            <file ID="uuid-85240d93-457c-48cf-af60-4abb862e2f52" 
+                MIMETYPE="text/sch" 
+                SIZE="3117" 
+                CREATED="2022-03-01T13:50:38" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\erms.sch"/>
+            </file>
+            <file ID="uuid-148e6283-3daa-44a2-953a-e329ebec8498" 
+                MIMETYPE="text/xsd" 
+                SIZE="52845" 
+                CREATED="2022-11-02T09:13:32" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\premis-v3-0.xsd"/>
+            </file>
+            <file ID="uuid-a280d59c-e023-4fea-850d-a3cdf29e0278" 
+                MIMETYPE="text/xsd" 
+                SIZE="105622" 
+                CREATED="2022-11-02T11:17:43" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256">
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas\ead3.xsd"/>
+            </file>
+        </fileGrp>
+        <fileGrp ID="uuid-c87b60bf-0907-47d1-9d9c-de6f89fd4321" USE="Representations" csip:CONTENTINFORMATIONTYPE="citserms_v2_1">
+            <file ID="uuid-511fb440-0176-4877-bdca-1d5c81c5ba99" 
+                MIMETYPE="text/xml" 
+                SIZE="78443" 
+                CREATED="2022-08-08T16:31:14" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                ADMID="uuid-61366485-4afb-467a-909f-ed10eee756ef uuid-f3b6ba26-6a80-4774-aa50-961a7ea4dcb0" 
+                DMDID="uuid-02c00ecf-008d-4b21-b94c-c106b1f84bd7" 
+                sip:FILEFORMATNAME="Extensible Markup Language"  
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\ERMS.xml"/>
+            </file>
+            <file ID="uuid-cd9eebf3-70fe-43ee-bca7-4bf684041610" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T15:03:29" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-00752_åtgärd_1.pdf"
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-00752_atgard_1.pdf"/>
+            </file>
+            <file ID="uuid-c6a60344-5edc-41fa-81bb-fc1616228045" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T15:04:01" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-00752_åtgärd_2.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-00752_atgard_2.pdf"/>
+            </file>
+            <file ID="uuid-8cad6904-952a-49b8-af7c-484636d45916" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T15:04:25" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-00752_åtgärd_3.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-00752_atgard_3.pdf"/>
+            </file>
+            <file ID="uuid-b7f1c748-33db-4c05-91f3-87c534efe5c2" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T15:04:34" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-00752_åtgärd_4.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-00752_atgard_4.pdf"/>
+            </file>
+            <file ID="uuid-7ee13387-c661-418b-8e05-4383c2a5cd37" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T14:52:30" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-800000_åtgärd_1.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-800000_atgard_1.pdf"/>
+            </file>
+            <file ID="uuid-fd869c5b-6967-48a7-b12a-1ae79562ae4b" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T14:55:38" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-800000_åtgärd_2-1.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-800000_atgard_2-1.pdf"/>
+            </file>
+            <file ID="uuid-eec67e23-20b2-461f-a6b7-20534b75b794" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T14:54:17" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-800000_åtgärd_2-2.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-800000_atgard_2-2.pdf"/>
+            </file>
+            <file ID="uuid-f10918af-854d-4d6c-9d2d-36c30f66a22d" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T14:53:11" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-800000_åtgärd_2-3.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-800000_atgard_2-3.pdf"/>
+            </file>
+            <file ID="uuid-fdfad1f8-a568-4663-8b2f-e65b166cfe91" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T15:01:35" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-800000_åtgärd_3.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-800000_atgard_3.pdf"/>
+            </file>
+            <file ID="uuid-badfc81d-b092-4f65-96d5-4eb740a8106d" 
+                MIMETYPE="text/pdf" 
+                SIZE="33427" 
+                CREATED="2022-10-24T15:02:24" 
+                CHECKSUM="574b69cf71ceb5534c8a2547f5547d" 
+                CHECKSUMTYPE="SHA-256" 
+                OWNERID="RA-KS_231-2022-800000_åtgärd_4.pdf" 
+                sip:FILEFORMATNAME="PDF/A" 
+                sip:FILEFORMATVERSION="1.7" 
+                sip:FORMATREGISTRY="PRONOM" 
+                sip:FORMATREGISTRYKEY="sfw/2"> 
+                <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations\rep_1\data\RA-KS_231-2022-800000_atgard_4.pdf"/>
+            </file>
+        </fileGrp>
+    </fileSec>
+    <structMap ID="uuid-c6402a1a-e85f-4411-94b6-3120e54c25c2" TYPE="PHYSICAL" LABEL="CSIP">
+        <div ID="uuid-fd27aa54-4047-492d-b869-8820c7c925a6">
+            <div ID="uuid-12d1925e-4208-419d-a648-05c59c4dc19d" LABEL="Metadata"  
+                ADMID="uuid-f3b6ba26-6a80-4774-aa50-961a7ea4dcb0 uuid-61366485-4afb-467a-909f-ed10eee756ef" 
+                DMDID="uuid-02c00ecf-008d-4b21-b94c-c106b1f84bd7">
+            </div>
+            <div ID="uuid-8fbdab4f-1e67-4a9c-aff3-b10a35dfc3d5" LABEL="Documentation">
+                <fptr FILEID="uuid-395b676d-aefa-482e-8f33-165afe718409">
+                </fptr>
+            </div>
+            <div ID="uuid-cb943057-2371-4386-8ab6-a692161bee7a" LABEL="Schemas">
+                <fptr FILEID="uuid-32ca0e18-900c-432e-af00-ff66e915786b">                    
+                </fptr>
+            </div>
+            <div ID="uuid-db8ddefb-da1b-4f80-8824-2005a8be8b21" LABEL="Representations">
+                <fptr FILEID="uuid-c87b60bf-0907-47d1-9d9c-de6f89fd4321">
+                </fptr>
+            </div>
+        </div>
+    </structMap>
+</mets>

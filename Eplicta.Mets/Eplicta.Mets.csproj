@@ -17,6 +17,10 @@
 	<ItemGroup>
 		<None Remove="Eplicta.Mets.csproj.DotSettings" />
 		<None Remove="Resources\CSPackageExtensionMETS.xsd" />
+		<None Remove="Resources\EArk\DILCISExtensionMETS.xsd" />
+		<None Remove="Resources\EArk\DILCISExtensionSIPMETS.xsd" />
+		<None Remove="Resources\EArk\mets.xsd" />
+		<None Remove="Resources\EArk\SNAadditionalPackageInfo.xsd" />
 		<None Remove="Resources\CSPackageMETS.xsd" />
 		<None Remove="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<None Remove="Resources\mets.xsd" />
@@ -37,6 +41,10 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\CSPackageExtensionMETS.xsd" />
+		<EmbeddedResource Include="Resources\EArk\DILCISExtensionMETS.xsd" />
+		<EmbeddedResource Include="Resources\EArk\DILCISExtensionSIPMETS.xsd" />
+		<EmbeddedResource Include="Resources\EArk\mets.xsd" />
+		<EmbeddedResource Include="Resources\EArk\SNAadditionalPackageInfo.xsd" />
 		<EmbeddedResource Include="Resources\CSPackageMETS.xsd" />
 		<EmbeddedResource Include="Resources\eARD_Paket_FGS-PUBL_mets.xsd" />
 		<EmbeddedResource Include="Resources\mets.xsd" />
@@ -67,7 +75,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
+	  <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
 	  <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
 	  <PackageReference Include="MimeTypeMapOfficial" Version="1.0.17" />
 	  <PackageReference Include="SharpZipLib" Version="1.4.2" />

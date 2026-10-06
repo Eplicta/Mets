@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additionalPackageInfo xmlns="http://xml.ra.se/e-arkiv/implementation-IP/version10/SNAadditionalPackageInfo"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xml.ra.se/e-arkiv/implementation-IP/version10/SNAadditionalPackageInfo ../schemas/SNAadditionalPackageInfo.xsd">
+    <control>
+        <identification type="UUID">9ad11b55-969c-4306-8916-ff7869321e87</identification>
+        <status>NEW</status>
+        <creationDate>2022-10-21T11:22:49</creationDate>
+        <creator>
+            <creatorName>Riksarkivet</creatorName>
+            <creatorCode type="ORG">202100107401</creatorCode>
+            <creatorDesc>Frivillig beskrivning av skaparen av dokumentet</creatorDesc>
+        </creator>
+    </control>
+    <package id="IP_exempel_1">
+        <archiveName>Riksarkivets ämbetsarkiv 2022</archiveName>
+        <disposal disposable="false">
+            <disposalDesc>Beskrivning av gallringen</disposalDesc>
+        </disposal>
+        <accessRestrict restricted="false">
+            <accessRestrictDesc>Beskrivning begränsning tillgänglighet exempelvis sekretess</accessRestrictDesc>
+        </accessRestrict>
+        <useRestrict restricted="false">
+            <useRestrictDesc>Beskrivning begränsningar användning exempelvis personuppgifter eller upphovsrätt</useRestrictDesc>
+        </useRestrict> 
+        <startDate>2022-01-01</startDate>
+        <endDate>2022-12-31</endDate>
+        <informationClass>Informationsklass</informationClass>
+        <securityClassification>Säkerhetsklass</securityClassification>
+        <audience publishable="false"/>
+        <files>
+            <file name="ERMS.xml" path="representations\rep_1\data\ERMS.xml">
+                <disposal disposable="false">
+                    <disposalDesc>Beskrivning av gallringen</disposalDesc>
+                </disposal>
+                <accessRestrict restricted="false">
+                    <accessRestrictDesc>Beskrivning begränsning tillgänglighet exempelvis sekretess</accessRestrictDesc>
+                </accessRestrict>
+                <useRestrict restricted="false">
+                    <useRestrictDesc>Beskrivning begränsningar användning exempelvis personuppgifter eller upphovsrätt</useRestrictDesc>
+                </useRestrict> 
+                <startDate>2010-01-01</startDate>
+                <endDate>2015-12-31</endDate>
+                <informationClass>Informationsklass</informationClass>
+                <securityClassification>Säkerhetsklass</securityClassification>
+                <audience publishable="false"/>
+                <archivalReferencecode>SE/RA/123456/24/P</archivalReferencecode>
+                <fileDescription>Ytterligare beskrivning av fil</fileDescription>
+            </file>
+            <file name="RA-KS_231-2022-00752_atgard_1.pdf" path="representations\rep_1\data\RA-KS_231-2022-00752_atgard_1.pdf">
+                <archivalReferencecode>SE/RA/123456/24/P</archivalReferencecode>
+                <archivalRecordtype>Framställningar</archivalRecordtype>
+            </file>
+            <file name="RA-KS_231-2022-00752_atgard_2.pdf" path="representations\rep_1\data\RA-KS_231-2022-00752_atgard_2.pdf">
+                <archivalReferencecode>SE/RA/123456/24/P</archivalReferencecode>
+                <archivalRecordtype>Promemorior</archivalRecordtype>
+            </file>
+            <file name="RA-KS_231-2022-00752_atgard_3.pdf" path="representations\rep_1\data\RA-KS_231-2022-00752_atgard_3.pdf">
+                <archivalReferencecode>SE/RA/123456/24/P</archivalReferencecode>
+                <archivalRecordtype>Föreskriftsförslag</archivalRecordtype>
+                <fileDescription>Ytterligare beskrivning av fil</fileDescription>
+            </file>
+            <file name="RA-KS_231-2022-00752_atgard_4.pdf" path="representations\rep_1\data\RA-KS_231-2022-00752_atgard_4.pdf">
+                <archivalReferencecode>SE/RA/123456/24/P</archivalReferencecode>
+                <archivalRecordtype>Beslut</archivalRecordtype>
+                <fileDescription>Ytterligare beskrivning av fil</fileDescription>
+            </file>
+        </files>
+    </package>
+</additionalPackageInfo>
