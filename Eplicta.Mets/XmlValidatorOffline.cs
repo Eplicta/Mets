@@ -11,6 +11,9 @@ namespace Eplicta.Mets;
 
 public class XmlValidatorOffline
 {
+    private const string RiksarkivetExtensionSchemaName = "CSPackageExtensionMETS.xsd";
+    private const string RiksarkivetExtensionNamespace = "ExtensionMETS";
+
     public IEnumerable<XmlValidatorResult> Validate(XmlDocument document, XmlDocument modsSchema, MetsSchema metsSchema = null)
     {
         metsSchema ??= MetsSchema.Default;
@@ -29,6 +32,9 @@ public class XmlValidatorOffline
             LoadSchema(schemas, "xml.xsd", "http://www.w3.org/XML/1998/namespace");
             LoadSchema(schemas, "xlink.xsd", "http://www.w3.org/1999/xlink");
             LoadSchema(schemas, metsSchema.Name, "http://www.loc.gov/METS/");
+
+            //CSPackageMETS only laxly allows its ext: attributes, so they are checked only when their own schema is in the set.
+            if (metsSchema.Name == MetsSchema.Riksarkivet.Name) LoadSchema(schemas, RiksarkivetExtensionSchemaName, RiksarkivetExtensionNamespace);
 
             schemas.Compile();
 

@@ -9,6 +9,46 @@ namespace Eplicta.Mets.Tests;
 
 public class MetsValidatorTests
 {
+    [Fact]
+    public void Riksarkivet_WhenAnExtensionAttributeIsOutsideItsValueList_ShouldFail()
+    {
+        //Arrange
+        var document = new Renderer(RiksarkivetData()).Render(null, MetsSchema.Riksarkivet);
+        document.DocumentElement.SetAttribute("ACCESSRESTRICT", "ExtensionMETS", "Bogus");
+        var sut = new MetsValidator();
+
+        //Act
+        var result = sut.Validate(document, ModsVersion.Mods_3_7, MetsSchema.Riksarkivet);
+
+        //Assert
+        result.Should().Contain(x => x.Message.Contains("ACCESSRESTRICT"));
+    }
+
+    [Fact]
+    public void Riksarkivet_WhenTheExtensionAttributesAreTheOnesTheRendererWrites_ShouldPass()
+    {
+        //Arrange
+        var document = new Renderer(RiksarkivetData()).Render(null, MetsSchema.Riksarkivet);
+        var sut = new MetsValidator();
+
+        //Act
+        var result = sut.Validate(document, ModsVersion.Mods_3_7, MetsSchema.Riksarkivet);
+
+        //Assert
+        result.Should().BeEmpty();
+        document.DocumentElement.GetAttribute("ACCESSRESTRICT", "ExtensionMETS").Should().Be("PuL");
+    }
+
+    private static MetsData RiksarkivetData()
+    {
+        return new Fixture().Build<MetsData>()
+            .Without(x => x.MetsHdr)
+            .Without(x => x.Files)
+            .Without(x => x.Sources)
+            .Without(x => x.AltRecords)
+            .Create();
+    }
+
     [Theory]
     [ClassData(typeof(MetsVersionGenerator))]
     public void Basic(ModsVersion version)
