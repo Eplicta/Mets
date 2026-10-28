@@ -22,6 +22,30 @@ internal static class TestResource
         return Read("Eplicta.Mets.Tests.Resources.Riksarkivet_IP_example_1_additionalPackageInfo.xml");
     }
 
+    /// <summary>
+    /// The METS document Conserver produced for the minimal Eplicta demo package.
+    /// </summary>
+    internal static string EplictaDemoMets()
+    {
+        return Read("Eplicta.Mets.Tests.Resources.EArk_eplicta_demo_METS.xml");
+    }
+
+    /// <summary>
+    /// The METS document Conserver produced for the full Eplicta demo package (EAD, PREMIS and documentation).
+    /// </summary>
+    internal static string EplictaDemoFullMets()
+    {
+        return Read("Eplicta.Mets.Tests.Resources.EArk_eplicta_demo_full_METS.xml");
+    }
+
+    /// <summary>
+    /// The MODS document (metadata/descriptive/mods.xml) of the full Eplicta demo package.
+    /// </summary>
+    internal static string EplictaDemoMods()
+    {
+        return Read("Eplicta.Mets.Tests.Resources.EArk_eplicta_demo_mods.xml");
+    }
+
     private static string Read(string resourceName)
     {
         using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+  <mods:identifier type="local">uuid-7c9f2e14-5a3b-4d82-9f61-0b4e8a1c3d57</mods:identifier>
+  <mods:location>
+    <mods:url>https://www.eplicta.se/</mods:url>
+  </mods:location>
+  <mods:originInfo>
+    <mods:dateIssued encoding="w3cdtf">2026-10-09T13:00:00Z</mods:dateIssued>
+  </mods:originInfo>
+  <mods:titleInfo>
+    <mods:title>www.eplicta.se</mods:title>
+  </mods:titleInfo>
+  <mods:relatedItem type="host" />
+</mods:mods>

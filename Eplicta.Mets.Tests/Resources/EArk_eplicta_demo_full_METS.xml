@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:csip="https://DILCIS.eu/XML/METS/CSIPExtensionMETS" xmlns:sip="https://DILCIS.eu/XML/METS/SIPExtensionMETS" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.loc.gov/METS/ schemas/mets.xsd https://DILCIS.eu/XML/METS/CSIPExtensionMETS schemas/DILCISExtensionMETS.xsd https://DILCIS.eu/XML/METS/SIPExtensionMETS schemas/DILCISExtensionSIPMETS.xsd http://www.w3.org/1999/xlink schemas/xlink.xsd" OBJID="uuid-7c9f2e14-5a3b-4d82-9f61-0b4e8a1c3d57" LABEL="www.eplicta.se" TYPE="Web Archives" PROFILE="https://earksip.dilcis.eu/profile/E-ARK-SIP.xml" csip:CONTENTINFORMATIONTYPE="OTHER" csip:OTHERCONTENTINFORMATIONTYPE="Eplicta web archive" xmlns="http://www.loc.gov/METS/">
+  <metsHdr CREATEDATE="2026-10-09T13:00:00Z" RECORDSTATUS="NEW" csip:OAISPACKAGETYPE="SIP">
+    <agent ROLE="CREATOR" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <name>Eplicta WebConserver</name>
+      <note csip:NOTETYPE="SOFTWARE VERSION">1.4.2</note>
+    </agent>
+    <agent ROLE="CREATOR" TYPE="ORGANIZATION">
+      <name>Eplicta Demo</name>
+      <note csip:NOTETYPE="IDENTIFICATIONCODE">5566778899</note>
+    </agent>
+    <agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+      <name>Eplicta Demo</name>
+      <note csip:NOTETYPE="IDENTIFICATIONCODE">5566778899</note>
+    </agent>
+    <altRecordID TYPE="SUBMISSIONAGREEMENT">Demo - no submission agreement</altRecordID>
+    <altRecordID TYPE="REFERENCECODE">SE/DEMO/2026/1</altRecordID>
+  </metsHdr>
+  <dmdSec ID="uuid-b8372b1a-2791-4a88-9318-b45fc979026d" CREATED="2026-10-09T13:00:00Z" STATUS="CURRENT">
+    <mdRef LOCTYPE="URL" xlink:type="simple" xlink:href="metadata/descriptive/mods.xml" MDTYPE="MODS" MIMETYPE="text/xml" SIZE="518" CREATED="2026-10-09T13:00:00Z" CHECKSUM="9f7cf2c61c38e8b021e7fab2e3a694c1335bf719c505ebd73a4ceb816e43878f" CHECKSUMTYPE="SHA-256" />
+  </dmdSec>
+  <dmdSec ID="uuid-d95ebb92-115c-4c33-a0c1-fea2355c2ef3" CREATED="2026-10-09T13:00:00Z" STATUS="CURRENT">
+    <mdRef LOCTYPE="URL" xlink:type="simple" xlink:href="metadata/descriptive/ead.xml" MDTYPE="EAD" MIMETYPE="text/xml" SIZE="1369" CREATED="2026-10-09T13:00:00Z" CHECKSUM="b89d4211da8b5d91358dd4c3ad86bb9483775e2ea9e6017aa4236cffe8b58133" CHECKSUMTYPE="SHA-256" />
+  </dmdSec>
+  <amdSec>
+    <digiprovMD ID="uuid-9f089f8f-a7ce-4655-b1f9-7b9bcd5b298d" STATUS="CURRENT">
+      <mdRef LOCTYPE="URL" xlink:type="simple" xlink:href="metadata/preservation/premis.xml" MDTYPE="PREMIS" MIMETYPE="text/xml" SIZE="2551" CREATED="2026-10-09T13:00:00Z" CHECKSUM="b4c0292b5971d49ffab6bc628cb8d257365b7b59a0a2b3da14945762703452c7" CHECKSUMTYPE="SHA-256" />
+    </digiprovMD>
+  </amdSec>
+  <fileSec ID="uuid-a201d796-708e-4de5-8941-b21768f831ec">
+    <fileGrp ID="uuid-921aa9d4-0bff-45b4-8e6b-8bbbb28dc710" USE="Documentation">
+      <file ID="uuid-7590862d-b544-493d-8181-02f875649a41" MIMETYPE="text/plain" SIZE="594" CREATED="2026-10-09T13:00:00Z" CHECKSUM="10472b39bfde3515f230480963f1cb2f18af17875d487b92d343474f56faf960" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="documentation/package-description.txt" />
+      </file>
+      <file ID="uuid-a0db5a86-c84a-4b41-a90d-bcedbbc33d99" MIMETYPE="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" SIZE="43" CREATED="2026-10-09T13:00:00Z" CHECKSUM="db4fcce3ec5e7821d97b780bc15e085b7556bc16bbbb7631674de771e26f1fbd" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="documentation/metadatabilaga.xlsx" />
+      </file>
+      <file ID="uuid-c428b94f-3c3f-4d9c-befd-4f4d70a2263e" MIMETYPE="text/xml" SIZE="781" CREATED="2026-10-09T13:00:00Z" CHECKSUM="11f3b49664c80f7e01fb2efdf26569f72dfb04c612fa18ecdbe45d30f341d6f7" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="documentation/additionalPackageInfo.xml" />
+      </file>
+    </fileGrp>
+    <fileGrp ID="uuid-d9484566-59d7-4d27-abe0-355321ac31f7" USE="Schemas">
+      <file ID="uuid-42744bc2-17bf-434c-9d5b-bbb11d265255" MIMETYPE="text/xml" SIZE="52845" CREATED="2026-10-09T13:00:00Z" CHECKSUM="03b8a77a20b32b882ad799e12262671d07ad18210c60233f4e613a1289491cba" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/premis-v3-0.xsd" />
+      </file>
+      <file ID="uuid-3e2d2ae1-7912-4635-b5b5-7550804ad084" MIMETYPE="text/xml" SIZE="105622" CREATED="2026-10-09T13:00:00Z" CHECKSUM="c357697461e566a880098a72eec6af2c1af9d3137bee27819206b29acd30459b" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/ead3.xsd" />
+      </file>
+      <file ID="uuid-b34be759-d0f4-4a0e-995c-b6cb3b53800b" MIMETYPE="text/xml" SIZE="133920" CREATED="2026-10-09T13:00:00Z" CHECKSUM="9c336f876c14103cb4e96800ca98257b8e4892f143b85ed9347c7446fb6490f6" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/mets.xsd" />
+      </file>
+      <file ID="uuid-d955460a-39d7-4163-8544-017b52fd0209" MIMETYPE="text/xml" SIZE="2038" CREATED="2026-10-09T13:00:00Z" CHECKSUM="b4a13747dde7644122dc14dc7f7333fc51b12de43039a73ba111a6e0e8204fcc" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/DILCISExtensionMETS.xsd" />
+      </file>
+      <file ID="uuid-2af188eb-99f9-4215-b749-70d0f2fa2f8b" MIMETYPE="text/xml" SIZE="499" CREATED="2026-10-09T13:00:00Z" CHECKSUM="43ac3f08dbecb74c069d1687187a1aeaed800e77581fe0d418468ae3ad20ef86" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/DILCISExtensionSIPMETS.xsd" />
+      </file>
+      <file ID="uuid-8232a161-0ff6-4b75-b889-2a3679b4aafa" MIMETYPE="text/xml" SIZE="3073" CREATED="2026-10-09T13:00:00Z" CHECKSUM="a8fedfecccb81a356b11f79aeed31a158f5c352977d8a0da548a3508c49b7c33" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/xlink.xsd" />
+      </file>
+      <file ID="uuid-74a700d3-f692-4388-8c3c-18f87a835f54" MIMETYPE="text/xml" SIZE="20085" CREATED="2026-10-09T13:00:00Z" CHECKSUM="027f8a58ca69d0c3afbdffc8e20562c2fefc59e005099eebb72850abcda0510c" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/SNAadditionalPackageInfo.xsd" />
+      </file>
+    </fileGrp>
+    <fileGrp ID="uuid-50528625-b03f-4492-953b-67bb4b8fa878" USE="Representations" csip:CONTENTINFORMATIONTYPE="OTHER">
+      <file ID="uuid-d43eacbe-15a2-4024-acd7-87d2d79798fc" MIMETYPE="application/zip" SIZE="29801" CREATED="2026-10-09T13:00:00Z" CHECKSUM="a928c5f0f383461b317047a147dac43c819659f325e035984cc8b66c63ded349" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations/rep_1/data/webarchive.zip" />
+      </file>
+    </fileGrp>
+  </fileSec>
+  <structMap ID="uuid-05821fbd-7539-4aff-833d-f19972a6a960" TYPE="PHYSICAL" LABEL="CSIP">
+    <div ID="uuid-a5da5259-cdf4-43cc-9116-0dd37b71076a">
+      <div ID="uuid-0c2102f2-3a7c-43cb-9797-f7dbada4785f" LABEL="Metadata" DMDID="uuid-b8372b1a-2791-4a88-9318-b45fc979026d uuid-d95ebb92-115c-4c33-a0c1-fea2355c2ef3" ADMID="uuid-9f089f8f-a7ce-4655-b1f9-7b9bcd5b298d" />
+      <div ID="uuid-5013aa0b-9c08-4b31-8fb5-21252698a375" LABEL="Documentation">
+        <fptr FILEID="uuid-921aa9d4-0bff-45b4-8e6b-8bbbb28dc710" />
+      </div>
+      <div ID="uuid-837ae7af-c85e-411d-ad9f-cc919435e09e" LABEL="Schemas">
+        <fptr FILEID="uuid-d9484566-59d7-4d27-abe0-355321ac31f7" />
+      </div>
+      <div ID="uuid-bd7a23c3-925b-4643-a69f-d71488b024c1" LABEL="Representations">
+        <fptr FILEID="uuid-50528625-b03f-4492-953b-67bb4b8fa878" />
+      </div>
+    </div>
+  </structMap>
+</mets>
