@@ -18,5 +18,13 @@ public static class PremisConstants
     public const string LocalIdentifierType = "local";
     public const string Sha256 = "SHA-256";
 
+    /// <summary>Agent types from the Library of Congress agentType vocabulary.</summary>
+    public static class AgentType
+    {
+        public const string Software = "software";
+        public const string Person = "person";
+        public const string Organization = "organization";
+    }
+
     internal const string SchemaResource = "EArk.premis-v3-0.xsd";
 }
