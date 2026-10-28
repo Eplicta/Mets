@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Swedisch National Archives ERMS Logs schema version 1.0 2023-03-30 Tomas Wallin -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.ra.se/e-arkiv/implementation-ERMS/version10/SNAermsLogs" targetNamespace="http://xml.ra.se/e-arkiv/implementation-ERMS/version10/SNAermsLogs" 
+    elementFormDefault="qualified">
+    <xs:element name="ermsLogs" type="ermsLogsType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The main element for the logs</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    
+    <xs:complexType name="ermsLogsType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the classifications element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="control" minOccurs="1" maxOccurs="1" type="controlType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Description of a classificationschema</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="logs" minOccurs="1" maxOccurs="1" type="logsType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Description of a the logs</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>      
+    </xs:complexType>
+    
+    <xs:complexType name="controlType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the classificationSchema element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="identification" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Identity of the xml-document</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="status" minOccurs="1" maxOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Status of the xml-document</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="creationDate" minOccurs="1" maxOccurs="1" type="xs:dateTime">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Creation date of the xml-document</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="creator" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Creator of the xml-document</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>      
+    </xs:complexType>
+    
+    <xs:element name="identification">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Identifier for the xml-document</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="type" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">Type of identifier</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="creator" type="creatorType">
+        <xs:annotation>
+            <xs:documentation>The creator of the xml-document</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    
+    <xs:complexType name="creatorType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the creator element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="creatorName" minOccurs="1" maxOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The name of the creator</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="creatorCode" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Identifier for the creator</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="creatorDesc" minOccurs="0" maxOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">A description of the creator</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="creatorCode">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Identifier for the creator</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="type" use="required">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">Type of identifier</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="VAT"/>
+                                <xs:enumeration value="DUNS"/>
+                                <xs:enumeration value="ORG"/>
+                                <xs:enumeration value="HSA"/>
+                                <xs:enumeration value="Local"/>
+                                <xs:enumeration value="URI"/>
+                                <xs:enumeration value="OTHER"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="logsType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the logs element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="caseLog" minOccurs="1" maxOccurs="unbounded" type="caseLogType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">A case log</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>      
+    </xs:complexType>
+    
+    <xs:complexType name="caseLogType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the caseLog element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="modification" minOccurs="1" maxOccurs="unbounded" type="modificationType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The number of the modification</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">The number eller numbers of the modification</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="modificationType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the modification element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="modDate" minOccurs="1" maxOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The date of the modification</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="modAgent" minOccurs="1" maxOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The agent that made the modification</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="caseMod" minOccurs="0" maxOccurs="unbounded" type="caseModType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The agent that made the modification</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="recordMod" minOccurs="0" maxOccurs="unbounded" type="recordModType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The agent that made the modification</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="number" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">The number eller numbers of the modification</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="caseModType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the caseModification element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="modField" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Description of the modified field</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>      
+    </xs:complexType>
+    
+    <xs:complexType name="recordModType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the caseModification element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="modifications" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Description of modified fields</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="modField" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Description of modified field</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Identifier for the modified record</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="name" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Name of the modified record</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    
+    
+    <xs:element name="modField" type="modFieldType">
+        <xs:annotation>
+            <xs:documentation>Description of the modified field</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    
+    <xs:complexType name="modFieldType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The definition of the modifiedField element</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="originalValueField" minOccurs="1" maxOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The original value of the modified field</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="newValueField" minOccurs="1" maxOccurs="1" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The new value of the modified field</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">The name of the modified field</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

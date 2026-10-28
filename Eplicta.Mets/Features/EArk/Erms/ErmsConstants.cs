@@ -18,6 +18,13 @@ public static class ErmsConstants
     /// <summary>How a file in representations/&lt;rep&gt;/data reaches the package's schemas folder.</summary>
     public const string SchemasPathFromRepresentationData = "../../../schemas";
 
+    /// <summary>The namespace of Riksarkivet's change logs that travel beside an ERMS document.</summary>
+    public const string LogNamespace = "http://xml.ra.se/e-arkiv/implementation-ERMS/version10/SNAermsLogs";
+
+    public const string LogFileName = "ermsLogs.xml";
+    public const string LogSchemaFileName = "SNAermsLogs.xsd";
+
     internal const string SchemaResource = "EArk.ERMS_v3.xsd";
     internal const string SchematronResource = "EArk.erms_v3.sch";
+    internal const string LogSchemaResource = "EArk.SNAermsLogs.xsd";
 }
