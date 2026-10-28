@@ -11,5 +11,6 @@ public record ErmsOwnElement
     public string DataType { get; init; }
     public string Format { get; init; }
     public string Value { get; init; }
+    public IReadOnlyList<ErmsOwnElementAttribute> Attributes { get; init; } = [];
     public IReadOnlyList<ErmsOwnElement> Children { get; init; } = [];
 }

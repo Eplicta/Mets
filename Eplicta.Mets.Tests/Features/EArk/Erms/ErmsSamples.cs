@@ -54,6 +54,7 @@ internal static class ErmsSamples
             ObjectId = "2026-0042-1",
             ExtraIds = [new ErmsExtraId { Type = "avsändarens diarienummer", Value = "KS 2026/17" }],
             Classifications = [new ErmsClassification { Value = "Hantera kränkande behandling", ClassificationCode = "2.3.1" }],
+            ParentAggregationId = "2026-0042",
             Keywords = ["kränkning"],
             Title = "Anmälan om kränkande behandling av elev",
             OtherTitles = [new ErmsOtherTitle { TitleType = "offentlig titel", Value = "Anmälan" }],
@@ -85,7 +86,30 @@ internal static class ErmsSamples
             AdditionalInformation = new ErmsAdditionalInformation
             {
                 Appendices = [new ErmsAppendix { Name = "Anmälan.pdf", Path = "2026-0042-1_1_Anmalan.pdf", FileFormat = "pdf", Description = "SHA-256 0011" }],
-                OwnElements = [new ErmsOwnElementSet { Description = "Kortmall", Elements = [new ErmsOwnElement { Name = "Klass", DataType = "string", Value = "7B" }] }]
+                OwnElements =
+                [
+                    new ErmsOwnElementSet { Description = "Kortmall", Elements = [new ErmsOwnElement { Name = "Klass", DataType = "string", Value = "7B" }] },
+                    new ErmsOwnElementSet
+                    {
+                        Description = "Additional information about the appendix",
+                        Elements =
+                        [
+                            new ErmsOwnElement
+                            {
+                                Name = "AdditionalAppendixInformation",
+                                DataType = "string",
+                                Value = "Anmälan.pdf",
+                                Attributes =
+                                [
+                                    new ErmsOwnElementAttribute { Name = "size", DataType = "int", Value = "74171" },
+                                    new ErmsOwnElementAttribute { Name = "mimeType", DataType = "string", Value = "application/pdf" },
+                                    new ErmsOwnElementAttribute { Name = "checkSum", DataType = "string", Value = "0011" },
+                                    new ErmsOwnElementAttribute { Name = "checkSumType", DataType = "string", Value = "SHA-256" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         };
     }
@@ -106,7 +130,18 @@ internal static class ErmsSamples
             Status = ErmsEntity.EStatus.Closed,
             Relations = [new ErmsRelation { RelationType = ErmsRelation.ERelationType.Reference, Value = "2026-0040" }],
             AdditionalInformation = new ErmsAdditionalInformation { OwnElements = [new ErmsOwnElementSet { Elements = [new ErmsOwnElement { Name = "JK-balans", DataType = "boolean", Value = "true" }] }] },
-            Restrictions = [new ErmsRestriction { RestrictionType = ErmsRestriction.ERestrictionType.OtherType, OtherRestrictionType = "sekretess", ExplanatoryText = "Elevhälsa", Regulation = "25 kap. 1 § OSL", Dates = [new ErmsDate { DateType = ErmsDate.EDateType.Start, Value = Created }] }],
+            Restrictions =
+            [
+                new ErmsRestriction
+                {
+                    RestrictionType = ErmsRestriction.ERestrictionType.OtherType,
+                    OtherRestrictionType = "secrecy",
+                    ExplanatoryText = "Elevhälsa",
+                    Regulation = "25 kap. 1 § OSL",
+                    Agents = [new ErmsAgent { AgentType = ErmsAgent.EAgentType.Other, OtherAgentType = "secrecy_responsible_person", Name = "Henrik Handläggare" }],
+                    Dates = [new ErmsDate { DateType = ErmsDate.EDateType.Start, Value = Created }]
+                }
+            ],
             Disposal = new ErmsDisposal { Disposable = true, DisposalScheduleId = "gr-1", DisposalAction = "Gallras", DisposalPeriod = "84 månader", DisposalMandate = "Dokumenthanteringsplan", DisposalDescription = "Gallras efter sju år", Date = new ErmsDisposalDate { DateType = ErmsDisposalDate.EDateType.DisposalDate, Value = new DateTime(2033, 3, 14, 0, 0, 0, DateTimeKind.Utc) } },
             Agents = [Person(ErmsAgent.EAgentType.ResponsiblePerson, "Henrik Handläggare"), Person(ErmsAgent.EAgentType.Editor, "Hanna Handläggare"), new ErmsAgent { AgentType = ErmsAgent.EAgentType.Counterpart, Name = "Elev", ProtectedIdentity = true }],
             Description = "Ärendet avser en anmälan.",

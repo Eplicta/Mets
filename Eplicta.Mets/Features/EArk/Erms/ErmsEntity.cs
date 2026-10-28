@@ -31,6 +31,10 @@ public abstract record ErmsEntity
     public string ObjectId { get; init; }
     public IReadOnlyList<ErmsExtraId> ExtraIds { get; init; } = [];
     public IReadOnlyList<ErmsClassification> Classifications { get; init; } = [];
+
+    /// <summary>The object id of the aggregation this entity belongs to, such as a record's case.</summary>
+    public string ParentAggregationId { get; init; }
+
     public IReadOnlyList<string> Keywords { get; init; } = [];
     public string Title { get; init; }
     public IReadOnlyList<ErmsOtherTitle> OtherTitles { get; init; } = [];

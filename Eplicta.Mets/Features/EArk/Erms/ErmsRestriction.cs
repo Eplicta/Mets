@@ -20,5 +20,6 @@ public record ErmsRestriction
     public string OtherRestrictionType { get; init; }
     public string ExplanatoryText { get; init; }
     public string Regulation { get; init; }
+    public IReadOnlyList<ErmsAgent> Agents { get; init; } = [];
     public IReadOnlyList<ErmsDate> Dates { get; init; } = [];
 }

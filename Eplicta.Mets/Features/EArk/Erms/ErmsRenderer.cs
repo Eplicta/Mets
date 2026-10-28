@@ -198,6 +198,8 @@ public class ErmsRenderer
             element.AppendChild(classificationElement);
         }
 
+        Append(element, OptionalText("parentAggregationId", entity.ParentAggregationId));
+
         if (entity.Keywords?.Any() == true) element.AppendChild(Wrap("keywords", entity.Keywords.Select(x => Text("keyword", x))));
     }
 
@@ -236,6 +238,11 @@ public class ErmsRenderer
             Attribute(restrictionElement, "otherRestrictionType", restriction.OtherRestrictionType);
             Append(restrictionElement, OptionalText("explanatoryText", restriction.ExplanatoryText));
             restrictionElement.AppendChild(Text("regulation", restriction.Regulation));
+            foreach (var agent in restriction.Agents ?? [])
+            {
+                restrictionElement.AppendChild(RenderAgent(agent));
+            }
+
             Append(restrictionElement, RenderDates("dates", "date", restriction.Dates));
             element.AppendChild(restrictionElement);
         }
@@ -402,6 +409,19 @@ public class ErmsRenderer
         Attribute(element, "dataType", ownElement.DataType);
         Attribute(element, "format", ownElement.Format);
         Append(element, OptionalText("value", ownElement.Value));
+
+        if (ownElement.Attributes?.Any() == true)
+        {
+            element.AppendChild(Wrap("property", ownElement.Attributes.Select(attribute =>
+            {
+                var attributeElement = Element("attribute");
+                attributeElement.SetAttribute("name", attribute.Name ?? string.Empty);
+                Attribute(attributeElement, "dataType", attribute.DataType);
+                Attribute(attributeElement, "format", attribute.Format);
+                Append(attributeElement, OptionalText("value", attribute.Value));
+                return attributeElement;
+            })));
+        }
 
         foreach (var child in ownElement.Children ?? [])
         {

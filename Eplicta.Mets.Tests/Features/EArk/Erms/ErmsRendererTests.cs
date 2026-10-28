@@ -117,6 +117,22 @@ public class ErmsRendererTests
     }
 
     [Fact]
+    public void An_own_element_carries_its_typed_properties_between_its_value_and_its_children()
+    {
+        var document = new ErmsRenderer(ErmsSamples.Full()).Render();
+        var own = (XmlElement)document.SelectSingleNode("//e:record//e:ownElement[@name='AdditionalAppendixInformation']", Namespaces(document))!;
+
+        own.ChildNodes.OfType<XmlElement>().Select(x => x.LocalName).Should().Equal("value", "property");
+        own.SelectNodes("e:property/e:attribute", Namespaces(document))!.Cast<XmlElement>().Select(x => x.GetAttribute("name")).Should().Equal("size", "mimeType", "checkSum", "checkSumType");
+    }
+
+    [Fact]
+    public void A_record_names_the_case_it_belongs_to()
+    {
+        Single(new ErmsRenderer(ErmsSamples.Full()).Render(), "//e:record/e:parentAggregationId").InnerText.Should().Be("2026-0042");
+    }
+
+    [Fact]
     public void Nothing_empty_is_written_for_what_was_not_given()
     {
         var aggregation = Single(new ErmsRenderer(ErmsSamples.Minimal()).Render(), "//e:aggregation");
