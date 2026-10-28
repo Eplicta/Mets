@@ -163,7 +163,7 @@ public class EArkRenderer
         return element;
     }
 
-    private static string ToNoteType(EArkAgent.ENoteType noteType)
+    internal static string ToNoteType(EArkAgent.ENoteType noteType)
     {
         return noteType == EArkAgent.ENoteType.SoftwareVersion ? EArkConstants.SoftwareVersionNoteType : EArkConstants.IdentificationCodeNoteType;
     }

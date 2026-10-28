@@ -110,4 +110,22 @@ It is off by default, since plain E-ARK is what any other recipient expects.
 var results = new EArkValidator().Validate(xmlDocument);
 ```
 
+### Reading an E-ARK package
+
+`EArkReader` is the inverse of the renderer. It reads a METS document back into an `EArkPackage`, and a
+referenced MODS document into its MODS element:
+
+```
+var reader = new EArkReader();
+var package = reader.Read(metsXml);
+var mods = reader.ReadMods(modsXml);
+```
+
+The reader sees only `METS.xml`. It returns the `mdRef` and `FLocat` hrefs verbatim, so the caller resolves
+them against the package root and reads those entries itself. `Content`, `SourcePath` and
+`AdditionalPackageInfo` are never set. A document that is not well-formed, is not METS, or lacks `OBJID`
+throws `InvalidDataException`. A value outside an open vocabulary (`MDTYPE`, agent `ROLE` and `TYPE`,
+`CONTENTINFORMATIONTYPE`) reads as `OTHER`; an unknown `CHECKSUMTYPE` throws, since the checksum could not be
+verified.
+
 This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License](LICENSE).

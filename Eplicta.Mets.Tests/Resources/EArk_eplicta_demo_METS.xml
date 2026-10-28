@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:csip="https://DILCIS.eu/XML/METS/CSIPExtensionMETS" xmlns:sip="https://DILCIS.eu/XML/METS/SIPExtensionMETS" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.loc.gov/METS/ schemas/mets.xsd https://DILCIS.eu/XML/METS/CSIPExtensionMETS schemas/DILCISExtensionMETS.xsd https://DILCIS.eu/XML/METS/SIPExtensionMETS schemas/DILCISExtensionSIPMETS.xsd http://www.w3.org/1999/xlink schemas/xlink.xsd" OBJID="uuid-7c9f2e14-5a3b-4d82-9f61-0b4e8a1c3d57" LABEL="www.eplicta.se" TYPE="Web Archives" PROFILE="https://earksip.dilcis.eu/profile/E-ARK-SIP.xml" csip:CONTENTINFORMATIONTYPE="OTHER" csip:OTHERCONTENTINFORMATIONTYPE="Eplicta web archive" xmlns="http://www.loc.gov/METS/">
+  <metsHdr CREATEDATE="2026-10-06T14:00:00Z" RECORDSTATUS="NEW" csip:OAISPACKAGETYPE="SIP">
+    <agent ROLE="CREATOR" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <name>Eplicta WebConserver</name>
+      <note csip:NOTETYPE="SOFTWARE VERSION">1.4.2</note>
+    </agent>
+    <agent ROLE="CREATOR" TYPE="ORGANIZATION">
+      <name>Eplicta Demo</name>
+    </agent>
+    <agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+      <name>Eplicta Demo</name>
+    </agent>
+    <altRecordID TYPE="SUBMISSIONAGREEMENT">Demo - no submission agreement</altRecordID>
+    <altRecordID TYPE="REFERENCECODE">SE/DEMO/2026/1</altRecordID>
+  </metsHdr>
+  <dmdSec ID="uuid-e2fc14e9-39f0-45b6-aab9-fe700fa3ee91" CREATED="2026-10-06T14:00:00Z" STATUS="CURRENT">
+    <mdRef LOCTYPE="URL" xlink:type="simple" xlink:href="metadata/descriptive/mods.xml" MDTYPE="MODS" MIMETYPE="text/xml" SIZE="518" CREATED="2026-10-06T14:00:00Z" CHECKSUM="909fb4aed5b17cb57da66218e19343faeee47ae74342387b382d8e6f635b8876" CHECKSUMTYPE="SHA-256" />
+  </dmdSec>
+  <fileSec ID="uuid-25449b08-139d-40fa-94b5-0cc89a840bcc">
+    <fileGrp ID="uuid-1e37cd61-0546-488d-86b9-64e56cbef105" USE="Schemas">
+      <file ID="uuid-e500fa63-771a-4e29-b717-bd3b0022f957" MIMETYPE="text/xml" SIZE="133920" CREATED="2026-10-06T14:00:00Z" CHECKSUM="9c336f876c14103cb4e96800ca98257b8e4892f143b85ed9347c7446fb6490f6" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/mets.xsd" />
+      </file>
+      <file ID="uuid-720a1ae8-54bf-4fa7-875a-3d3be4614163" MIMETYPE="text/xml" SIZE="2038" CREATED="2026-10-06T14:00:00Z" CHECKSUM="b4a13747dde7644122dc14dc7f7333fc51b12de43039a73ba111a6e0e8204fcc" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/DILCISExtensionMETS.xsd" />
+      </file>
+      <file ID="uuid-a6efc437-9dd8-44fa-816a-1dcf5089e501" MIMETYPE="text/xml" SIZE="499" CREATED="2026-10-06T14:00:00Z" CHECKSUM="43ac3f08dbecb74c069d1687187a1aeaed800e77581fe0d418468ae3ad20ef86" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/DILCISExtensionSIPMETS.xsd" />
+      </file>
+      <file ID="uuid-aabf62b2-4b12-43dd-9212-c28d579c0682" MIMETYPE="text/xml" SIZE="3073" CREATED="2026-10-06T14:00:00Z" CHECKSUM="a8fedfecccb81a356b11f79aeed31a158f5c352977d8a0da548a3508c49b7c33" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="schemas/xlink.xsd" />
+      </file>
+    </fileGrp>
+    <fileGrp ID="uuid-1403c17c-25dc-44a1-b5fa-69f4119e4c18" USE="Representations" csip:CONTENTINFORMATIONTYPE="OTHER">
+      <file ID="uuid-bdfe0e45-ec9f-4f16-a586-316f216b910d" MIMETYPE="application/zip" SIZE="29326" CREATED="2026-10-06T14:00:00Z" CHECKSUM="18d3ff1fe5e7cc8cc8a68e3e03137deac8ce7c123d0bf18e7c7ebe2831d75bf7" CHECKSUMTYPE="SHA-256">
+        <FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="representations/rep_1/data/webarchive.zip" />
+      </file>
+    </fileGrp>
+  </fileSec>
+  <structMap ID="uuid-0079994a-1c8e-4d12-9656-b965c9ff5fb6" TYPE="PHYSICAL" LABEL="CSIP">
+    <div ID="uuid-9dc481e6-e273-4874-8b3b-95ce998bc3d5">
+      <div ID="uuid-c7479715-3c82-4220-8169-52cf89503f7a" LABEL="Metadata" DMDID="uuid-e2fc14e9-39f0-45b6-aab9-fe700fa3ee91" />
+      <div ID="uuid-cbbd56a4-cc6d-42f3-937e-954e93ad6808" LABEL="Schemas">
+        <fptr FILEID="uuid-1e37cd61-0546-488d-86b9-64e56cbef105" />
+      </div>
+      <div ID="uuid-eb7ce8c1-3339-4bff-a6ac-75e6742da048" LABEL="Representations">
+        <fptr FILEID="uuid-1403c17c-25dc-44a1-b5fa-69f4119e4c18" />
+      </div>
+    </div>
+  </structMap>
+</mets>
