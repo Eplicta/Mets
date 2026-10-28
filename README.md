@@ -128,4 +128,42 @@ throws `InvalidDataException`. A value outside an open vocabulary (`MDTYPE`, age
 `CONTENTINFORMATIONTYPE`) reads as `OTHER`; an unknown `CHECKSUMTYPE` throws, since the checksum could not be
 verified.
 
+### Exporting cases: ERMS (FGS Ärendehantering 3.0)
+
+A case-management export is an E-ARK package carrying an **ERMS** document — E-ARK CITS ERMS 3.0, which
+Riksarkivet adopts unchanged as *FGS Ärendehantering 3.0*. `ErmsPackageBuilder` lays it out as Riksarkivet's
+application does: `ERMS.xml`, its change log `ermsLogs.xml` and the records' files in
+`representations/rep_1/data`, PREMIS in `metadata/preservation`, and every schema they use in `schemas`.
+
+```
+var erms = new ErmsDocument
+{
+    Control = new ErmsControl { /* identification, classification schemas, maintenance agency and history */ },
+    Aggregations = [new ErmsAggregation { SystemIdentifier = "UUID:…", ObjectId = "2026-0042", Title = "…", Records = [/* … */] }]
+};
+
+var package = new ErmsPackageBuilder()
+    .SetObjId($"IP_{Guid.NewGuid()}")
+    .SetSoftware("My System", "1.0.0")
+    .AddAgent(EArkAgent.Submitter("My Organisation", identificationCode: "ORG:5560000000"))
+    .SetErms(erms)
+    .SetLogs(logs)
+    .SetPreservation(premis)
+    .AddDataFile(new EArkStreamedFile { Href = "2026-0042-1_1_Letter.pdf", MimeType = "application/pdf", Size = size, Checksum = sha256, Open = ct => storage.OpenReadAsync(ct) })
+    .Build();
+
+await new ErmsPackageWriter(package).WriteAsync(target);
+```
+
+- A record names each file by `ErmsPackageBuilder.AppendixPath(fileName)`.
+- `EArkStreamedFile` streams a file from anywhere, such as blob storage; `ErmsPackageWriter` verifies its bytes
+  against the declared SHA-256 as it writes them and stops on a mismatch. Without a declared checksum, the stream is
+  read once to measure it.
+- Every standard folder exists in the zip, as Riksarkivet asks, and the METS declares the content as
+  `citserms_v3_0` on the package and on its representations.
+- `ErmsValidator` validates against the ERMS 3.0.2 schema and checks the Schematron's co-occurrence rules in code;
+  `ErmsLogValidator` and `PremisValidator` validate the log and the preservation metadata.
+
+`EArkPackageWriter` and its output are unchanged; the ERMS usage is separate types that reuse it.
+
 This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License](LICENSE).
