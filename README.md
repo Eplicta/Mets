@@ -172,7 +172,9 @@ await new ErmsPackageWriter(package).WriteAsync(target);
   `XmlCharacters`: a space for a control character, nothing for an unpaired surrogate or a non-character.
 - Riksarkivet's application asks for the archival creator (`EArkAgent.Archivist`) and a contact person
   (`EArkAgent.ContactPerson`) beside the submitter; a submission agreement and reference code are the receiving
-  archive's to give.
+  archive's to give. A contact person's note carries no `NOTETYPE`, as in Riksarkivet's example, because the CSIP
+  vocabulary has none for contact information. commons-ip validates against a METS schema that requires one on every
+  agent note, so name the contact without a note when a package must pass it.
 
 `EArkPackageWriter` and its output are unchanged; the ERMS usage is separate types that reuse it.
 
