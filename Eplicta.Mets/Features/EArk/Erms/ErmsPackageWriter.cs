@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Schema;
 using Eplicta.Mets.Entities;
+using Eplicta.Mets.Features.EArk.Premis;
 
 namespace Eplicta.Mets.Features.EArk.Erms;
 
@@ -46,8 +48,9 @@ public class ErmsPackageWriter
         };
         var resolved = new EArkPackageWriter(measured).Resolve();
         var root = RootFolderName ?? resolved.ObjId;
-        var document = new EArkRenderer(resolved).Render();
+        var document = XmlCharacters.Clean(new EArkRenderer(resolved).Render());
         DeclareRepresentationContent(document, resolved);
+        Validate(document, resolved);
 
         using var archive = new ZipArchive(target, ZipArchiveMode.Create, true);
 
@@ -68,6 +71,46 @@ public class ErmsPackageWriter
             await WriteFileAsync(archive, $"{root}/{file.Href}", file, cancellationToken);
         }
     }
+
+    // Checked before a byte is written, so an invalid package fails whole rather than reaching anyone half-written.
+    private static void Validate(XmlDocument mets, EArkPackage package)
+    {
+        var failures = Failures(EArkConstants.MetsFileName, new EArkValidator().Validate(mets)).ToList();
+        var data = $"{EArkConstants.RepresentationsFolderName}/{package.RepresentationName}/{EArkConstants.DataFolderName}";
+        var validators = new Dictionary<string, Func<XmlDocument, IEnumerable<XmlValidatorResult>>>(StringComparer.Ordinal)
+        {
+            [$"{data}/{ErmsConstants.FileName}"] = x => new ErmsValidator().Validate(x),
+            [$"{data}/{ErmsConstants.LogFileName}"] = x => new ErmsLogValidator().Validate(x),
+            [$"{EArkConstants.MetadataFolderName}/{EArkConstants.PreservationFolderName}/{PremisConstants.FileName}"] = x => new PremisValidator().Validate(x)
+        };
+
+        var generated = package.RepresentationFiles.Select(x => (x.Href, x.Content)).Concat(package.PreservationMetadata.Select(x => (x.Href, x.Content)));
+        foreach (var (href, content) in generated.Where(x => x.Content != null && validators.ContainsKey(x.Href)))
+        {
+            failures.AddRange(Check(href, content, validators[href]));
+        }
+
+        if (failures.Count > 0) throw new ErmsPackageValidationException(failures);
+    }
+
+    private static IEnumerable<string> Check(string href, byte[] content, Func<XmlDocument, IEnumerable<XmlValidatorResult>> validator)
+    {
+        var document = new XmlDocument { XmlResolver = null };
+        try
+        {
+            using var stream = new MemoryStream(content);
+            document.Load(stream);
+        }
+        catch (XmlException exception)
+        {
+            return [$"{href}: {exception.Message}"];
+        }
+
+        return Failures(href, validator(document));
+    }
+
+    private static IEnumerable<string> Failures(string href, IEnumerable<XmlValidatorResult> results) =>
+        results.Where(x => x.XmlSeverityType == XmlSeverityType.Error).Select(x => $"{href}: {x.Message}");
 
     private static IEnumerable<string> StandardFolders(string representationName)
     {

@@ -58,7 +58,7 @@ public class ErmsLogRenderer
         }
 
         root.AppendChild(logs);
-        return _document;
+        return XmlCharacters.Clean(_document);
     }
 
     private XmlElement RenderCaseLog(ErmsCaseLog caseLog)

@@ -99,6 +99,40 @@ public class ErmsPackageWriterTests
         return document;
     }
 
+    [Fact]
+    public async Task A_package_whose_erms_the_schema_rejects_is_not_written_at_all()
+    {
+        var package = Builder().SetErms(ErmsSamples.Minimal() with { Aggregations = [ErmsSamples.MinimalCaseFile() with { ObjectId = null }] }).Build();
+        var buffer = new MemoryStream();
+
+        var refused = await FluentActions.Awaiting(() => new ErmsPackageWriter(package).WriteAsync(buffer, CancellationToken.None)).Should().ThrowAsync<ErmsPackageValidationException>();
+
+        refused.Which.Failures.Should().NotBeEmpty().And.OnlyContain(x => x.StartsWith("representations/rep_1/data/ERMS.xml: ", StringComparison.Ordinal));
+        buffer.Length.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task A_control_character_in_the_label_still_gives_a_well_formed_mets()
+    {
+        using var archive = await WriteAsync(Builder().SetLabel("2026-0042Kränkande behandling").Build());
+
+        Xml(archive, "METS.xml").DocumentElement!.GetAttribute("LABEL").Should().Be("2026-0042 Kränkande behandling");
+    }
+
+    [Fact]
+    public async Task The_contact_person_is_an_individual_creator_reached_as_the_note_says()
+    {
+        using var archive = await WriteAsync(Builder().AddAgent(EArkAgent.ContactPerson("Rita Registrator", "rita@futuraskolan.se")).Build());
+
+        var mets = Xml(archive, "METS.xml");
+        var contact = (XmlElement)mets.SelectSingleNode("//m:metsHdr/m:agent[@ROLE='CREATOR' and @TYPE='INDIVIDUAL']", MetsNamespaces(mets));
+        contact.Should().NotBeNull();
+        contact!["name", EArkConstants.MetsNamespace]!.InnerText.Should().Be("Rita Registrator");
+        var note = contact["note", EArkConstants.MetsNamespace]!;
+        note.InnerText.Should().Be("rita@futuraskolan.se");
+        note.HasAttribute("NOTETYPE", EArkConstants.CsipNamespace).Should().BeFalse();
+    }
+
     private static XmlNamespaceManager MetsNamespaces(XmlDocument document)
     {
         var manager = new XmlNamespaceManager(document.NameTable);

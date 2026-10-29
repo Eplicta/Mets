@@ -145,7 +145,9 @@ var erms = new ErmsDocument
 var package = new ErmsPackageBuilder()
     .SetObjId($"IP_{Guid.NewGuid()}")
     .SetSoftware("My System", "1.0.0")
+    .AddAgent(EArkAgent.Archivist("My Organisation", identificationCode: "ORG:5560000000"))
     .AddAgent(EArkAgent.Submitter("My Organisation", identificationCode: "ORG:5560000000"))
+    .AddAgent(EArkAgent.ContactPerson("Jane Doe", "jane.doe@example.se"))
     .SetErms(erms)
     .SetLogs(logs)
     .SetPreservation(premis)
@@ -163,6 +165,14 @@ await new ErmsPackageWriter(package).WriteAsync(target);
   `citserms_v3_0` on the package and on its representations.
 - `ErmsValidator` validates against the ERMS 3.0.2 schema and checks the Schematron's co-occurrence rules in code;
   `ErmsLogValidator` and `PremisValidator` validate the log and the preservation metadata.
+- Before writing a byte, `ErmsPackageWriter` validates every XML document it generated — METS, ERMS, the log and
+  PREMIS — against the schemas the package carries, and throws `ErmsPackageValidationException`, listing each
+  failure by file, instead of writing a package an archive would reject.
+- Text XML 1.0 cannot carry — a control character pasted into a title — is cleaned from every rendered document by
+  `XmlCharacters`: a space for a control character, nothing for an unpaired surrogate or a non-character.
+- Riksarkivet's application asks for the archival creator (`EArkAgent.Archivist`) and a contact person
+  (`EArkAgent.ContactPerson`) beside the submitter; a submission agreement and reference code are the receiving
+  archive's to give.
 
 `EArkPackageWriter` and its output are unchanged; the ERMS usage is separate types that reuse it.
 

@@ -27,6 +27,17 @@ public class ErmsRendererTests
         return (XmlElement)document.SelectSingleNode(xpath, Namespaces(document));
     }
 
+    [Fact]
+    public void A_control_character_pasted_into_a_title_still_renders_a_document_that_validates()
+    {
+        var document = new ErmsRenderer(ErmsSamples.Minimal() with { Aggregations = [ErmsSamples.MinimalCaseFile() with { Title = "Kränkningi 7B" }] }).Render();
+
+        var reloaded = new XmlDocument();
+        reloaded.LoadXml(document.OuterXml);
+        Errors(reloaded).Should().BeEmpty();
+        Single(reloaded, "//e:aggregation/e:title").InnerText.Should().Be("Kränkning i 7B");
+    }
+
     public static IEnumerable<object[]> EveryVocabularyTerm()
     {
         foreach (var value in Enum.GetValues<ErmsDate.EDateType>()) yield return [ErmsSamples.Minimal() with { Aggregations = [ErmsSamples.MinimalCaseFile() with { Dates = [new ErmsDate { DateType = value, OtherDateType = "annat", Value = ErmsSamples.Created }] }] }];

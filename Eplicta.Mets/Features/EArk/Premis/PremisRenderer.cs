@@ -57,7 +57,7 @@ public class PremisRenderer
             root.AppendChild(RenderAgent(agent));
         }
 
-        return _document;
+        return XmlCharacters.Clean(_document);
     }
 
     private XmlElement RenderFile(PremisFile file)

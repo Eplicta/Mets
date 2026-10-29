@@ -56,7 +56,7 @@ public class ErmsRenderer
         root.AppendChild(hasAggregations ? Wrap("aggregations", _ermsDocument.Aggregations.Select(RenderAggregation)) : Wrap("records", _ermsDocument.Records.Select(RenderRecord)));
         Append(root, RenderAdditionalInformation(_ermsDocument.AdditionalInformation));
 
-        return _document;
+        return XmlCharacters.Clean(_document);
     }
 
     private XmlElement RenderControl(ErmsControl control)
