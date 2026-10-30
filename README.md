@@ -128,4 +128,54 @@ throws `InvalidDataException`. A value outside an open vocabulary (`MDTYPE`, age
 `CONTENTINFORMATIONTYPE`) reads as `OTHER`; an unknown `CHECKSUMTYPE` throws, since the checksum could not be
 verified.
 
+### Exporting cases: ERMS (FGS Ärendehantering 3.0)
+
+A case-management export is an E-ARK package carrying an **ERMS** document — E-ARK CITS ERMS 3.0, which
+Riksarkivet adopts unchanged as *FGS Ärendehantering 3.0*. `ErmsPackageBuilder` lays it out as Riksarkivet's
+application does: `ERMS.xml`, its change log `ermsLogs.xml` and the records' files in
+`representations/rep_1/data`, PREMIS in `metadata/preservation`, and every schema they use in `schemas`.
+
+```
+var erms = new ErmsDocument
+{
+    Control = new ErmsControl { /* identification, classification schemas, maintenance agency and history */ },
+    Aggregations = [new ErmsAggregation { SystemIdentifier = "UUID:…", ObjectId = "2026-0042", Title = "…", Records = [/* … */] }]
+};
+
+var package = new ErmsPackageBuilder()
+    .SetObjId($"{EArkConstants.IdPrefix}{Guid.NewGuid()}")
+    .SetSoftware("My System", "1.0.0")
+    .AddAgent(EArkAgent.Archivist("My Organisation", identificationCode: "ORG:5560000000"))
+    .AddAgent(EArkAgent.Submitter("My Organisation", identificationCode: "ORG:5560000000"))
+    .AddAgent(EArkAgent.ContactPerson("Jane Doe", "jane.doe@example.se"))
+    .SetErms(erms)
+    .SetLogs(logs)
+    .SetPreservation(premis)
+    .AddDataFile(new EArkStreamedFile { Href = "2026-0042-1_1_Letter.pdf", MimeType = "application/pdf", Size = size, Checksum = sha256, Open = ct => storage.OpenReadAsync(ct) })
+    .Build();
+
+await new ErmsPackageWriter(package).WriteAsync(target);
+```
+
+- A record names each file by `ErmsPackageBuilder.AppendixPath(fileName)`.
+- `EArkStreamedFile` streams a file from anywhere, such as blob storage; `ErmsPackageWriter` verifies its bytes
+  against the declared SHA-256 as it writes them and stops on a mismatch. Without a declared checksum, the stream is
+  read once to measure it.
+- Every standard folder exists in the zip, as Riksarkivet asks, and the METS declares the content as
+  `citserms_v3_0` on the package and on its representations.
+- `ErmsValidator` validates against the ERMS 3.0.2 schema and checks the Schematron's co-occurrence rules in code;
+  `ErmsLogValidator` and `PremisValidator` validate the log and the preservation metadata.
+- Before writing a byte, `ErmsPackageWriter` validates every XML document it generated — METS, ERMS, the log and
+  PREMIS — against the schemas the package carries, and throws `ErmsPackageValidationException`, listing each
+  failure by file, instead of writing a package an archive would reject.
+- Text XML 1.0 cannot carry — a control character pasted into a title — is cleaned from every rendered document by
+  `XmlCharacters`: a space for a control character, nothing for an unpaired surrogate or a non-character.
+- Riksarkivet's application asks for the archival creator (`EArkAgent.Archivist`) and a contact person
+  (`EArkAgent.ContactPerson`) beside the submitter; a submission agreement and reference code are the receiving
+  archive's to give. A contact person's note carries no `NOTETYPE`, as in Riksarkivet's example, because the CSIP
+  vocabulary has none for contact information. commons-ip validates against a METS schema that requires one on every
+  agent note, so name the contact without a note when a package must pass it.
+
+`EArkPackageWriter` and its output are unchanged; the ERMS usage is separate types that reuse it.
+
 This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License](LICENSE).

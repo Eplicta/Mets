@@ -71,6 +71,20 @@ public record EArkAgent
     }
 
     /// <summary>
+    /// The contact person SIP21-25 describe: the individual to ask about the package, reached as the note says.
+    /// </summary>
+    public static EArkAgent ContactPerson(string name, string contact = null)
+    {
+        return new EArkAgent
+        {
+            Role = ERole.Creator,
+            Type = EType.Individual,
+            Name = name,
+            Note = contact
+        };
+    }
+
+    /// <summary>
     /// The archival creator SIP9-14 describe, responsible for the archived material.
     /// </summary>
     public static EArkAgent Archivist(string name, EType type = EType.Organization, string identificationCode = null)
