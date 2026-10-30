@@ -143,7 +143,7 @@ var erms = new ErmsDocument
 };
 
 var package = new ErmsPackageBuilder()
-    .SetObjId($"IP_{Guid.NewGuid()}")
+    .SetObjId($"{EArkConstants.IdPrefix}{Guid.NewGuid()}")
     .SetSoftware("My System", "1.0.0")
     .AddAgent(EArkAgent.Archivist("My Organisation", identificationCode: "ORG:5560000000"))
     .AddAgent(EArkAgent.Submitter("My Organisation", identificationCode: "ORG:5560000000"))
