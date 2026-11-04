@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Eplicta.Mets;
+namespace Eplicta.Mets.Extensions;
 
 public static class MetsRegistrationExtensions
 {

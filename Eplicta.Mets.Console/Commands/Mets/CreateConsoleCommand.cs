@@ -90,11 +90,17 @@ public abstract class CreateConsoleCommand : AsyncActionCommandBase
         var archiveFormat = ArchiveFormat.Zip;
         var extension = $"{archiveFormat}".ToLower();
 
+		IArchiveStreamFactory archiveStreamFactory = archiveFormat switch
+        {
+            ArchiveFormat.Zip => new DefaultZipArchiveStreamFactory(),
+            ArchiveFormat.Tar => new TarArchiveStreamFactory(),
+            _ => throw new NotImplementedException()
+        };
         //using var archive = renderer.GetArchiveStream(archiveFormat, null, true, MetsSchema.KB);
         //await File.WriteAllBytesAsync($"C:\\temp\\mods-archive.{extension}", archive.ToArray());
-        using var archive = renderer.GetArchiveStream(archiveFormat, null, true, MetsSchema.KB);
+        using var archive = renderer.GetArchiveStream(archiveStreamFactory, null, true, MetsSchema.KB);
         await using var fileStream = File.Create($"C:\\temp\\mods-archive.{extension}");
-        await archive.CopyToAsync(fileStream);
+        await archive.Stream.CopyToAsync(fileStream);
 
         var xmlDocument = renderer.Render();
         if (!Validate(xmlDocument)) return;
