@@ -6,6 +6,8 @@ public static class MetsRegistrationExtensions
 {
     public static void AddEplictaMets(this IServiceCollection services)
     {
-        services.AddTransient<IMetsValidatorService, MetsValidatorService>();
+		services.AddTransient<IHttpClientFactory>(sp => new MicrosoftHttpClientFactory(sp.GetRequiredService<System.Net.Http.IHttpClientFactory>()));
+
+		services.AddTransient<IMetsValidatorService, MetsValidatorService>();
     }
 }
