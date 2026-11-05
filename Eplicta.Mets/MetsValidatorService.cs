@@ -10,7 +10,7 @@ using Eplicta.Mets.Entities;
 
 namespace Eplicta.Mets;
 
-internal class MetsValidatorService : IMetsValidatorService
+public class MetsValidatorService : IMetsValidatorService
 {
     private readonly IHttpClientFactory _httpClientFactory;
 

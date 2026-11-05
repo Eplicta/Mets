@@ -37,7 +37,8 @@ public class BuildBasicCommand : AsyncActionCommandBase
             Output(row.ToMessage(), row.ToLevel());
         }
 
-        using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip, null, true, MetsSchema.Default);
+        using var archive = renderer.GetArchiveStream(new DefaultZipArchiveStreamFactory(), null, true, MetsSchema.Default);
+		archive.Stream.Seek(0, SeekOrigin.Begin);
         await File.WriteAllBytesAsync("C:\\temp\\mets-archive.zip", archive.ToArray());
     }
 }

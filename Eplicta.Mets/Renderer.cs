@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Eplicta.Mets.Entities;
 using Eplicta.Mets.Helpers;
-using ICSharpCode.SharpZipLib.Tar;
-using Microsoft.IO;
 using static Eplicta.Mets.Entities.MetsData;
 
 namespace Eplicta.Mets;
 
 public class Renderer
 {
-    private static readonly RecyclableMemoryStreamManager _recyclableMsManager = new();
     private readonly MetsData _metsData;
     private const string MetsNs = "http://www.loc.gov/METS/";
     private const string ModsNs = "http://www.loc.gov/mods/v3";
@@ -299,10 +293,9 @@ public class Renderer
             {
                 foreach (var note in _metsData.Mods.Notes)
                 {
-                    var noteType = Regex.Replace(note.Type.ToString(), "([A-Z])", " $1").Trim().ToLower();
-
+                    //var noteType = Regex.Replace(note.Type.ToString(), "([A-Z])", " $1").Trim().ToLower();
                     var noteNode = doc.CreateElement("mods", "note", ModsNs);
-                    noteNode.SetAttribute("type", noteType);
+                    noteNode.SetAttribute("type", note.Type);
                     noteNode.InnerText = note.InnerText;
 
                     if (!string.IsNullOrEmpty(note.Href))
@@ -435,145 +428,25 @@ public class Renderer
         }
     }
 
-    public ArchiveStream GetArchiveStream(ArchiveFormat archiveFormat, string metsFileName = null, bool prettify = false, MetsSchema schema = null)
+    public IArchiveStream GetArchiveStream(IArchiveStreamFactory archiveStreamFactory, string metsFileName = null, bool prettify = false, MetsSchema schema = null)
     {
-        schema ??= MetsSchema.Default;
-        ArchiveStream archive;
-        switch (archiveFormat)
-        {
-            case ArchiveFormat.Zip:
-                archive = GetZipArchiveStream(metsFileName, prettify, schema);
-                break;
-            case ArchiveFormat.Tar:
-                archive = GetTarArchiveStream(metsFileName, prettify, schema);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(archiveFormat), archiveFormat, null);
-        }
+		var xmlString = Render(null, schema ?? MetsSchema.Default).OuterXml;
+		if (prettify)
+			xmlString = PrettifyXml(xmlString);
 
-        archive.Stream.Seek(0, SeekOrigin.Begin);
-        return archive;
+		return archiveStreamFactory.GetArchiveStream(_metsData, xmlString, metsFileName ?? "metadata.xml");
     }
 
-    private ArchiveStream GetZipArchiveStream(string metsFileName, bool prettify, MetsSchema schema)
-    {
-        var compressedFileStream = _recyclableMsManager.GetStream();
-        using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, true);
-        var archiveStream = new ArchiveStream(compressedFileStream, null, zipArchive);
+	private static string PrettifyXml(string xmlString)
+	{
+		var xmlDocument = new XmlDocument();
 
-        foreach (var source in _metsData.Sources ?? [])
-        {
-            using var md5 = MD5.Create();
-            var entry = zipArchive.CreateEntry(source.Name);
+		xmlDocument.LoadXml(xmlString);
 
-            using (var zipEntryStream = entry.Open())
+		var stringWriter = new Utf8StringWriter(new StringBuilder());
+		var xmlTextWriter = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented };
+		xmlDocument.Save(xmlTextWriter);
 
-            using (var hashingStream = new CryptoStream(zipEntryStream, md5, CryptoStreamMode.Write))
-            {
-                source.Stream.CopyTo(hashingStream);
-            }
-
-            source.Size ??= source.Stream.Length;
-
-            var hash = BitConverter.ToString(md5.Hash!).Replace("-", "");
-            if (string.IsNullOrEmpty(source.Id))
-            {
-                source.Id = $"ID{hash}";
-            }
-
-            if (string.IsNullOrEmpty(source.Checksum))
-            {
-                source.Checksum = hash;
-                source.ChecksumType = EChecksumType.MD5;
-            }
-        }
-
-        foreach (var resource in _metsData.Files ?? [])
-        {
-            AddFile(zipArchive, $"{resource.FileName}", resource.Data);
-        }
-
-        var xmlString = Render(null, schema).OuterXml;
-
-        AddFile(zipArchive, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
-
-        return archiveStream;
-    }
-
-    private ArchiveStream GetTarArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
-    {
-        var compressedFileStream = _recyclableMsManager.GetStream();
-        var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
-        var archiveStream = new ArchiveStream(compressedFileStream, tarOutputStream);
-
-        foreach (var source in _metsData.Sources ?? [])
-        {
-            throw new NotImplementedException("Stream resources from sources has not yet been implemented for Tar-archives.");
-        }
-
-        foreach (var resource in _metsData.Files ?? [])
-        {
-            AddFile(tarOutputStream, $"{resource.FileName}", resource.Data);
-        }
-
-        var xmlString = Render(null, schema).OuterXml;
-
-        AddFile(tarOutputStream, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
-
-        tarOutputStream.Finish();
-
-        return archiveStream;
-    }
-
-    private static void AddFile(ZipArchive zipArchive, string entryName, string data)
-    {
-        var bytes = Encoding.UTF8.GetBytes(data);
-        AddFile(zipArchive, entryName, bytes);
-    }
-
-    private static void AddFile(ZipArchive zipArchive, string entryName, byte[] data)
-    {
-        using var stream = new MemoryStream(data);
-        AddFile(zipArchive, entryName, stream);
-    }
-
-    private static void AddFile(ZipArchive zipArchive, string entryName, MemoryStream stream)
-    {
-        var entry = zipArchive.CreateEntry(entryName);
-        using var originalFileStream = stream;
-        using var zipEntryStream = entry.Open();
-        originalFileStream.CopyTo(zipEntryStream);
-    }
-
-    private static void AddFile(TarOutputStream tarStream, string entryName, string data)
-    {
-        var bytes = Encoding.UTF8.GetBytes(data);
-        AddFile(tarStream, entryName, bytes);
-    }
-
-    private static void AddFile(TarOutputStream tarStream, string entryName, byte[] data)
-    {
-        var tarEntry = new TarEntry(new TarHeader
-        {
-            Size = data.Length,
-            Name = entryName
-        });
-
-        tarStream.PutNextEntry(tarEntry);
-        tarStream.Write(data, 0, data.Length);
-        tarStream.CloseEntry();
-    }
-
-    private static string PrettifyXml(string xmlString)
-    {
-        var xmlDocument = new XmlDocument();
-
-        xmlDocument.LoadXml(xmlString);
-
-        var stringWriter = new Utf8StringWriter(new StringBuilder());
-        var xmlTextWriter = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented };
-        xmlDocument.Save(xmlTextWriter);
-
-        return stringWriter.ToString();
-    }
+		return stringWriter.ToString();
+	}
 }

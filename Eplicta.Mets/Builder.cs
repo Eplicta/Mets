@@ -174,17 +174,23 @@ public class Builder
         return this;
     }
 
-    //public Builder SetMetsProfile(string profile)
-    //{
-    //    _metsProfile = profile;
-    //    return this;
-    //}
+	//public Builder SetMetsProfile(string profile)
+	//{
+	//    _metsProfile = profile;
+	//    return this;
+	//}
 
-    public Builder AddModsNote(MetsData.ModsNote note)
+	/// <summary>
+	/// Note: requires a previous call to <see cref="SetModsSection"/>
+	/// </summary>
+	/// <param name="note"></param>
+	/// <returns></returns>
+	/// <exception cref="Exception"></exception>
+	public Builder AddModsNote(MetsData.ModsNote note)
     {
-        var notesArray = _modsSectionData.Notes?.Concat([note]).ToArray() ?? [note];
-
-        _modsSectionData.Notes = notesArray;
+        if (_modsSectionData == null)
+            throw new Exception($"Call {nameof(SetModsSection)} first");
+        _modsSectionData.Notes = _modsSectionData.Notes == null ? [note] : _modsSectionData.Notes?.Concat([note]).ToArray();
         return this;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Eplicta.Mets;
+using Eplicta.Mets.Extensions;
 using Eplicta.Mets.Console.Commands.Html;
 using Eplicta.Mets.Console.Commands.Mets;
 using Eplicta.Mets.Console.Commands.Xml;

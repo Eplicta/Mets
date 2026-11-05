@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32014.148
+# Visual Studio Version 18
+VisualStudioVersion = 18.11.12328.437 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eplicta.Mets", "Eplicta.Mets\Eplicta.Mets.csproj", "{E081A9C8-5D0B-41B9-A707-51CB84215BFB}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mets", "Mets", "{464DD6FC-C8D4-490B-93B3-A94C4C06A572}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Html", "Html", "{AD9EA845-85A0-445B-8814-14BCBFE5A99A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eplicta.Mets.Extensions", "Eplicta.Mets.Extension\Eplicta.Mets.Extensions.csproj", "{4B1A431C-6392-40E2-A7C5-267FAF0E4E1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{23F806D8-97E5-4D2D-B3CC-1BC724C87676}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23F806D8-97E5-4D2D-B3CC-1BC724C87676}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23F806D8-97E5-4D2D-B3CC-1BC724C87676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B1A431C-6392-40E2-A7C5-267FAF0E4E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B1A431C-6392-40E2-A7C5-267FAF0E4E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B1A431C-6392-40E2-A7C5-267FAF0E4E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B1A431C-6392-40E2-A7C5-267FAF0E4E1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{6C2DF3BB-8EB3-42E8-87B3-44C9459E52D3} = {464DD6FC-C8D4-490B-93B3-A94C4C06A572}
 		{1F4E99D4-1DEC-4579-9155-4B4EA05BFCB9} = {AD9EA845-85A0-445B-8814-14BCBFE5A99A}
 		{23F806D8-97E5-4D2D-B3CC-1BC724C87676} = {AD9EA845-85A0-445B-8814-14BCBFE5A99A}
+		{4B1A431C-6392-40E2-A7C5-267FAF0E4E1C} = {464DD6FC-C8D4-490B-93B3-A94C4C06A572}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9E36431-8C11-4A5B-BF7F-014526F93BB5}
