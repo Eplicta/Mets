@@ -60,24 +60,71 @@ public record MetsData
         Other
     }
 
-    public enum ENoteType
-    {
-        None,
-        LikeCount,
-        FollowerCount,
-        PostId,
-        PostMessage,
-        ShareCount,
-        Description,
-        ReplyCount,
-        RetweetCount,
-        AuthorDisplayName,
-        ChannelInformationPackageId,
-        SourceChannel,
-        Keywords,
-        ViewCount,
-        CollectDate
-    }
+    public static class ENoteType
+	{
+		// https://www.loc.gov/standards/mods/mods-notes.html
+		// tmp.split('\n').map(o => o.trim()).filter(o => o.length).map(o => `public const string ${o.split(/[ /]/).map(p => p[0].toUpperCase() + p.slice(1)).join("")} = "${o}";`).join("\n")
+
+		public const string AccrualMethod = "accrual method";
+        public const string AccrualPolicy = "accrual policy";
+		public const string Acquisition = "acquisition";
+		public const string Action = "action";
+		public const string AdditionalPhysicalForm = "additional physical form";
+		public const string Admin = "admin";
+		public const string BibliographicHistory = "bibliographic history";
+		public const string Bibliography = "bibliography";
+		public const string BiographicalHistorical = "biographical/historical";
+		public const string CitationReference = "citation/reference";
+		public const string ConservationHistory = "conservation history";
+		public const string Content = "content";
+		public const string CreationProductionCredits = "creation/production credits";
+		public const string Date = "date";
+		public const string Exhibitions = "exhibitions";
+		public const string Funding = "funding";
+		public const string Handwritten = "handwritten";
+		public const string Language = "language";
+		public const string Numbering = "numbering";
+		public const string DateSequentialDesignation = "date/sequential designation";
+		public const string OriginalLocation = "original location";
+		public const string OriginalVersion = "original version";
+		public const string Orthography = "orthography";
+		public const string Ownership = "ownership";
+		public const string Performers = "performers";
+		public const string PreferredCitation = "preferred citation";
+		public const string Publications = "publications";
+		public const string Reproduction = "reproduction";
+		public const string Restriction = "restriction";
+		public const string SourceCharacteristics = "source characteristics";
+		public const string SourceDimensions = "source dimensions";
+		public const string SourceIdentifier = "source identifier";
+		public const string SourceNote = "source note";
+		public const string SourceType = "source type";
+		public const string StatementOfResponsibility = "statement of responsibility";
+		public const string SubjectCompleteness = "subject completeness";
+		public const string SystemDetails = "system details";
+		public const string Thesis = "thesis";
+		public const string Venue = "venue";
+		public const string VersionIdentification = "version identification";
+
+		public static class SocialMedia
+        {
+			public const string LikeCount = "likeCount";
+			public const string FollowerCount = "followerCount";
+			public const string PostId = "postId";
+			public const string ReplyCount = "replyCount";
+			public const string RetweetCount = "retweetCount";
+			public const string ViewCount = "viewCount";
+			public const string ShareCount = "shareCount";
+			public const string None = "none";
+			public const string PostMessage = "postMessage";
+			public const string Description = "description";
+			public const string AuthorDisplayName = "authorDisplayName";
+			public const string ChannelInformationPackageId = "channelInformationPackageId";
+			public const string SourceChannel = "sourceChannel";
+			public const string Keywords = "keywords";
+			public const string CollectDate = "collectDate";
+		}
+	}
 
     public enum EMetsHdrAttributeName
     {
@@ -148,8 +195,9 @@ public record MetsData
 
     public record ModsNote
     {
-        public ENoteType Type { get; set; }
-        public string InnerText { get; set; }
+		//public ENoteType Type { get; set; }
+		public required string Type { get; set; }
+		public string InnerText { get; set; }
         public string Href { get; set; }
     }
 

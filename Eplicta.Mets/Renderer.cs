@@ -293,10 +293,9 @@ public class Renderer
             {
                 foreach (var note in _metsData.Mods.Notes)
                 {
-                    var noteType = Regex.Replace(note.Type.ToString(), "([A-Z])", " $1").Trim().ToLower();
-
+                    //var noteType = Regex.Replace(note.Type.ToString(), "([A-Z])", " $1").Trim().ToLower();
                     var noteNode = doc.CreateElement("mods", "note", ModsNs);
-                    noteNode.SetAttribute("type", noteType);
+                    noteNode.SetAttribute("type", note.Type);
                     noteNode.InnerText = note.InnerText;
 
                     if (!string.IsNullOrEmpty(note.Href))
