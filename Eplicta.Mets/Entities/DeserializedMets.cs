@@ -97,10 +97,19 @@ public record DeserializedMets
                     [XmlElement(ElementName = "name", Namespace = "http://www.loc.gov/mods/v3")]
                     public ModsNameElement[] Names { get; set; }
 
+                    [XmlElement(ElementName = "genre", Namespace = "http://www.loc.gov/mods/v3")]
+                    public ModsGenreElement[] Genres { get; set; }
+
                     public record ModsIdentifierElement : XmlValueElement<string>
                     {
                         [XmlAttribute("type")]
                         public string Type { get; set; }
+                    }
+
+                    public record ModsGenreElement : XmlValueElement<string>
+                    {
+                        [XmlAttribute("authority")]
+                        public string Authority { get; set; }
                     }
 
                     public record ModsLocationElement
