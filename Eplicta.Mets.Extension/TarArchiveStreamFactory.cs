@@ -16,14 +16,10 @@ public class TarArchiveStreamFactory : IArchiveStreamFactory
 		var archiveStream = new ArchiveStream(compressedFileStream);
 
 		foreach (var source in metsData.Sources ?? [])
-		{
 			throw new NotImplementedException("Stream resources from sources has not yet been implemented for Tar-archives.");
-		}
 
 		foreach (var resource in metsData.Files ?? [])
-		{
 			AddFile(tarOutputStream, $"{resource.FileName}", resource.Data);
-		}
 
 		AddFile(tarOutputStream, metsFileName, xmlString);
 

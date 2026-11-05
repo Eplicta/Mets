@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using Eplicta.Mets.Entities;
@@ -17,14 +16,7 @@ public class DefaultZipArchiveStreamFactory : IArchiveStreamFactory
 {
 	private static readonly RecyclableMemoryStreamManager _recyclableMsManager = new();
 
-	public IArchiveStream GetArchiveStream(MetsData metsData, string xml, string metsFileName)
-    {
-        var archive = GetZipArchiveStream(metsData, xml, metsFileName);
-		archive.Stream.Seek(0, SeekOrigin.Begin);
-		return archive;
-	}
-
-	private IArchiveStream GetZipArchiveStream(MetsData metsData, string xmlString, string metsFileName)
+	public IArchiveStream GetArchiveStream(MetsData metsData, string xmlString, string metsFileName)
     {
         var compressedFileStream = _recyclableMsManager.GetStream();
         using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, true);
