@@ -175,7 +175,45 @@ await new ErmsPackageWriter(package).WriteAsync(target);
   archive's to give. A contact person's note carries no `NOTETYPE`, as in Riksarkivet's example, because the CSIP
   vocabulary has none for contact information. commons-ip validates against a METS schema that requires one on every
   agent note, so name the contact without a note when a package must pass it.
+- `ErmsPackageBuilder.AddDescriptiveMetadata` references a MODS document under `metadata/descriptive`, as
+  `EArkPackageBuilder` does; the writer carries its content beside the METS. Nothing else about the package changes:
+  its content information type stays `citserms_v3_0`.
 
 `EArkPackageWriter` and its output are unchanged; the ERMS usage is separate types that reuse it.
+
+### Eplicta package types
+
+`EplictaPackageTypes` names the packages Eplicta's own systems produce for FortDocs to ingest:
+
+- `EplictaPackageTypes.WebArchive` (`Eplicta Web Archive`) is carried as the `OTHERCONTENTINFORMATIONTYPE` of a web
+  archive.
+- `EplictaPackageTypes.CaseArchive` (`FortDocs Case Archive`) is carried as a MODS `genre`, because an ERMS package
+  must keep `citserms_v3_0` as its content information type.
+
+`EplictaPackageTypes.Matches(value, packageType)` compares a value read from a package ignoring case and surrounding
+whitespace, and is false for a missing value. `EArkReader.ReadMods` reads each `genre` with its `authority`.
+
+### A standalone MODS document
+
+E-ARK references descriptive metadata rather than embedding it, so the MODS becomes a file of its own.
+`ModsDocumentRenderer` renders one from a `ModsDocument`; only the identifier is required, and what is not set is
+left out:
+
+```
+var mods = new ModsDocument
+{
+    Identifier = "case-2026-0042",
+    Title = "2026-0042 Kränkande behandling",
+    Url = new Uri("https://fortdocs.example/cases/2026-0042"),
+    DateIssued = DateTime.UtcNow,
+    Genres = [EplictaPackageTypes.CaseArchive],
+    Notes = [new ModsDocumentNote { Type = "agency", Value = "Futuraskolan AB" }]
+};
+
+builder.AddDescriptiveMetadata(new EArkMetadataReference { Href = "metadata/descriptive/mods.xml", MdType = EArkMetadataReference.EMdType.MODS, MimeType = "text/xml", Content = ModsDocumentRenderer.RenderBytes(mods) });
+```
+
+`RenderBytes` gives indented UTF-8 without a byte order mark. `dateIssued` is written as a UTC instant in `w3cdtf`;
+an unspecified `DateTimeKind` is taken to be UTC.
 
 This component is created by [Eplicta](https://www.eplicta.se) and is licensed under the [MIT License](LICENSE).
