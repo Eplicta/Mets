@@ -182,9 +182,8 @@ public class Builder
 
     public Builder AddModsNote(MetsData.ModsNote note)
     {
-        var notesArray = _modsSectionData.Notes?.Concat([note]).ToArray() ?? [note];
-
-        _modsSectionData.Notes = notesArray;
+        _modsSectionData ??= new MetsData.ModsSectionData();
+        _modsSectionData.Notes = _modsSectionData.Notes == null ? [note] : _modsSectionData.Notes?.Concat([note]).ToArray();
         return this;
     }
 }
