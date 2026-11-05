@@ -80,6 +80,13 @@ public class ErmsPackageBuilder
         return this;
     }
 
+    /// <summary>Adds a reference to descriptive metadata, such as a MODS document under metadata/descriptive, its href given from the package root.</summary>
+    public ErmsPackageBuilder AddDescriptiveMetadata(EArkMetadataReference reference)
+    {
+        _settings.Add(x => x.AddDescriptiveMetadata(reference));
+        return this;
+    }
+
     public ErmsPackageBuilder SetErms(ErmsDocument erms)
     {
         _erms = erms;
