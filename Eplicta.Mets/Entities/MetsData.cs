@@ -76,7 +76,9 @@ public record MetsData
         SourceChannel,
         Keywords,
         ViewCount,
-        CollectDate
+        CollectDate,
+        SourcePlatform,
+        SourceName
     }
 
     public enum EMetsHdrAttributeName
