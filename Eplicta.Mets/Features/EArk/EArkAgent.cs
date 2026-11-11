@@ -98,4 +98,16 @@ public record EArkAgent
             NoteType = identificationCode == null ? null : ENoteType.IdentificationCode
         };
     }
+
+    public static EArkAgent IpOwner(string name, EType type = EType.Organization, string identificationCode = null)
+	{
+		return new EArkAgent
+		{
+			Role = ERole.IpOwner,
+			Type = type,
+			Name = name,
+			Note = identificationCode,
+			NoteType = identificationCode == null ? null : ENoteType.IdentificationCode
+		};
+	}
 }
