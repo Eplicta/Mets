@@ -17,7 +17,7 @@ public class ZipArchiveMemoryTests
     private const string SourceName = "large.pdf";
 
     [Fact]
-    public void GetArchiveStream_LargeSource_IsNotBufferedUncompressedInMemory()
+    public void GetArchiveStream_WhenSourceIsLarge_ShouldNotBufferItUncompressed()
     {
         var sut = new Renderer(new MetsData { Sources = [new StreamFileSource { Name = SourceName, Stream = new ZeroStream(SourceSize) }] });
 
@@ -29,7 +29,7 @@ public class ZipArchiveMemoryTests
     }
 
     [Fact]
-    public void GetArchiveStream_WithSource_ArchiveHoldsTheSourceAndTheMetsFile()
+    public void GetArchiveStream_WhenArchivingASource_ShouldHoldTheSourceAndTheMetsFile()
     {
         var content = Enumerable.Range(0, 100_000).Select(x => (byte)(x % 251)).ToArray();
         var source = new StreamFileSource { Name = SourceName, Stream = new MemoryStream(content) };
