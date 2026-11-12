@@ -455,11 +455,47 @@ public class Renderer
         return archive;
     }
 
+    /// <summary>
+    /// Writes the complete archive to <paramref name="target"/> instead of to memory, so a large package can go straight to a file.
+    /// </summary>
+    /// <param name="target">The stream that receives the archive. It is left open, positioned after the archive.</param>
+    /// <param name="archiveFormat">The archive format.</param>
+    /// <param name="metsFileName">The name of the METS file inside the archive. Defaults to metadata.xml.</param>
+    /// <param name="prettify">True to indent the METS file.</param>
+    /// <param name="schema">The METS schema. Defaults to <see cref="MetsSchema.Default"/>.</param>
+    public void WriteArchive(Stream target, ArchiveFormat archiveFormat, string metsFileName = null, bool prettify = false, MetsSchema schema = null)
+    {
+        if (target == null) throw new ArgumentNullException(nameof(target));
+
+        schema ??= MetsSchema.Default;
+        switch (archiveFormat)
+        {
+            case ArchiveFormat.Zip:
+                WriteZipArchive(target, metsFileName, prettify, schema);
+                break;
+            case ArchiveFormat.Tar:
+                using (var tarOutputStream = new TarOutputStream(target, Encoding.UTF8) { IsStreamOwner = false })
+                {
+                    WriteTarEntries(tarOutputStream, metsFileName, prettify, schema);
+                }
+
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(archiveFormat), archiveFormat, null);
+        }
+    }
+
     private ArchiveStream GetZipArchiveStream(string metsFileName, bool prettify, MetsSchema schema)
     {
         var compressedFileStream = _recyclableMsManager.GetStream();
-        using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Create, true);
-        var archiveStream = new ArchiveStream(compressedFileStream, null, zipArchive);
+        WriteZipArchive(compressedFileStream, metsFileName, prettify, schema);
+
+        return new ArchiveStream(compressedFileStream);
+    }
+
+    private void WriteZipArchive(Stream target, string metsFileName, bool prettify, MetsSchema schema)
+    {
+        using var zipArchive = new ZipArchive(target, ZipArchiveMode.Create, true);
 
         foreach (var source in _metsData.Sources ?? [])
         {
@@ -496,8 +532,6 @@ public class Renderer
         var xmlString = Render(null, schema).OuterXml;
 
         AddFile(zipArchive, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
-
-        return archiveStream;
     }
 
     private ArchiveStream GetTarArchiveStream(string metsFileName = null, bool prettify = false, MetsSchema schema = null)
@@ -506,6 +540,13 @@ public class Renderer
         var tarOutputStream = new TarOutputStream(compressedFileStream, Encoding.UTF8);
         var archiveStream = new ArchiveStream(compressedFileStream, tarOutputStream);
 
+        WriteTarEntries(tarOutputStream, metsFileName, prettify, schema);
+
+        return archiveStream;
+    }
+
+    private void WriteTarEntries(TarOutputStream tarOutputStream, string metsFileName, bool prettify, MetsSchema schema)
+    {
         foreach (var source in _metsData.Sources ?? [])
         {
             throw new NotImplementedException("Stream resources from sources has not yet been implemented for Tar-archives.");
@@ -521,8 +562,6 @@ public class Renderer
         AddFile(tarOutputStream, metsFileName ?? "metadata.xml", prettify ? PrettifyXml(xmlString) : xmlString);
 
         tarOutputStream.Finish();
-
-        return archiveStream;
     }
 
     private static void AddFile(ZipArchive zipArchive, string entryName, string data)
