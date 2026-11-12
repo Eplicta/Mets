@@ -19,6 +19,32 @@ public class RendererWriteArchiveTests
     private const string MetsFileName = "sip.xml";
     private const string SourceName = "video.mp4";
 
+    private static Dictionary<string, byte[]> ReadZip(byte[] archive)
+    {
+        using var zip = new ZipArchive(new MemoryStream(archive), ZipArchiveMode.Read);
+        return zip.Entries.ToDictionary(x => x.FullName, x =>
+        {
+            using var entryStream = x.Open();
+            using var content = new MemoryStream();
+            entryStream.CopyTo(content);
+            return content.ToArray();
+        });
+    }
+
+    private static Dictionary<string, byte[]> ReadTar(byte[] archive)
+    {
+        var entries = new Dictionary<string, byte[]>();
+        using var tar = new TarInputStream(new MemoryStream(archive), System.Text.Encoding.UTF8);
+        while (tar.GetNextEntry() is { } entry)
+        {
+            using var content = new MemoryStream();
+            tar.CopyEntryContents(content);
+            entries[entry.Name] = content.ToArray();
+        }
+
+        return entries;
+    }
+
     [Fact]
     public void WriteArchive_WhenFormatIsTar_ShouldWriteACompleteArchive()
     {
@@ -28,6 +54,7 @@ public class RendererWriteArchiveTests
 
         sut.WriteArchive(target, ArchiveFormat.Tar, MetsFileName);
 
+        target.CanWrite.Should().BeTrue();
         var entries = ReadTar(target.ToArray());
         entries.Keys.Should().BeEquivalentTo(metsData.Files.Select(x => x.FileName).Append(MetsFileName));
         foreach (var file in metsData.Files) entries[file.FileName].Should().Equal(file.Data);
@@ -85,31 +112,5 @@ public class RendererWriteArchiveTests
         writtenEntries.Keys.Should().BeEquivalentTo(returnedEntries.Keys);
         writtenEntries[SourceName].Should().Equal(content);
         returnedEntries[SourceName].Should().Equal(content);
-    }
-
-    private static Dictionary<string, byte[]> ReadZip(byte[] archive)
-    {
-        using var zip = new ZipArchive(new MemoryStream(archive), ZipArchiveMode.Read);
-        return zip.Entries.ToDictionary(x => x.FullName, x =>
-        {
-            using var entryStream = x.Open();
-            using var content = new MemoryStream();
-            entryStream.CopyTo(content);
-            return content.ToArray();
-        });
-    }
-
-    private static Dictionary<string, byte[]> ReadTar(byte[] archive)
-    {
-        var entries = new Dictionary<string, byte[]>();
-        using var tar = new TarInputStream(new MemoryStream(archive), System.Text.Encoding.UTF8);
-        while (tar.GetNextEntry() is { } entry)
-        {
-            using var content = new MemoryStream();
-            tar.CopyEntryContents(content);
-            entries[entry.Name] = content.ToArray();
-        }
-
-        return entries;
     }
 }
