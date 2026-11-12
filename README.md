@@ -44,6 +44,12 @@ await using var archive = renderer.GetArchiveStream(ArchiveFormat.Zip, null, tru
 await File.WriteAllBytesAsync("C:\\mets-archive.zip", archive.ToArray());
 ```
 
+`GetArchiveStream` builds the whole archive in memory. For large packages (video, many files), write it straight to a stream you own instead, for example a file; the stream is left open, positioned after the archive:
+```
+await using var file = File.Create("C:\\mets-archive.zip");
+renderer.WriteArchive(file, ArchiveFormat.Zip, null, true, MetsSchema.Default);
+```
+
 ## Validator
 Inject *IMetsValidatorService* and use it
 

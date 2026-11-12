@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Tar;
 
@@ -10,13 +9,11 @@ public record ArchiveStream : IDisposable
 {
     private readonly MemoryStream _memoryStream;
     private readonly TarOutputStream _tarOutputStream;
-    private readonly ZipArchive _zipArchive;
 
-    internal ArchiveStream(MemoryStream memoryStream, TarOutputStream tarOutputStream = default, ZipArchive zipArchive = default)
+    internal ArchiveStream(MemoryStream memoryStream, TarOutputStream tarOutputStream = default)
     {
         _memoryStream = memoryStream;
         _tarOutputStream = tarOutputStream;
-        _zipArchive = zipArchive;
     }
 
     public static implicit operator MemoryStream(ArchiveStream archive) => archive._memoryStream;
@@ -26,7 +23,6 @@ public record ArchiveStream : IDisposable
     public void Dispose()
     {
         _tarOutputStream?.Dispose();
-        _zipArchive?.Dispose();
         _memoryStream?.Dispose();
     }
 
