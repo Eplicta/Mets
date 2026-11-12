@@ -458,7 +458,7 @@ public class Renderer
     private ArchiveStream GetZipArchiveStream(string metsFileName, bool prettify, MetsSchema schema)
     {
         var compressedFileStream = _recyclableMsManager.GetStream();
-        using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, true);
+        using var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Create, true);
         var archiveStream = new ArchiveStream(compressedFileStream, null, zipArchive);
 
         foreach (var source in _metsData.Sources ?? [])
