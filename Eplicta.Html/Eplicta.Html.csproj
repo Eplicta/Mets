@@ -7,7 +7,7 @@
 		<Authors>Eplicta</Authors>
 		<Company>Eplicta</Company>
 		<Product>Eplicta Html archive renderer</Product>
-		<PackageIconUrl>https://eplicta-aggregator.azurewebsites.net/images/eplicta.toolkit.png</PackageIconUrl>
+		<PackageIcon>icon.png</PackageIcon>
 		<LangVersion>latest</LangVersion>
 		<PackageProjectUrl>https://github.com/Eplicta/Mets</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,6 +19,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 		<None Include="README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
